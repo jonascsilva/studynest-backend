@@ -1,7 +1,8 @@
 import { Controller, Get } from '@nestjs/common'
+import { User as UserModel, Note as NoteModel } from '@prisma/client'
+
 import { AppService } from './app.service'
 import { PrismaService } from './prisma.service'
-import { User as UserModel } from '@prisma/client'
 
 @Controller()
 export class AppController {
@@ -18,5 +19,10 @@ export class AppController {
   @Get('users')
   async getAllUsers(): Promise<UserModel[]> {
     return this.prismaService.user.findMany()
+  }
+
+  @Get('notes')
+  async getAllNotes(): Promise<NoteModel[]> {
+    return this.prismaService.note.findMany()
   }
 }
