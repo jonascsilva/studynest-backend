@@ -6,26 +6,34 @@ npm install
 
 ## Compile and run the project
 
+Development
+
 ```bash
-# development
-$ npm run start
+npm run start:dev
+```
 
-# watch mode
-$ npm run start:dev
+Production
 
-# production mode
-$ npm run start:prod
+```bash
+npm run start:prod
 ```
 
 ## Run tests
 
+Unit tests
+
 ```bash
-# unit tests
-$ npm run test
+npm run test
+```
 
-# e2e tests
-$ npm run test:e2e
+E2E tests
 
-# test coverage
-$ npm run test:cov
+```bash
+npm run test:e2e
+```
+
+Test coverage
+
+```bash
+npm run test:cov
 ```

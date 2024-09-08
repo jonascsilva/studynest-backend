@@ -1,0 +1,2 @@
+### List all notes
+GET http://localhost:3000/notes
