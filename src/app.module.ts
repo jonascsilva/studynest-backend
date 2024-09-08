@@ -1,8 +1,7 @@
+import { AppController } from '$/app.controller'
+import { AppService } from '$/app.service'
 import { Module } from '@nestjs/common'
-
-import { AppController } from 'src/app.controller'
-import { AppService } from 'src/app.service'
-import { NotesModule } from 'src/notes/notes.module'
+import { NotesModule } from '$/notes/notes.module'
 
 @Module({
   imports: [NotesModule],

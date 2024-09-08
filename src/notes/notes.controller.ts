@@ -1,7 +1,7 @@
 import { Controller, Get } from '@nestjs/common'
 import { Note as NoteModel } from '@prisma/client'
 
-import { NotesService } from 'src/notes/notes.service'
+import { NotesService } from '$/notes/notes.service'
 
 @Controller('notes')
 export class NotesController {

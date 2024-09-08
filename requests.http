@@ -1,2 +1,5 @@
+### Hello World
+GET http://localhost:3000
+
 ### List all notes
 GET http://localhost:3000/notes
