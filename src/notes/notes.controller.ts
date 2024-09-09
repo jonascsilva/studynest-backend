@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common'
+import { Controller, Get, Param } from '@nestjs/common'
 import { Note as NoteModel } from '@prisma/client'
 
 import { NotesService } from '$/notes/notes.service'
@@ -10,5 +10,10 @@ export class NotesController {
   @Get()
   getAllNotes(): Promise<NoteModel[]> {
     return this.notesService.getAllNotes()
+  }
+
+  @Get('/:id')
+  getNote(@Param('id') id: string): Promise<NoteModel> {
+    return this.notesService.getNote(id)
   }
 }

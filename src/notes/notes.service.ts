@@ -10,4 +10,8 @@ export class NotesService {
   async getAllNotes(): Promise<NoteModel[]> {
     return this.prismaService.note.findMany()
   }
+
+  async getNote(id: string): Promise<NoteModel> {
+    return this.prismaService.note.findUnique({ where: { id } })
+  }
 }
