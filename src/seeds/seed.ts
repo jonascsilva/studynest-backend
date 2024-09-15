@@ -1,9 +1,11 @@
-import { AppModule } from '../app.module'
 import { NestFactory } from '@nestjs/core'
-import { Note } from '$/notes/note.entity'
 import { Repository } from 'typeorm'
-import { User } from '$/users/user.entity'
 import { v7 as uuidv7 } from 'uuid'
+
+import { Note } from '$/notes/note.entity'
+import { User } from '$/users/user.entity'
+
+import { AppModule } from '../app.module'
 
 async function bootstrap() {
   const app = await NestFactory.createApplicationContext(AppModule)

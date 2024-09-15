@@ -6,6 +6,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn
 } from 'typeorm'
+
 import { Note } from '$/notes/note.entity'
 
 @Entity()

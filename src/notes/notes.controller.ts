@@ -1,4 +1,5 @@
 import { Controller, Get, Param } from '@nestjs/common'
+
 import { Note } from '$/notes/note.entity'
 import { NotesService } from '$/notes/notes.service'
 

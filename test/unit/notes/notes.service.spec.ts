@@ -1,7 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing'
-import { getNote as getNoteMock, notes as notesMock } from './mocks'
 import { Note as NoteModel } from '@prisma/client'
+
 import { NotesService } from '$/notes/notes.service'
+
+import { getNote as getNoteMock, notes as notesMock } from './mocks'
+
 import { PrismaService } from '$/prisma.service'
 
 describe('NotesService', () => {
