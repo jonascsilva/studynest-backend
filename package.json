@@ -18,7 +18,8 @@
     "test:watch": "jest --config ./test/jest.config.json --watch",
     "test:cov": "jest --config ./test/jest.config.json --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --config ./test/unit/jest.config.json --runInBand",
-    "test:e2e": "jest --config ./test/jest.config.json"
+    "test:e2e": "jest --config ./test/jest.config.json",
+    "db:seed": "ts-node -r tsconfig-paths/register src/seeds/seed.ts"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
@@ -29,7 +30,8 @@
     "pg": "^8.12.0",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1",
-    "typeorm": "^0.3.20"
+    "typeorm": "^0.3.20",
+    "uuid": "^10.0.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.0.0",
@@ -39,6 +41,7 @@
     "@types/jest": "^29.5.2",
     "@types/node": "^20.3.1",
     "@types/supertest": "^6.0.0",
+    "@types/uuid": "^10.0.0",
     "@typescript-eslint/eslint-plugin": "^8.0.0",
     "@typescript-eslint/parser": "^8.0.0",
     "class-validator": "^0.14.1",

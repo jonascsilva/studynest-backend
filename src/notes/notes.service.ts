@@ -7,11 +7,11 @@ import { Repository } from 'typeorm'
 export class NotesService {
   constructor(@InjectRepository(Note) private repo: Repository<Note>) {}
 
-  getAllNotes(): string {
-    return 'Not implemented yet'
+  getAllNotes(): Promise<Note[]> {
+    return this.repo.find()
   }
 
-  getNote(id: string): string {
-    return 'Not implemented yet'
+  getNote(id: string): Promise<Note> {
+    return this.repo.findOneBy({ id })
   }
 }
