@@ -1,17 +1,17 @@
+import { InjectRepository } from '@nestjs/typeorm'
 import { Injectable } from '@nestjs/common'
-import { Note as NoteModel } from '@prisma/client'
-
-import { PrismaService } from '$/prisma.service'
+import { Note } from '$/notes/note.entity'
+import { Repository } from 'typeorm'
 
 @Injectable()
 export class NotesService {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(@InjectRepository(Note) private repo: Repository<Note>) {}
 
-  async getAllNotes(): Promise<NoteModel[]> {
-    return this.prismaService.note.findMany()
+  getAllNotes(): string {
+    return 'Not implemented yet'
   }
 
-  async getNote(id: string): Promise<NoteModel> {
-    return this.prismaService.note.findUnique({ where: { id } })
+  getNote(id: string): string {
+    return 'Not implemented yet'
   }
 }

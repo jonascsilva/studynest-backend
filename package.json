@@ -18,22 +18,18 @@
     "test:watch": "jest --config ./test/jest.config.json --watch",
     "test:cov": "jest --config ./test/jest.config.json --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --config ./test/unit/jest.config.json --runInBand",
-    "test:e2e": "jest --config ./test/jest.config.json",
-    "db:reset": "prisma migrate reset",
-    "db:push": "prisma db push",
-    "db:seed": "prisma db seed"
-  },
-  "prisma": {
-    "seed": "ts-node prisma/seed.ts"
+    "test:e2e": "jest --config ./test/jest.config.json"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
     "@nestjs/core": "^10.0.0",
     "@nestjs/platform-express": "^10.0.0",
-    "@prisma/client": "^5.19.1",
-    "prisma": "^5.19.1",
+    "@nestjs/typeorm": "^10.0.2",
+    "class-transformer": "^0.5.1",
+    "pg": "^8.12.0",
     "reflect-metadata": "^0.2.0",
-    "rxjs": "^7.8.1"
+    "rxjs": "^7.8.1",
+    "typeorm": "^0.3.20"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.0.0",
@@ -45,6 +41,7 @@
     "@types/supertest": "^6.0.0",
     "@typescript-eslint/eslint-plugin": "^8.0.0",
     "@typescript-eslint/parser": "^8.0.0",
+    "class-validator": "^0.14.1",
     "eslint": "^8.42.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.0",
