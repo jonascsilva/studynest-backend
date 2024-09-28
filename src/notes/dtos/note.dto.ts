@@ -1,9 +1,24 @@
 import { Expose } from 'class-transformer'
 
-export class UserDto {
+export class NoteDto {
   @Expose()
-  id: number
+  id: string
 
   @Expose()
-  email: string
+  title: string
+
+  @Expose()
+  subject: string
+
+  @Expose()
+  content: string
+
+  @Expose()
+  userId: string
+
+  @Expose()
+  createdAt: Date
+
+  @Expose()
+  updatedAt: Date
 }

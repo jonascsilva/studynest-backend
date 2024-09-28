@@ -1,0 +1,31 @@
+@noteId = b992b89d-aa92-4a4b-9610-bb633409b60c
+@userId = 8f82aa4e-57fb-4e07-9928-3616edcf45c0
+
+### Find all notes
+GET http://localhost:3000/notes
+
+### Find a particular note
+GET http://localhost:3000/notes/{{noteId}}
+
+### Create a new note
+POST http://localhost:3000/notes
+Content-Type: application/json
+
+{
+    "userId": "{{userId}}",
+    "title": "Revolução Russa",
+    "subject": "História",
+    "content": "Um texto qualquer"
+}
+
+### Update a note
+PATCH http://localhost:3000/notes/{{noteId}}
+content-type: application/json
+
+{
+    "title": "Revolução Soviética",
+    "content": "Um novo texto qualquer"
+}
+
+### Delete a note with given id
+DELETE http://localhost:3000/notes/{{noteId}}
