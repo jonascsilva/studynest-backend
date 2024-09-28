@@ -6,42 +6,30 @@
 
 ---
 
-## Project setup
+## Setup do projeto
 
 ```bash
 npm install
 ```
 
-## Compile and run the project
+## Rodar o projeto
 
-Development
+### Modo desenvolvimento
 
 ```bash
 npm run start:dev
 ```
 
-Production
+### Modo produçãos
 
 ```bash
 npm run start:prod
 ```
 
-## Run tests
+## Rodar os testes
 
-Unit tests
+### Unitários
 
 ```bash
 npm run test
-```
-
-E2E tests
-
-```bash
-npm run test:e2e
-```
-
-Test coverage
-
-```bash
-npm run test:cov
 ```
