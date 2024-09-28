@@ -1,8 +1,41 @@
+@userId = 8f82aa4e-57fb-4e07-9928-3616edcf45c0
+@userEmail = abcd@abcd.com
+
 ### Create a new user
 POST http://localhost:3000/auth/signup
 content-type: application/json
 
 {
-  "email": "asdf@asdf.com",
-  "password": "asdlfkajsd"
+  "email": {{userEmail}},
+  "password": "abcd"
+}
+
+### Authenticate a user
+POST http://localhost:3000/auth/signin
+content-type: application/json
+
+{
+  "email": {{userEmail}},
+  "password": "abcd"
+}
+
+### Find a particular user with a given ID
+GET http://localhost:3000/auth/{{userId}}
+
+### Find all users
+GET http://localhost:3000/auth
+
+### Find all users with a given email
+GET http://localhost:3000/auth?email={{userEmail}}
+
+### Delete a user given id
+DELETE http://localhost:3000/auth/{{userId}}
+
+### Update a user
+PATCH http://localhost:3000/auth/{{userId}}
+content-type: application/json
+
+{
+  "email": "{{userEmail}}",
+  "password": "zzzz"
 }
