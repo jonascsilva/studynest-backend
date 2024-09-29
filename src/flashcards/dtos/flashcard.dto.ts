@@ -5,13 +5,13 @@ export class FlashcardDto {
   id: string
 
   @Expose()
-  title: string
+  question: string
 
   @Expose()
   subject: string
 
   @Expose()
-  content: string
+  answer: string
 
   @Expose()
   userId: string
