@@ -1,0 +1,32 @@
+@flashcardId = b992b89d-aa92-4a4b-9610-bb633409b60c
+@userId = 8f82aa4e-57fb-4e07-9928-3616edcf45c0
+
+### Find all flashcards
+GET http://localhost:3000/flashcards
+
+### Find a particular flashcard
+GET http://localhost:3000/flashcards/{{flashcardId}}
+
+### Create a new flashcard
+POST http://localhost:3000/flashcards
+Content-Type: application/json
+
+{
+    "userId": "{{userId}}",
+    "title": "Revolução Russa",
+    "subject": "História",
+    "front": "Pergunta",
+    "back": "Resposta"
+}
+
+### Update a flashcard
+PATCH http://localhost:3000/flashcards/{{flashcardId}}
+content-type: application/json
+
+{
+    "title": "Outra pergunta",
+    "content": "Uma nova resposta"
+}
+
+### Delete a flashcard with given id
+DELETE http://localhost:3000/flashcards/{{flashcardId}}

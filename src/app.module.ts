@@ -3,6 +3,8 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 
 import { AppController } from '$/app.controller'
 import { AppService } from '$/app.service'
+import { Flashcard } from '$/flashcards/flashcard.entity'
+import { FlashcardsModule } from '$/flashcards/flashcards.module'
 import { Note } from '$/notes/note.entity'
 import { NotesModule } from '$/notes/notes.module'
 import { User } from '$/users/user.entity'
@@ -17,12 +19,13 @@ import { UsersModule } from '$/users/users.module'
       username: 'studynest_owner',
       password: '9SuvcNgdt7Pq',
       database: 'studynest',
-      entities: [Note, User],
+      entities: [Note, User, Flashcard],
       synchronize: true,
       ssl: true
     }),
     UsersModule,
-    NotesModule
+    NotesModule,
+    FlashcardsModule
   ],
   controllers: [AppController],
   providers: [AppService]
