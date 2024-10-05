@@ -10,6 +10,7 @@ import {
   UpdateDateColumn
 } from 'typeorm'
 
+import { Flashcard } from '$/flashcards/flashcard.entity'
 import { Note } from '$/notes/note.entity'
 
 @Entity()
@@ -34,6 +35,9 @@ export class User {
 
   @OneToMany(() => Note, note => note.user)
   notes: Note[]
+
+  @OneToMany(() => Flashcard, flashcard => flashcard.user)
+  flashcards: Note[]
 
   @AfterInsert()
   logInsert() {
