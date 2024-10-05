@@ -4,10 +4,12 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn
 } from 'typeorm'
 
+import { FlashcardRevision } from '$/flashcards/flashcard-revision.entity'
 import { User } from '$/users/user.entity'
 
 @Entity()
@@ -15,16 +17,16 @@ export class Flashcard {
   @PrimaryGeneratedColumn('uuid')
   id: string
 
-  @Column()
+  @Column('text', { default: '' })
   question: string
 
-  @Column()
+  @Column('text', { default: '' })
   subject: string
 
-  @Column()
+  @Column('text', { default: '' })
   answer: string
 
-  @Column()
+  @Column('uuid')
   userId: string
 
   @CreateDateColumn()
@@ -33,7 +35,10 @@ export class Flashcard {
   @UpdateDateColumn()
   updatedAt: Date
 
-  @ManyToOne(() => User, user => user.notes)
+  @ManyToOne(() => User, user => user.flashcards)
   @JoinColumn({ name: 'userId' })
   user: User
+
+  @OneToMany(() => FlashcardRevision, flashcardRevision => flashcardRevision.flashcard)
+  flashcardRevisions: FlashcardRevision[]
 }

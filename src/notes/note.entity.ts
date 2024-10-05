@@ -15,16 +15,16 @@ export class Note {
   @PrimaryGeneratedColumn('uuid')
   id: string
 
-  @Column()
+  @Column('text', { default: '' })
   title: string
 
-  @Column()
+  @Column('text', { default: '' })
   subject: string
 
-  @Column()
+  @Column('text', { default: '' })
   content: string
 
-  @Column()
+  @Column('uuid')
   userId: string
 
   @CreateDateColumn()
