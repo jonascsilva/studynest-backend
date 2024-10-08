@@ -1,19 +1,29 @@
 import { Test, TestingModule } from '@nestjs/testing'
+import { getRepositoryToken } from '@nestjs/typeorm'
 
+import { User } from '$/users/user.entity'
 import { UsersService } from '$/users/users.service'
 
+import { UsersRepositoryMock } from './users.repository.mock'
+
 describe('UsersService', () => {
-  let service: UsersService
+  let usersService: UsersService
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [UsersService]
+      providers: [
+        UsersService,
+        {
+          provide: getRepositoryToken(User),
+          useClass: UsersRepositoryMock
+        }
+      ]
     }).compile()
 
-    service = module.get<UsersService>(UsersService)
+    usersService = module.get<UsersService>(UsersService)
   })
 
   it('should be defined', () => {
-    expect(service).toBeDefined()
+    expect(usersService).toBeDefined()
   })
 })

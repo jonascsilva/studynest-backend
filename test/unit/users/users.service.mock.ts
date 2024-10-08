@@ -1,0 +1,3 @@
+class UsersServiceMock {}
+
+export { UsersServiceMock }

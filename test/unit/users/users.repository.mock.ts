@@ -1,0 +1,3 @@
+class UsersRepositoryMock {}
+
+export { UsersRepositoryMock }

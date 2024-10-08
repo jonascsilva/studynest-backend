@@ -1,0 +1,3 @@
+class AuthServiceMock {}
+
+export { AuthServiceMock }

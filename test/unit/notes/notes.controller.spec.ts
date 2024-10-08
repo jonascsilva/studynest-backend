@@ -1,24 +1,25 @@
 import { Test, TestingModule } from '@nestjs/testing'
-import { Note as NoteModel } from '@prisma/client'
 
+import { Note } from '$/notes/note.entity'
 import { NotesController } from '$/notes/notes.controller'
 import { NotesService } from '$/notes/notes.service'
 
-import { getNote as getNoteMock, notes as notesMock } from './mocks'
-
-import { PrismaService } from '$/prisma.service'
+import { notesMock, NotesServiceMock } from './notes.service.mock'
 
 describe('NotesController', () => {
   let notesController: NotesController
-  let notesService: NotesService
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [NotesController],
-      providers: [NotesService, PrismaService]
+      providers: [
+        {
+          provide: NotesService,
+          useClass: NotesServiceMock
+        }
+      ]
     }).compile()
 
-    notesService = module.get<NotesService>(NotesService)
     notesController = module.get<NotesController>(NotesController)
   })
 
@@ -28,15 +29,11 @@ describe('NotesController', () => {
 
   describe('routes', () => {
     it('/notes"', async () => {
-      jest.spyOn(notesService, 'getAllNotes').mockImplementation(async () => notesMock)
-
-      expect(await notesController.getAllNotes()).toHaveLength(1)
+      expect(await notesController.findAllNotes()).toHaveLength(3)
     })
 
     it('/notes/:id', async () => {
-      jest.spyOn(notesService, 'getNote').mockImplementation(getNoteMock)
-
-      expect(await notesController.getNote(notesMock[1].id)).toMatchObject<NoteModel>(notesMock[1])
+      expect(await notesController.findNote(notesMock[1].id)).toMatchObject<Note>(notesMock[1])
     })
   })
 })
