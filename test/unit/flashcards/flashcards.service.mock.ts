@@ -1,0 +1,3 @@
+class FlashcardsServiceMock {}
+
+export { FlashcardsServiceMock }

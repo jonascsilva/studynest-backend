@@ -1,18 +1,29 @@
 import { Test, TestingModule } from '@nestjs/testing'
-import { FlashcardsService } from './flashcards.service'
+import { getRepositoryToken } from '@nestjs/typeorm'
+
+import { Flashcard } from '$/flashcards/flashcard.entity'
+import { FlashcardsService } from '$/flashcards/flashcards.service'
+
+import { FlashcardsRepositoryMock } from './flashcards.repository.mock'
 
 describe('FlashcardsService', () => {
-  let service: FlashcardsService
+  let flashcardsService: FlashcardsService
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [FlashcardsService]
+      providers: [
+        FlashcardsService,
+        {
+          provide: getRepositoryToken(Flashcard),
+          useClass: FlashcardsRepositoryMock
+        }
+      ]
     }).compile()
 
-    service = module.get<FlashcardsService>(FlashcardsService)
+    flashcardsService = module.get<FlashcardsService>(FlashcardsService)
   })
 
   it('should be defined', () => {
-    expect(service).toBeDefined()
+    expect(flashcardsService).toBeDefined()
   })
 })

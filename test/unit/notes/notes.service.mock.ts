@@ -1,8 +1,8 @@
-import { Note as NoteModel } from '@prisma/client'
+import { Note } from '$/notes/note.entity'
 
 const date = new Date()
 
-const notes: NoteModel[] = [
+const notesMock: Note[] = [
   {
     id: '7f3ad2bc25ac4ba19a44b9ef135adf42',
     title: 'Revolução Francesa',
@@ -10,7 +10,8 @@ const notes: NoteModel[] = [
     content: '',
     userId: 'cm0n1obcr0000y4jqcdwowlwl',
     createdAt: date,
-    updatedAt: date
+    updatedAt: date,
+    user: null
   },
   {
     id: '98029866259947f36c5e799ebfea234e',
@@ -19,7 +20,8 @@ const notes: NoteModel[] = [
     content: '',
     userId: 'cm0n1obcr0000y4jqcdwowlwl',
     createdAt: date,
-    updatedAt: date
+    updatedAt: date,
+    user: null
   },
   {
     id: '4f7964e314a926409c071b53062b19af',
@@ -28,10 +30,21 @@ const notes: NoteModel[] = [
     content: '',
     userId: 'cm0n1obcr0000y4jqcdwowlwl',
     createdAt: date,
-    updatedAt: date
+    updatedAt: date,
+    user: null
   }
 ]
 
-const getNote = async (id: string) => notes.find(note => note.id === id)
+class NotesServiceMock {
+  notes = notesMock
 
-export { notes, getNote }
+  async findOne(id: string) {
+    return this.notes.find(note => note.id === id)
+  }
+
+  async find() {
+    return this.notes
+  }
+}
+
+export { notesMock, NotesServiceMock }

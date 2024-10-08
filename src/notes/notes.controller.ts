@@ -23,13 +23,11 @@ export class NotesController {
 
   @Post()
   createNote(@Body() body: CreateNoteDto): Promise<Note> {
-    console.log(body)
-
     return this.notesService.create(body)
   }
 
   @Get()
-  getAllNotes(): Promise<Note[]> {
+  findAllNotes(): Promise<Note[]> {
     return this.notesService.find()
   }
 
