@@ -1,13 +1,4 @@
-import {
-  Controller,
-  Get,
-  Param,
-  Post,
-  Delete,
-  Patch,
-  Body,
-  NotFoundException
-} from '@nestjs/common'
+import { Controller, Get, Param, Post, Delete, Patch, Body } from '@nestjs/common'
 
 import { Serialize } from '$/interceptor/serialize.interceptor'
 import { CreateNoteDto } from '$/notes/dtos/create-note.dto'
@@ -21,11 +12,6 @@ import { NotesService } from '$/notes/notes.service'
 export class NotesController {
   constructor(private readonly notesService: NotesService) {}
 
-  @Post()
-  createNote(@Body() body: CreateNoteDto): Promise<Note> {
-    return this.notesService.create(body)
-  }
-
   @Get()
   findAllNotes(): Promise<Note[]> {
     return this.notesService.find()
@@ -33,13 +19,12 @@ export class NotesController {
 
   @Get('/:id')
   async findNote(@Param('id') id: string): Promise<Note> {
-    const note = await this.notesService.findOne(id)
+    return this.notesService.findOne(id)
+  }
 
-    if (!note) {
-      throw new NotFoundException('Note not found')
-    }
-
-    return note
+  @Post()
+  createNote(@Body() body: CreateNoteDto): Promise<Note> {
+    return this.notesService.create(body)
   }
 
   @Patch('/:id')

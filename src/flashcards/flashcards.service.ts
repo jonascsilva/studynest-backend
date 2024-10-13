@@ -6,7 +6,7 @@ import { Flashcard } from '$/flashcards/flashcard.entity'
 
 @Injectable()
 export class FlashcardsService {
-  constructor(@InjectRepository(Flashcard) private repo: Repository<Flashcard>) {}
+  constructor(@InjectRepository(Flashcard) private readonly repo: Repository<Flashcard>) {}
 
   create(attrs: Partial<Flashcard>): Promise<Flashcard> {
     console.log(attrs)

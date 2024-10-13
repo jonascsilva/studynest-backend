@@ -1,10 +1,12 @@
+import { v7 as uuid } from 'uuid'
+
 import { Note } from '$/notes/note.entity'
 
 const date = new Date()
 
 const notesMock: Note[] = [
   {
-    id: '7f3ad2bc25ac4ba19a44b9ef135adf42',
+    id: uuid(),
     title: 'Revolução Francesa',
     subject: 'História',
     content: '',
@@ -14,7 +16,7 @@ const notesMock: Note[] = [
     user: null
   },
   {
-    id: '98029866259947f36c5e799ebfea234e',
+    id: uuid(),
     title: 'Guerra Fria',
     subject: 'História',
     content: '',
@@ -24,7 +26,7 @@ const notesMock: Note[] = [
     user: null
   },
   {
-    id: '4f7964e314a926409c071b53062b19af',
+    id: uuid(),
     title: 'Vitaminas',
     subject: 'Biologia',
     content: '',
@@ -35,16 +37,4 @@ const notesMock: Note[] = [
   }
 ]
 
-class NotesServiceMock {
-  notes = notesMock
-
-  async findOne(id: string) {
-    return this.notes.find(note => note.id === id)
-  }
-
-  async find() {
-    return this.notes
-  }
-}
-
-export { notesMock, NotesServiceMock }
+export { notesMock }
