@@ -4,8 +4,6 @@ import { getRepositoryToken } from '@nestjs/typeorm'
 import { User } from '$/users/user.entity'
 import { UsersService } from '$/users/users.service'
 
-import { UsersRepositoryMock } from './users.repository.mock'
-
 describe('UsersService', () => {
   let usersService: UsersService
 

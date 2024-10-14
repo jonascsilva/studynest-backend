@@ -4,9 +4,6 @@ import { AuthService } from '$/users/auth.service'
 import { UsersController } from '$/users/users.controller'
 import { UsersService } from '$/users/users.service'
 
-import { AuthServiceMock } from './auth.service.mock'
-import { UsersServiceMock } from './users.service.mock'
-
 describe('UsersController', () => {
   let usersController: UsersController
 

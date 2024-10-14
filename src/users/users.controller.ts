@@ -21,8 +21,8 @@ import { UsersService } from '$/users/users.service'
 @Serialize(UserDto)
 export class UsersController {
   constructor(
-    private usersService: UsersService,
-    private authService: AuthService
+    private readonly usersService: UsersService,
+    private readonly authService: AuthService
   ) {}
 
   @Post('/signup')
