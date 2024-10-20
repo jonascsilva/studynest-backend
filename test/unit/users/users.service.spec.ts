@@ -1,21 +1,24 @@
 import { Test, TestingModule } from '@nestjs/testing'
 import { getRepositoryToken } from '@nestjs/typeorm'
+import { instance, mock } from 'ts-mockito'
+import { Repository } from 'typeorm'
 
 import { User } from '$/users/user.entity'
 import { UsersService } from '$/users/users.service'
 
-import { UsersRepositoryMock } from './users.repository.mock'
-
 describe('UsersService', () => {
   let usersService: UsersService
+  let userRepositoryMock: Repository<User>
 
   beforeEach(async () => {
+    userRepositoryMock = mock(Repository<User>)
+
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         UsersService,
         {
           provide: getRepositoryToken(User),
-          useClass: UsersRepositoryMock
+          useValue: instance(userRepositoryMock)
         }
       ]
     }).compile()

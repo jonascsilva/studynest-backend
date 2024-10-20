@@ -23,8 +23,6 @@ export class FlashcardsController {
 
   @Post()
   createFlashcard(@Body() body: CreateFlashcardDto): Promise<Flashcard> {
-    console.log(body)
-
     return this.flashcardsService.create(body)
   }
 

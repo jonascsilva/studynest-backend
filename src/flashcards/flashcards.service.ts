@@ -9,8 +9,6 @@ export class FlashcardsService {
   constructor(@InjectRepository(Flashcard) private readonly repo: Repository<Flashcard>) {}
 
   create(attrs: Partial<Flashcard>): Promise<Flashcard> {
-    console.log(attrs)
-
     const flashcard = this.repo.create(attrs)
 
     return this.repo.save(flashcard)
