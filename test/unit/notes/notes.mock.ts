@@ -10,7 +10,7 @@ const notesMock: Note[] = [
     title: 'Revolução Francesa',
     subject: 'História',
     content: '',
-    userId: 'cm0n1obcr0000y4jqcdwowlwl',
+    userId: '8f82aa4e-57fb-4e07-9928-3616edcf45c0',
     createdAt: date,
     updatedAt: date,
     user: null
@@ -20,7 +20,7 @@ const notesMock: Note[] = [
     title: 'Guerra Fria',
     subject: 'História',
     content: '',
-    userId: 'cm0n1obcr0000y4jqcdwowlwl',
+    userId: '8f82aa4e-57fb-4e07-9928-3616edcf45c0',
     createdAt: date,
     updatedAt: date,
     user: null
@@ -30,7 +30,7 @@ const notesMock: Note[] = [
     title: 'Vitaminas',
     subject: 'Biologia',
     content: '',
-    userId: 'cm0n1obcr0000y4jqcdwowlwl',
+    userId: '8f82aa4e-57fb-4e07-9928-3616edcf45c0',
     createdAt: date,
     updatedAt: date,
     user: null
