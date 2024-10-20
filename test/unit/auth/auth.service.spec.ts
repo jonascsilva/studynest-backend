@@ -1,14 +1,16 @@
 import { BadRequestException, NotFoundException } from '@nestjs/common'
+import { JwtModule, JwtService } from '@nestjs/jwt'
 import { Test, TestingModule } from '@nestjs/testing'
 import { instance, mock, when, verify, anything } from 'ts-mockito'
 
-import { AuthService } from '$/users/auth.service'
-import { HashService } from '$/users/hash.service'
+import { AuthService } from '$/auth/auth.service'
+import { HashService } from '$/auth/hash.service'
 import { User } from '$/users/user.entity'
 import { UsersService } from '$/users/users.service'
 
 describe('AuthService', () => {
   let authService: AuthService
+  let jwtService: JwtService
   let usersServiceMock: UsersService
   let hashServiceMock: HashService
 
@@ -17,6 +19,12 @@ describe('AuthService', () => {
     hashServiceMock = mock(HashService)
 
     const module: TestingModule = await Test.createTestingModule({
+      imports: [
+        JwtModule.register({
+          secret: 'test-secret',
+          signOptions: { expiresIn: '1h' }
+        })
+      ],
       providers: [
         AuthService,
         {
@@ -31,6 +39,7 @@ describe('AuthService', () => {
     }).compile()
 
     authService = module.get<AuthService>(AuthService)
+    jwtService = module.get<JwtService>(JwtService)
   })
 
   afterEach(() => {
@@ -119,7 +128,7 @@ describe('AuthService', () => {
       verify(hashServiceMock.verify(hashedPassword, password)).once()
     })
 
-    it('should return user if credentials are correct', async () => {
+    it('should return access token if credentials are correct', async () => {
       const email = 'test@example.com'
       const password = 'correctpassword'
       const hashedPassword = 'hashedpassword'
@@ -128,17 +137,27 @@ describe('AuthService', () => {
       user.id = 'user-id'
       user.email = email
       user.password = hashedPassword
+      user.name = 'Test User'
+
+      const accessToken = 'fake-jwt-token'
 
       when(usersServiceMock.find(email)).thenResolve([user])
 
       when(hashServiceMock.verify(hashedPassword, password)).thenResolve(true)
 
+      jest.spyOn(jwtService, 'sign').mockReturnValue(accessToken)
+
       const result = await authService.signin(email, password)
 
-      expect(result).toEqual(user)
+      expect(result).toEqual({ access_token: accessToken })
 
       verify(usersServiceMock.find(email)).once()
       verify(hashServiceMock.verify(hashedPassword, password)).once()
+      expect(jwtService.sign).toHaveBeenCalledWith({
+        sub: user.id,
+        email: user.email,
+        name: user.name
+      })
     })
   })
 })

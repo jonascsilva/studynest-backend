@@ -2,8 +2,6 @@ import { NotFoundException } from '@nestjs/common'
 import { Test, TestingModule } from '@nestjs/testing'
 import { instance, mock, when, verify, deepEqual } from 'ts-mockito'
 
-import { AuthService } from '$/users/auth.service'
-import { CreateUserDto } from '$/users/dtos/create-user.dto'
 import { UpdateUserDto } from '$/users/dtos/update-user.dto'
 import { User } from '$/users/user.entity'
 import { UsersController } from '$/users/users.controller'
@@ -12,11 +10,9 @@ import { UsersService } from '$/users/users.service'
 describe('UsersController', () => {
   let usersController: UsersController
   let usersServiceMock: UsersService
-  let authServiceMock: AuthService
 
   beforeEach(async () => {
     usersServiceMock = mock(UsersService)
-    authServiceMock = mock(AuthService)
 
     const module: TestingModule = await Test.createTestingModule({
       controllers: [UsersController],
@@ -24,10 +20,6 @@ describe('UsersController', () => {
         {
           provide: UsersService,
           useValue: instance(usersServiceMock)
-        },
-        {
-          provide: AuthService,
-          useValue: instance(authServiceMock)
         }
       ]
     }).compile()
@@ -39,53 +31,28 @@ describe('UsersController', () => {
     expect(usersController).toBeDefined()
   })
 
-  describe('createUser', () => {
-    it('should create a new user via authService.signup', async () => {
-      const body: CreateUserDto = {
-        email: 'test@example.com',
-        password: 'password123'
+  describe('getProfile', () => {
+    it('should return the user profile from the request', () => {
+      const req = {
+        user: {
+          id: 'user-id',
+          email: 'test@example.com',
+          name: 'Test User'
+        }
       }
 
-      const user = new User()
-      user.id = 'some-id'
-      user.email = body.email
-      user.password = body.password
+      const result = usersController.getProfile(req)
 
-      when(authServiceMock.signup(body.email, body.password)).thenResolve(user)
-
-      const result = await usersController.createUser(body)
-
-      expect(result).toEqual(user)
-      verify(authServiceMock.signup(body.email, body.password)).once()
-    })
-  })
-
-  describe('signin', () => {
-    it('should sign in a user via authService.signin', async () => {
-      const body: CreateUserDto = {
-        email: 'test@example.com',
-        password: 'password123'
-      }
-
-      const user = new User()
-      user.id = 'some-id'
-      user.email = body.email
-      user.password = body.password
-
-      when(authServiceMock.signin(body.email, body.password)).thenResolve(user)
-
-      const result = await usersController.signin(body)
-
-      expect(result).toEqual(user)
-      verify(authServiceMock.signin(body.email, body.password)).once()
+      expect(result).toEqual(req.user)
     })
   })
 
   describe('findUser', () => {
     it('should return the user if found', async () => {
-      const id = 'some-id'
+      const id = 'user-id'
       const user = new User()
       user.id = id
+      user.email = 'test@example.com'
 
       when(usersServiceMock.findOne(id)).thenResolve(user)
 
@@ -106,7 +73,7 @@ describe('UsersController', () => {
   })
 
   describe('findAllUsers', () => {
-    it('should return all users matching the email', async () => {
+    it('should return all users matching the email query', async () => {
       const email = 'test@example.com'
       const users = [new User(), new User()]
       users[0].email = email
@@ -119,11 +86,24 @@ describe('UsersController', () => {
       expect(result).toEqual(users)
       verify(usersServiceMock.find(email)).once()
     })
+
+    it('should return all users when no email query is provided', async () => {
+      const users = [new User(), new User()]
+      users[0].email = 'user1@example.com'
+      users[1].email = 'user2@example.com'
+
+      when(usersServiceMock.find(undefined)).thenResolve(users)
+
+      const result = await usersController.findAllUsers(undefined)
+
+      expect(result).toEqual(users)
+      verify(usersServiceMock.find(undefined)).once()
+    })
   })
 
   describe('removeUser', () => {
     it('should remove the user via usersService.remove', async () => {
-      const id = 'some-id'
+      const id = 'user-id'
       const user = new User()
       user.id = id
 
@@ -138,13 +118,15 @@ describe('UsersController', () => {
 
   describe('updateUser', () => {
     it('should update the user via usersService.update', async () => {
-      const id = 'some-id'
+      const id = 'user-id'
       const body: UpdateUserDto = {
-        email: 'newemail@example.com'
+        email: 'newemail@example.com',
+        name: 'New Name'
       }
       const updatedUser = new User()
       updatedUser.id = id
       updatedUser.email = body.email
+      updatedUser.name = body.name
 
       when(usersServiceMock.update(id, deepEqual(body))).thenResolve(updatedUser)
 

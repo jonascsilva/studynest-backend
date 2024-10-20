@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 
 import { AppController } from '$/app.controller'
 import { AppService } from '$/app.service'
+import { AuthModule } from '$/auth/auth.module'
 import { FlashcardRevision } from '$/flashcards/flashcard-revision.entity'
 import { Flashcard } from '$/flashcards/flashcard.entity'
 import { FlashcardsModule } from '$/flashcards/flashcards.module'
@@ -31,7 +32,8 @@ import { UsersModule } from '$/users/users.module'
     }),
     UsersModule,
     NotesModule,
-    FlashcardsModule
+    FlashcardsModule,
+    AuthModule
   ],
   controllers: [AppController],
   providers: [AppService]

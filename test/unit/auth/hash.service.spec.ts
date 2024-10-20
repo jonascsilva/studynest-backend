@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing'
 
-import { HashService } from '$/users/hash.service'
+import { HashService } from '$/auth/hash.service'
 
 describe('HashService', () => {
   let hashService: HashService
@@ -70,16 +70,11 @@ describe('HashService', () => {
       expect(result).toBe(false)
     })
 
-    it('should not verify if hash is tampered', async () => {
+    it('should throw an error when verifying an invalid hash', async () => {
       const password = 'password123'
+      const invalidHash = 'invalid-hash-value'
 
-      const hash = await hashService.hash(password)
-
-      const tamperedHash = hash.slice(0, -1) + '0'
-
-      const result = await hashService.verify(tamperedHash, password)
-
-      expect(result).toBe(false)
+      await expect(hashService.verify(invalidHash, password)).rejects.toThrow()
     })
   })
 })

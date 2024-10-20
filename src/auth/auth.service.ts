@@ -1,17 +1,20 @@
 import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common'
+import { JwtService } from '@nestjs/jwt'
 
-import { HashService } from '$/users/hash.service'
+import { HashService } from '$/auth/hash.service'
 import { UsersService } from '$/users/users.service'
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly usersService: UsersService,
-    private readonly hashService: HashService
+    private readonly hashService: HashService,
+    private readonly jwtService: JwtService
   ) {}
 
   async signup(email: string, password: string) {
     const users = await this.usersService.find(email)
+
     if (users.length) {
       throw new BadRequestException('Email is already in use')
     }
@@ -25,6 +28,7 @@ export class AuthService {
 
   async signin(email: string, password: string) {
     const [user] = await this.usersService.find(email)
+
     if (!user) {
       throw new NotFoundException('User was not found')
     }
@@ -35,6 +39,10 @@ export class AuthService {
       throw new BadRequestException('Wrong password')
     }
 
-    return user
+    const payload = { sub: user.id, email: user.email, name: user.name }
+
+    return {
+      access_token: this.jwtService.sign(payload)
+    }
   }
 }

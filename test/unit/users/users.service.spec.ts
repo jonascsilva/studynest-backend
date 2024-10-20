@@ -1,4 +1,4 @@
-import { NotFoundException } from '@nestjs/common'
+import { BadRequestException, NotFoundException } from '@nestjs/common'
 import { Test, TestingModule } from '@nestjs/testing'
 import { getRepositoryToken } from '@nestjs/typeorm'
 import { instance, mock, when, verify, anything, deepEqual } from 'ts-mockito'
@@ -99,33 +99,60 @@ describe('UsersService', () => {
   describe('update', () => {
     it('should update and save a user', async () => {
       const id = 'some-id'
-      const attrs: Partial<User> = { password: 'newpassword123' }
+      const attrs: Partial<User> = { email: 'newemail@example.com' }
       const user = new User()
       user.id = id
       user.email = 'test@example.com'
       user.password = 'oldpassword'
 
       when(usersRepositoryMock.findOneBy(deepEqual({ id }))).thenResolve(user)
+      when(usersRepositoryMock.findOne(deepEqual({ where: { email: attrs.email } }))).thenResolve(
+        null
+      )
       when(usersRepositoryMock.save(anything())).thenResolve(user)
 
       const result = await usersService.update(id, attrs)
 
       expect(result).toEqual(user)
-      expect(user.password).toEqual(attrs.password)
-
+      expect(user.email).toEqual(attrs.email)
       verify(usersRepositoryMock.findOneBy(deepEqual({ id }))).once()
+      verify(usersRepositoryMock.findOne(deepEqual({ where: { email: attrs.email } }))).once()
       verify(usersRepositoryMock.save(user)).once()
     })
 
     it('should throw NotFoundException if user not found', async () => {
       const id = 'non-existent-id'
-      const attrs: Partial<User> = { password: 'newpassword123' }
+      const attrs: Partial<User> = { email: 'newemail@example.com' }
 
       when(usersRepositoryMock.findOneBy(deepEqual({ id }))).thenResolve(null)
 
       await expect(usersService.update(id, attrs)).rejects.toThrow(NotFoundException)
 
       verify(usersRepositoryMock.findOneBy(deepEqual({ id }))).once()
+      verify(usersRepositoryMock.findOne(anything())).never()
+      verify(usersRepositoryMock.save(anything())).never()
+    })
+
+    it('should throw BadRequestException if new email is already in use', async () => {
+      const id = 'some-id'
+      const attrs: Partial<User> = { email: 'existing@example.com' }
+      const user = new User()
+      user.id = id
+      user.email = 'test@example.com'
+
+      const existingUser = new User()
+      existingUser.id = 'another-id'
+      existingUser.email = attrs.email
+
+      when(usersRepositoryMock.findOneBy(deepEqual({ id }))).thenResolve(user)
+      when(usersRepositoryMock.findOne(deepEqual({ where: { email: attrs.email } }))).thenResolve(
+        existingUser
+      )
+
+      await expect(usersService.update(id, attrs)).rejects.toThrow(BadRequestException)
+
+      verify(usersRepositoryMock.findOneBy(deepEqual({ id }))).once()
+      verify(usersRepositoryMock.findOne(deepEqual({ where: { email: attrs.email } }))).once()
       verify(usersRepositoryMock.save(anything())).never()
     })
   })

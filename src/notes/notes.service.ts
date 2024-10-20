@@ -3,9 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 
 import { CreateNoteDto } from '$/notes/dtos/create-note.dto'
+import { UpdateNoteDto } from '$/notes/dtos/update-note.dto'
 import { Note } from '$/notes/note.entity'
-
-import { UpdateNoteDto } from './dtos/update-note.dto'
 
 @Injectable()
 export class NotesService {

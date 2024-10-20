@@ -6,33 +6,32 @@ import {
   NotFoundException,
   Param,
   Patch,
-  Post,
-  Query
+  Query,
+  UseGuards,
+  Request
 } from '@nestjs/common'
 
+import { JwtAuthGuard } from '$/auth/jwt-auth.guard'
 import { Serialize } from '$/interceptor/serialize.interceptor'
-import { AuthService } from '$/users/auth.service'
-import { CreateUserDto } from '$/users/dtos/create-user.dto'
 import { UpdateUserDto } from '$/users/dtos/update-user.dto'
 import { UserDto } from '$/users/dtos/user.dto'
 import { UsersService } from '$/users/users.service'
 
-@Controller('auth')
+type User = {
+  id: string
+  email: string
+  name: string
+}
+
+@Controller('users')
 @Serialize(UserDto)
 export class UsersController {
-  constructor(
-    private readonly usersService: UsersService,
-    private readonly authService: AuthService
-  ) {}
+  constructor(private readonly usersService: UsersService) {}
 
-  @Post('/signup')
-  createUser(@Body() body: CreateUserDto) {
-    return this.authService.signup(body.email, body.password)
-  }
-
-  @Post('/signin')
-  signin(@Body() body: CreateUserDto) {
-    return this.authService.signin(body.email, body.password)
+  @UseGuards(JwtAuthGuard)
+  @Get('profile')
+  getProfile(@Request() req: { user: User }) {
+    return req.user
   }
 
   @Get('/:id')

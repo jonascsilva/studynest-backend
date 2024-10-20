@@ -2,9 +2,9 @@ import { NestFactory } from '@nestjs/core'
 import { Repository } from 'typeorm'
 
 import { AppModule } from '$/app.module'
+import { CreateUserDto } from '$/auth/dtos/create-user.dto'
 import { Flashcard } from '$/flashcards/flashcard.entity'
 import { Note } from '$/notes/note.entity'
-import { CreateUserDto } from '$/users/dtos/create-user.dto'
 import { User } from '$/users/user.entity'
 
 async function bootstrap() {
