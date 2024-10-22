@@ -9,6 +9,6 @@
   "moduleNameMapper": {
     "^\\$/(.*)$": "<rootDir>/src/$1"
   },
-  "collectCoverageFrom": ["./src/**/*.{!(module),}.(t|j)s"],
+  "collectCoverageFrom": ["./src/**/*.{!(module|entity),}.(t|j)s"],
   "coverageDirectory": "./coverage"
 }

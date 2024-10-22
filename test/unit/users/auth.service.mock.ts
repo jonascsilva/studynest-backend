@@ -1,3 +1,0 @@
-class AuthServiceMock {}
-
-export { AuthServiceMock }

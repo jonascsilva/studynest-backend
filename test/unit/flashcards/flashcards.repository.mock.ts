@@ -1,3 +1,0 @@
-class FlashcardsRepositoryMock {}
-
-export { FlashcardsRepositoryMock }

@@ -9,6 +9,7 @@ import {
   NotFoundException
 } from '@nestjs/common'
 
+import { AiService } from '$/flashcards/ai.service'
 import { CreateFlashcardDto } from '$/flashcards/dtos/create-flashcard.dto'
 import { FlashcardDto } from '$/flashcards/dtos/flashcard.dto'
 import { UpdateFlashcardDto } from '$/flashcards/dtos/update-flashcard.dto'
@@ -19,18 +20,24 @@ import { Serialize } from '$/interceptor/serialize.interceptor'
 @Controller('flashcards')
 @Serialize(FlashcardDto)
 export class FlashcardsController {
-  constructor(private readonly flashcardsService: FlashcardsService) {}
+  constructor(
+    private readonly flashcardsService: FlashcardsService,
+    private readonly aiService: AiService
+  ) {}
 
   @Post()
   createFlashcard(@Body() body: CreateFlashcardDto): Promise<Flashcard> {
-    console.log(body)
-
     return this.flashcardsService.create(body)
   }
 
   @Get()
   getAllFlashcards(): Promise<Flashcard[]> {
     return this.flashcardsService.find()
+  }
+
+  @Get('/ai')
+  generateFlashcard(): Promise<Partial<Flashcard>> {
+    return this.aiService.generate()
   }
 
   @Get('/:id')

@@ -3,13 +3,13 @@ import { IsString, IsOptional } from 'class-validator'
 export class UpdateFlashcardDto {
   @IsString()
   @IsOptional()
-  question: string
+  question?: string
 
   @IsString()
   @IsOptional()
-  subject: string
+  subject?: string
 
   @IsString()
   @IsOptional()
-  answer: string
+  answer?: string
 }

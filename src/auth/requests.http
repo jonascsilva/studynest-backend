@@ -1,0 +1,20 @@
+@userEmail = test4@abcd.com
+@userPassword = 123456
+
+### Create a new user
+POST http://localhost:3000/auth/signup
+content-type: application/json
+
+{
+  "email": "{{userEmail}}",
+  "password": "{{userPassword}}"
+}
+
+### Authenticate a user
+POST http://localhost:3000/auth/signin
+content-type: application/json
+
+{
+  "email": "{{userEmail}}",
+  "password": "{{userPassword}}"
+}

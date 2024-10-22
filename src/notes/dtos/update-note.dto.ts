@@ -3,13 +3,13 @@ import { IsString, IsOptional } from 'class-validator'
 export class UpdateNoteDto {
   @IsString()
   @IsOptional()
-  title: string
+  title?: string
 
   @IsString()
   @IsOptional()
-  subject: string
+  subject?: string
 
   @IsString()
   @IsOptional()
-  content: string
+  content?: string
 }

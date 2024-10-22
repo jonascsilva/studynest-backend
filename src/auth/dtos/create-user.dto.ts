@@ -6,7 +6,7 @@ export class CreateUserDto {
 
   @IsString()
   @IsOptional()
-  name: string
+  name?: string
 
   @IsString()
   password: string
