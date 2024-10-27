@@ -14,21 +14,11 @@ npm install
 
 ## Rodar o projeto
 
-### Modo desenvolvimento
-
 ```bash
-npm run start:dev
+docker compose up
 ```
 
-### Modo produçãos
-
-```bash
-npm run start:prod
-```
-
-## Rodar os testes
-
-### Unitários
+## Rodar os testes unitários
 
 ```bash
 npm run test
