@@ -1,9 +1,6 @@
 {
   "typescript.tsdk": "./node_modules/typescript/lib",
-  "[javascript][typescript][typescriptreact]": {
+  "[javascript][typescript][typescriptreact][json]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "[dockerfile]": {
-    "editor.defaultFormatter": "ms-azuretools.vscode-docker"
-  }
 }
