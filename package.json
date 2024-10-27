@@ -24,7 +24,7 @@
     "migration:revert": "npm run build && typeorm migration:revert -d ./dist/db/data-source.js",
     "db:create": "ts-node ./node_modules/typeorm-extension/bin/cli.cjs db:create -d ./src/db/data-source.ts --initialDatabase postgres",
     "db:drop": "ts-node ./node_modules/typeorm-extension/bin/cli.cjs db:drop -d ./src/db/data-source.ts --initialDatabase postgres",
-    "db:seed": "npm run build && ts-node ./node_modules/typeorm-extension/bin/cli.cjs seed:run -d ./src/db/data-source.ts"
+    "db:seed": "npm run build && cross-env NODE_ENV=seed ts-node ./node_modules/typeorm-extension/bin/cli.cjs seed:run -d ./src/db/data-source.ts"
   },
   "dependencies": {
     "@google/generative-ai": "^0.21.0",

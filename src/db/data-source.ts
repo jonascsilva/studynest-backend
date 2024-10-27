@@ -3,12 +3,12 @@ import { DataSource, DataSourceOptions } from 'typeorm'
 import { SeederOptions } from 'typeorm-extension'
 
 config({
-  path: [`.env.seed.local`, `.env.${process.env.NODE_ENV}`, `.env.${process.env.NODE_ENV}.local`]
+  path: [`.env.${process.env.NODE_ENV}`, `.env.${process.env.NODE_ENV}.local`]
 })
 
 export const dataSourceOptions: DataSourceOptions & SeederOptions = {
   type: 'postgres',
-  ssl: true,
+  ssl: !!process.env.DB_SSL,
   host: process.env.DB_HOST,
   port: +process.env.DB_PORT,
   username: process.env.DB_USERNAME,
