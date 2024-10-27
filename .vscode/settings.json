@@ -1,6 +1,6 @@
 {
   "typescript.tsdk": "./node_modules/typescript/lib",
-  "[javascript][typescript][typescriptreact][json]": {
+  "[javascript][typescript][typescriptreact][json][jsonc]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
+  }
 }

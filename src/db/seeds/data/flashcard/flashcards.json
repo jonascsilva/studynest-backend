@@ -1,0 +1,915 @@
+{
+  "$schema": "./flashcards.schema.json",
+  "flashcards": [
+    {
+      "question": "O que foi a Revolução Francesa?",
+      "subject": "História",
+      "answer": "Um movimento social e político que ocorreu na França em 1789, resultando na queda da monarquia e no estabelecimento da República."
+    },
+    {
+      "question": "O que é a fotossíntese?",
+      "subject": "Biologia",
+      "answer": "É o processo pelo qual as plantas, algas e algumas bactérias utilizam a luz solar para converter dióxido de carbono e água em glicose e oxigênio."
+    },
+    {
+      "question": "Quantos centímetros existem em 1 metro?",
+      "answer": "100 centímetros",
+      "subject": "Medidas"
+    },
+    {
+      "question": "Quantos metros existem em 1 quilômetro?",
+      "answer": "1000 metros",
+      "subject": "Medidas"
+    },
+    {
+      "question": "Quantos milímetros existem em 1 centímetro?",
+      "answer": "10 milímetros",
+      "subject": "Medidas"
+    },
+    {
+      "question": "Quantos gramas existem em 1 quilograma?",
+      "answer": "1000 gramas",
+      "subject": "Medidas"
+    },
+    {
+      "question": "Quantos mililitros existem em 1 litro?",
+      "answer": "1000 mililitros",
+      "subject": "Medidas"
+    },
+    {
+      "question": "Quantos centímetros quadrados existem em 1 metro quadrado?",
+      "answer": "10.000 centímetros quadrados",
+      "subject": "Medidas"
+    },
+    {
+      "question": "Quantos metros quadrados existem em 1 hectare?",
+      "answer": "10.000 metros quadrados",
+      "subject": "Medidas"
+    },
+    {
+      "question": "Quantos segundos existem em 1 minuto?",
+      "answer": "60 segundos",
+      "subject": "Medidas"
+    },
+    {
+      "question": "Quantos minutos existem em 1 hora?",
+      "answer": "60 minutos",
+      "subject": "Medidas"
+    },
+    {
+      "question": "Quantos centímetros cúbicos existem em 1 litro?",
+      "answer": "1000 centímetros cúbicos",
+      "subject": "Medidas"
+    },
+    {
+      "question": "Quantos milímetros existem em 1 metro?",
+      "answer": "1000 milímetros",
+      "subject": "Medidas"
+    },
+    {
+      "question": "Quantas libras existem em 1 quilograma?",
+      "answer": "~2,2 libras",
+      "subject": "Medidas"
+    },
+    {
+      "question": "Quantos pés existem em 1 metro?",
+      "answer": "~3,28 pés",
+      "subject": "Medidas"
+    },
+    {
+      "question": "Quantas polegadas existem em 1 pé?",
+      "answer": "12 polegadas",
+      "subject": "Medidas"
+    },
+    {
+      "question": "Quantos minutos existem em 1 dia?",
+      "answer": "1440 minutos",
+      "subject": "Medidas"
+    },
+    {
+      "question": "Quantos dias existem em 1 ano comum?",
+      "answer": "365 dias",
+      "subject": "Medidas"
+    },
+    {
+      "question": "Quantos centímetros existem em 1 polegada?",
+      "answer": "2,54 centímetros",
+      "subject": "Medidas"
+    },
+    {
+      "question": "Quantos metros quadrados existem em 1 quilômetro quadrado?",
+      "answer": "1.000.000 metros quadrados",
+      "subject": "Medidas"
+    },
+    {
+      "question": "Quantos litros existem em 1 metro cúbico?",
+      "answer": "1000 litros",
+      "subject": "Medidas"
+    },
+    {
+      "question": "Quantos segundos existem em 1 hora?",
+      "answer": "3600 segundos",
+      "subject": "Medidas"
+    },
+    {
+      "question": "O que é o DXY?",
+      "answer": "O DXY, ou Índice do Dólar dos EUA, mede o valor do dólar americano em relação a uma cesta de moedas estrangeiras.",
+      "subject": "Investimentos"
+    },
+    {
+      "question": "Quais moedas estão incluídas na cesta do DXY?",
+      "answer": "O DXY inclui o euro, iene japonês, libra esterlina, dólar canadense, coroa sueca e franco suíço.",
+      "subject": "Investimentos"
+    },
+    {
+      "question": "O que representa o índice S&P 500?",
+      "answer": "O S&P 500 é um índice que representa as 500 maiores empresas de capital aberto dos Estados Unidos, medindo o desempenho do mercado de ações.",
+      "subject": "Investimentos"
+    },
+    {
+      "question": "Qual é o propósito do índice Dow Jones Industrial Average?",
+      "answer": "O Dow Jones Industrial Average (DJIA) acompanha 30 grandes empresas industriais dos EUA, refletindo a saúde geral do setor industrial.",
+      "subject": "Investimentos"
+    },
+    {
+      "question": "O que mede o índice NASDAQ Composite?",
+      "answer": "O NASDAQ Composite mede o desempenho de todas as ações listadas na bolsa NASDAQ, com foco em empresas de tecnologia.",
+      "subject": "Investimentos"
+    },
+    {
+      "question": "O que é o índice FTSE 100?",
+      "answer": "O FTSE 100 é um índice que representa as 100 maiores empresas listadas na Bolsa de Valores de Londres.",
+      "subject": "Investimentos"
+    },
+    {
+      "question": "Para que serve o índice Nikkei 225?",
+      "answer": "O Nikkei 225 é um índice que representa as 225 maiores empresas listadas na Bolsa de Valores de Tóquio, refletindo a economia japonesa.",
+      "subject": "Investimentos"
+    },
+    {
+      "question": "O que é o índice VIX?",
+      "answer": "O VIX, conhecido como o 'índice do medo', mede a expectativa de volatilidade do mercado de ações dos EUA, baseado nas opções do S&P 500.",
+      "subject": "Investimentos"
+    },
+    {
+      "question": "O que é o índice MSCI World?",
+      "answer": "O MSCI World é um índice que representa o desempenho das ações de grandes e médias empresas em 23 países.",
+      "subject": "Investimentos"
+    },
+    {
+      "question": "O que representa o índice CAC 40?",
+      "answer": "O CAC 40 é um índice que representa as 40 maiores empresas listadas na Bolsa de Valores de Paris.",
+      "subject": "Investimentos"
+    },
+    {
+      "question": "O que é o índice Bovespa?",
+      "answer": "O Índice Bovespa é o principal indicador de desempenho das ações negociadas na Bolsa de Valores de São Paulo (B3), refletindo o mercado acionário brasileiro.",
+      "subject": "Investimentos"
+    },
+    {
+      "question": "O que é a Síndrome de Estocolmo?",
+      "answer": "A Síndrome de Estocolmo é uma resposta psicológica onde vítimas de sequestro ou abuso desenvolvem sentimentos de confiança ou afeição em relação aos seus captores.",
+      "subject": "Psicologia"
+    },
+    {
+      "question": "Quais são os principais sintomas da Síndrome de Estocolmo?",
+      "answer": "Os principais sintomas incluem empatia com o captor, negação da gravidade da situação, dependência emocional e resistência a esforços de fuga.",
+      "subject": "Psicologia"
+    },
+    {
+      "question": "Em que situação a Síndrome de Lima ocorre?",
+      "answer": "A Síndrome de Lima ocorre quando captores desenvolvem sentimentos positivos em relação aos reféns, protegendo-os ou tratando-os com bondade.",
+      "subject": "Psicologia"
+    },
+    {
+      "question": "O que caracteriza a Síndrome de Capgras?",
+      "answer": "A Síndrome de Capgras é um distúrbio psicológico onde a pessoa acredita que amigos próximos ou familiares foram substituídos por impostores idênticos.",
+      "subject": "Psicologia"
+    },
+    {
+      "question": "Como se manifesta a Síndrome de Fregoli?",
+      "answer": "A Síndrome de Fregoli é caracterizada pela crença de que diferentes pessoas são, na verdade, uma única pessoa que muda de aparência ou identidade.",
+      "subject": "Psicologia"
+    },
+    {
+      "question": "O que é a Síndrome de Münchhausen?",
+      "answer": "A Síndrome de Münchhausen é um transtorno psicológico onde a pessoa finge ou causa sintomas de doenças para atrair atenção e simpatia.",
+      "subject": "Psicologia"
+    },
+    {
+      "question": "Qual a principal característica da Síndrome de Alienação Parental?",
+      "answer": "A Síndrome de Alienação Parental envolve a manipulação emocional de uma criança por um dos pais para rejeitar o outro pai sem justificativa válida.",
+      "subject": "Psicologia"
+    },
+    {
+      "question": "O que é a Síndrome de Peter Pan?",
+      "answer": "A Síndrome de Peter Pan descreve adultos que se comportam de maneira infantil, evitando responsabilidades e compromissos típicos da idade adulta.",
+      "subject": "Psicologia"
+    },
+    {
+      "question": "Como a Síndrome de Estocolmo difere da Síndrome de Lima?",
+      "answer": "Na Síndrome de Estocolmo, as vítimas desenvolvem afeto pelos captores, enquanto na Síndrome de Lima, os captores desenvolvem afeto pelos reféns.",
+      "subject": "Psicologia"
+    },
+    {
+      "question": "Quais são as possíveis causas da Síndrome de Estocolmo?",
+      "answer": "As causas incluem situações de extremo estresse, isolamento prolongado, e a percepção de que o captor é a única fonte de proteção.",
+      "subject": "Psicologia"
+    },
+    {
+      "question": "A Síndrome de Estocolmo é reconhecida oficialmente na Classificação Internacional de Doenças (CID)?",
+      "answer": "Não, a Síndrome de Estocolmo não é reconhecida oficialmente na CID, sendo considerada mais um fenômeno psicológico do que um transtorno formal.",
+      "subject": "Psicologia"
+    },
+    {
+      "question": "A Síndrome de Capgras está associada a quais condições neurológicas?",
+      "answer": "A Síndrome de Capgras pode estar associada a demências, esquizofrenia, lesões cerebrais e outros transtornos neurológicos que afetam o reconhecimento facial.",
+      "subject": "Psicologia"
+    },
+    {
+      "question": "O que significa 'bombordo' em termos náuticos?",
+      "answer": "'Bombordo' refere-se ao lado esquerdo de um navio quando se está de frente para a proa (frente).",
+      "subject": "Náutica"
+    },
+    {
+      "question": "O que significa 'estibordo' ou 'boreste' em termos náuticos?",
+      "answer": "'Estibordo' ou 'boreste' referem-se ao lado direito de um navio quando se está de frente para a proa (frente).",
+      "subject": "Náutica"
+    },
+    {
+      "question": "O que é a 'proa' de um navio?",
+      "answer": "A 'proa' é a parte frontal de um navio.",
+      "subject": "Náutica"
+    },
+    {
+      "question": "O que é a 'popa' de um navio?",
+      "answer": "A 'popa' é a parte traseira de um navio.",
+      "subject": "Náutica"
+    },
+    {
+      "question": "O que é o 'convés' de um navio?",
+      "answer": "O 'convés' é a superfície plana que cobre a estrutura do navio, funcionando como um andar superior.",
+      "subject": "Náutica"
+    },
+    {
+      "question": "O que é a 'cabine' em um navio?",
+      "answer": "A 'cabine' é o espaço destinado ao alojamento da tripulação e passageiros em um navio.",
+      "subject": "Náutica"
+    },
+    {
+      "question": "O que é o 'timão' em um navio?",
+      "answer": "O 'timão' é o dispositivo utilizado para direcionar o navio, controlando a direção da hélice ou do leme.",
+      "subject": "Náutica"
+    },
+    {
+      "question": "O que é uma 'hélice' em um navio?",
+      "answer": "A 'hélice' é o dispositivo de propulsão que movimenta o navio através da água.",
+      "subject": "Náutica"
+    },
+    {
+      "question": "O que é o 'casco' de um navio?",
+      "answer": "O 'casco' é a estrutura principal de um navio, responsável por sua flutuabilidade e resistência.",
+      "subject": "Náutica"
+    },
+    {
+      "question": "O que é um 'farol' em contexto náutico?",
+      "answer": "Um 'farol' é uma torre com uma luz forte utilizada para guiar navios durante a noite ou em condições de baixa visibilidade.",
+      "subject": "Náutica"
+    },
+    {
+      "question": "O que é o 'cais' em termos náuticos?",
+      "answer": "O 'cais' é a estrutura construída junto à margem de um corpo de água, onde os navios podem atracar para carga, descarga ou manutenção.",
+      "subject": "Náutica"
+    },
+    {
+      "question": "O que significa 'maré' em termos náuticos?",
+      "answer": "'Maré' refere-se à variação periódica do nível do mar causada pela interação gravitacional entre a Terra, a Lua e o Sol.",
+      "subject": "Náutica"
+    },
+    {
+      "question": "O que é o 'ponte' de um navio?",
+      "answer": "O 'ponte' é a área elevada onde a tripulação comanda a navegação e controla as operações do navio.",
+      "subject": "Náutica"
+    },
+    {
+      "question": "O que é uma 'gaveta' em um navio?",
+      "answer": "A 'gaveta' é uma janela ou abertura no convés de um navio que permite a passagem de ar e luz para o interior.",
+      "subject": "Náutica"
+    },
+    {
+      "question": "O que significa 'estaleiro' em termos náuticos?",
+      "answer": "'Estaleiro' é o local onde os navios são construídos, reparados e mantidos.",
+      "subject": "Náutica"
+    },
+    {
+      "question": "O que é um 'winche' em um navio?",
+      "answer": "Um 'winche' é um dispositivo mecânico usado para enrolar e desenrolar cabos ou cordas a bordo de um navio.",
+      "subject": "Náutica"
+    },
+    {
+      "question": "O que é a 'quilha' de um navio?",
+      "answer": "A 'quilha' é a estrutura longitudinal que corre ao longo da parte inferior do casco, proporcionando estabilidade e rigidez ao navio.",
+      "subject": "Náutica"
+    },
+    {
+      "question": "O que significa DEFCON?",
+      "answer": "DEFCON é a abreviação de Defense Readiness Condition (Condição de Prontidão de Defesa), um sistema utilizado pelas Forças Armadas dos Estados Unidos para indicar o nível de prontidão militar.",
+      "subject": "Militar"
+    },
+    {
+      "question": "Quais são os cinco níveis do DEFCON, do mais baixo ao mais alto?",
+      "answer": "Os cinco níveis do DEFCON são: DEFCON 5 (Normal), DEFCON 4 (Aumento de Segurança), DEFCON 3 (Aumento de Prontidão), DEFCON 2 (Alerta Máximo), e DEFCON 1 (Estado de Guerra).",
+      "subject": "Militar"
+    },
+    {
+      "question": "O que indica o DEFCON 1?",
+      "answer": "O DEFCON 1 indica um estado de guerra iminente ou em curso, sendo o nível mais alto de prontidão militar.",
+      "subject": "Militar"
+    },
+    {
+      "question": "Em que nível do DEFCON as Forças Armadas estão em sua condição normal?",
+      "answer": "No DEFCON 5, as Forças Armadas estão em sua condição normal, sem sinais imediatos de ameaça.",
+      "subject": "Militar"
+    },
+    {
+      "question": "Qual é o significado do DEFCON 3?",
+      "answer": "O DEFCON 3 representa um aumento de prontidão, onde as forças armadas estão preparadas para mobilização em um curto prazo.",
+      "subject": "Militar"
+    },
+    {
+      "question": "Qual é a função principal do sistema DEFCON?",
+      "answer": "A função principal do DEFCON é fornecer um nível claro e padronizado de prontidão militar para responder a diferentes níveis de ameaça.",
+      "subject": "Militar"
+    },
+    {
+      "question": "O DEFCON é utilizado apenas pelos Estados Unidos?",
+      "answer": "Sim, o sistema DEFCON é específico das Forças Armadas dos Estados Unidos, embora outros países possam ter sistemas semelhantes com nomes diferentes.",
+      "subject": "Militar"
+    },
+    {
+      "question": "O que é o NATO Threat Levels e como ele se relaciona com o DEFCON?",
+      "answer": "O NATO Threat Levels é um sistema de alerta utilizado pela Organização do Tratado do Atlântico Norte para indicar o nível de ameaça à segurança. Diferente do DEFCON, que é específico dos EUA, o NATO Threat Levels é utilizado por múltiplos países membros da OTAN.",
+      "subject": "Militar"
+    },
+    {
+      "question": "Quais são os níveis do NATO Threat Levels?",
+      "answer": "Os níveis do NATO Threat Levels vão de 1 (Normal) a 5 (Ataque iminente), sendo o nível 5 o mais alto de alerta.",
+      "subject": "Militar"
+    },
+    {
+      "question": "Em que situações o DEFCON pode ser elevado?",
+      "answer": "O DEFCON pode ser elevado em resposta a ameaças iminentes, crises internacionais, atos de agressão, ou outros eventos que requerem aumento de prontidão militar.",
+      "subject": "Militar"
+    },
+    {
+      "question": "O DEFCON já foi elevado desde a sua criação?",
+      "answer": "Sim, o DEFCON foi elevado várias vezes, especialmente durante a Guerra Fria, crises internacionais, e incidentes como o ataque de Pearl Harbor e o atentado de 11 de setembro.",
+      "subject": "Militar"
+    },
+    {
+      "question": "Em que anos ocorreu a Primeira Guerra Mundial?",
+      "answer": "1914 a 1918",
+      "subject": "História"
+    },
+    {
+      "question": "Em que anos ocorreu a Segunda Guerra Mundial?",
+      "answer": "1939 a 1945",
+      "subject": "História"
+    },
+    {
+      "question": "Quais foram os anos da Guerra Fria?",
+      "answer": "1947 a 1991",
+      "subject": "História"
+    },
+    {
+      "question": "Quando ocorreu a Guerra do Vietnã?",
+      "answer": "1955 a 1975",
+      "subject": "História"
+    },
+    {
+      "question": "Em que período se deu a Guerra Civil Americana?",
+      "answer": "1861 a 1865",
+      "subject": "História"
+    },
+    {
+      "question": "Quais foram os anos das Guerras Napoleônicas?",
+      "answer": "1803 a 1815",
+      "subject": "História"
+    },
+    {
+      "question": "Quando ocorreu a Guerra da Coreia?",
+      "answer": "1950 a 1953",
+      "subject": "História"
+    },
+    {
+      "question": "Em que ano iniciou a Guerra do Golfo?",
+      "answer": "1990",
+      "subject": "História"
+    },
+    {
+      "question": "Quando terminou a Guerra do Golfo?",
+      "answer": "1991",
+      "subject": "História"
+    },
+    {
+      "question": "Quais foram os anos da Guerra das Malvinas?",
+      "answer": "1982",
+      "subject": "História"
+    },
+    {
+      "question": "Quando ocorreram as Guerras do Ópio?",
+      "answer": "1839 a 1842 e 1856 a 1860",
+      "subject": "História"
+    },
+    {
+      "question": "Em que período se deu a Guerra dos Cem Anos?",
+      "answer": "1337 a 1453",
+      "subject": "História"
+    },
+    {
+      "question": "Quando ocorreu a Guerra Púnica Segunda?",
+      "answer": "218 a 201 a.C.",
+      "subject": "História"
+    },
+    {
+      "question": "Quando ocorreu a Guerra da Crimeia?",
+      "answer": "1853 a 1856",
+      "subject": "História"
+    },
+    {
+      "question": "Em que anos se deu a Guerra Civil Espanhola?",
+      "answer": "1936 a 1939",
+      "subject": "História"
+    },
+    {
+      "question": "Quando ocorreu a Guerra Civil Russa?",
+      "answer": "1917 a 1922",
+      "subject": "História"
+    },
+    {
+      "question": "Quais foram os anos da Guerra do Iraque?",
+      "answer": "2003 a 2011",
+      "subject": "História"
+    },
+    {
+      "question": "O que é um ciclone?",
+      "answer": "Um ciclone é um sistema de baixa pressão atmosférica que gira em torno de um centro, caracterizado por ventos fortes e chuvas intensas. Pode ser tropical ou extratropical.",
+      "subject": "Meteorologia"
+    },
+    {
+      "question": "O que é um furacão?",
+      "answer": "Um furacão é um tipo de ciclone tropical que se forma no Oceano Atlântico e no nordeste do Oceano Pacífico, com ventos sustentados de pelo menos 119 km/h.",
+      "subject": "Meteorologia"
+    },
+    {
+      "question": "O que é um tufão?",
+      "answer": "Um tufão é um ciclone tropical que se forma no noroeste do Oceano Pacífico, semelhante ao furacão, com ventos sustentados de pelo menos 119 km/h.",
+      "subject": "Meteorologia"
+    },
+    {
+      "question": "Qual a principal diferença entre um furacão e um tufão?",
+      "answer": "A principal diferença está na localização geográfica: furacões se formam no Oceano Atlântico e no nordeste do Pacífico, enquanto tufões se formam no noroeste do Pacífico.",
+      "subject": "Meteorologia"
+    },
+    {
+      "question": "O que é um tornado?",
+      "answer": "Um tornado é uma coluna de ar em rotação violenta que se estende desde uma nuvem cumulonimbus até a superfície terrestre, com ventos extremamente fortes e duração curta.",
+      "subject": "Meteorologia"
+    },
+    {
+      "question": "Como os tornados se formam?",
+      "answer": "Tornados se formam a partir de tempestades severas, especialmente supercélulas, onde há uma interação entre correntes de ar ascendentes e descendentes, criando uma rotação que pode se intensificar em um tornado.",
+      "subject": "Meteorologia"
+    },
+    {
+      "question": "O que é a escala Fujita?",
+      "answer": "A escala Fujita é uma classificação que mede a intensidade dos tornados com base nos danos causados, variando de F0 (menos intenso) a F5 (extremamente intenso).",
+      "subject": "Meteorologia"
+    },
+    {
+      "question": "O que é uma tempestade tropical?",
+      "answer": "Uma tempestade tropical é um ciclone tropical com ventos sustentados entre 63 km/h e 118 km/h, que pode se intensificar para um furacão ou tufão.",
+      "subject": "Meteorologia"
+    },
+    {
+      "question": "O que é um ciclone extratropical?",
+      "answer": "Um ciclone extratropical é um sistema de baixa pressão que se forma fora das regiões tropicais, geralmente associado a frentes frias e quentes, e é alimentado por gradientes de temperatura, não por calor e umidade como os ciclones tropicais.",
+      "subject": "Meteorologia"
+    },
+    {
+      "question": "O que é a escala Saffir-Simpson?",
+      "answer": "A escala Saffir-Simpson é uma classificação que mede a intensidade dos furacões com base na velocidade dos ventos sustentados, variando de Categoria 1 (menos intenso) a Categoria 5 (extremamente intenso).",
+      "subject": "Meteorologia"
+    },
+    {
+      "question": "Onde os furacões são mais comuns?",
+      "answer": "Furacões são mais comuns nas regiões do Atlântico Norte e do nordeste do Pacífico, incluindo o Caribe, Golfo do México e as costas leste dos Estados Unidos.",
+      "subject": "Meteorologia"
+    },
+    {
+      "question": "Onde os tufões são mais comuns?",
+      "answer": "Tufões são mais comuns no noroeste do Oceano Pacífico, afetando países como Japão, Filipinas, China e Taiwan.",
+      "subject": "Meteorologia"
+    },
+    {
+      "question": "O que é um ciclone tropical?",
+      "answer": "Um ciclone tropical é um sistema de tempestade organizado com ventos circulares, formação sobre águas quentes tropicais e potencial para se intensificar em furacão ou tufão.",
+      "subject": "Meteorologia"
+    },
+    {
+      "question": "Qual a diferença entre um ciclone tropical e um ciclone extratropical?",
+      "answer": "Ciclos tropicais se formam sobre águas quentes tropicais e são alimentados por calor e umidade, enquanto ciclones extratropicais se formam fora das regiões tropicais, alimentados por gradientes de temperatura e interação com frentes atmosféricas.",
+      "subject": "Meteorologia"
+    },
+    {
+      "question": "O que é um mesociclone?",
+      "answer": "Um mesociclone é uma rotação de ar dentro de uma supercélula que pode levar à formação de tornados.",
+      "subject": "Meteorologia"
+    },
+    {
+      "question": "O que é a eye (olho) de um furacão?",
+      "answer": "O olho de um furacão é a região central de baixa pressão, geralmente calma e clara, cercada pelo olho-da-tempestade, onde os ventos são mais fortes.",
+      "subject": "Meteorologia"
+    },
+    {
+      "question": "O que é um barociclone?",
+      "answer": "Um barociclone é um sistema de ciclone extratropical caracterizado por variações de pressão e temperatura associadas a frentes frias e quentes.",
+      "subject": "Meteorologia"
+    },
+    {
+      "question": "Como a mudança climática está afetando a frequência e intensidade dos furacões?",
+      "answer": "A mudança climática está contribuindo para o aumento da temperatura das águas oceânicas, o que pode levar a furacões mais intensos e possivelmente mais frequentes, além de aumentar a quantidade de precipitação associada.",
+      "subject": "Meteorologia"
+    },
+    {
+      "question": "Qual é a estimativa atual da idade da Terra?",
+      "answer": "A Terra tem aproximadamente 4,54 bilhões de anos.",
+      "subject": "Geologia"
+    },
+    {
+      "question": "Qual método é mais utilizado para determinar a idade da Terra?",
+      "answer": "A datação radiométrica, especialmente a datação por urânio-chumbo, é o método mais utilizado.",
+      "subject": "Geologia"
+    },
+    {
+      "question": "O que é a datação radiométrica?",
+      "answer": "A datação radiométrica é um método que utiliza a taxa de decaimento de isótopos radioativos para determinar a idade de rochas e minerais.",
+      "subject": "Geologia"
+    },
+    {
+      "question": "Qual é o isótopo mais comum usado na datação radiométrica da Terra?",
+      "answer": "O isótopo urânio-238 é comumente usado na datação radiométrica da Terra.",
+      "subject": "Geologia"
+    },
+    {
+      "question": "O que é o Sistema de Escalas de Tempo Geológico?",
+      "answer": "É uma divisão hierárquica do tempo geológico em eons, eras, períodos, épocas e idades para organizar a história da Terra.",
+      "subject": "Geologia"
+    },
+    {
+      "question": "Quais são os quatro eons principais na escala de tempo geológico?",
+      "answer": "Os quatro eons principais são Hadeano, Arqueano, Proterozoico e Fanerozoico.",
+      "subject": "Geologia"
+    },
+    {
+      "question": "Em qual eon a vida multicelular complexa começou a se desenvolver na Terra?",
+      "answer": "No eon Fanerozoico.",
+      "subject": "Geologia"
+    },
+    {
+      "question": "Qual era geológica precede o período Cambriano?",
+      "answer": "O Pré-Cambriano precede o período Cambriano.",
+      "subject": "Geologia"
+    },
+    {
+      "question": "O que caracteriza o período Cambriano?",
+      "answer": "O período Cambriano é conhecido pela explosão Cambriana, um rápido aumento na diversidade e complexidade da vida marinha.",
+      "subject": "Geologia"
+    },
+    {
+      "question": "Qual evento geológico ocorreu há cerca de 66 milhões de anos e marcou o fim dos dinossauros?",
+      "answer": "A extinção em massa do Cretáceo-Paleógeno.",
+      "subject": "Geologia"
+    },
+    {
+      "question": "O que é a tectônica de placas?",
+      "answer": "A tectônica de placas é a teoria que descreve a movimentação das grandes placas rígidas que compõem a litosfera da Terra.",
+      "subject": "Geologia"
+    },
+    {
+      "question": "Como a tectônica de placas contribui para a formação de montanhas?",
+      "answer": "A colisão e subducção de placas tectônicas podem levar à formação de cadeias montanhosas.",
+      "subject": "Geologia"
+    },
+    {
+      "question": "Qual eon é conhecido como a 'Idade da Pedra' devido ao desenvolvimento das primeiras ferramentas de pedra?",
+      "answer": "O eon Arqueano.",
+      "subject": "Geologia"
+    },
+    {
+      "question": "O que é o Prólogo Hadeano?",
+      "answer": "O Prólogo Hadeano é a fase inicial do eon Hadeano, caracterizada pela formação da Terra e condições extremamente inóspitas.",
+      "subject": "Geologia"
+    },
+    {
+      "question": "Qual é a diferença entre eons e eras na escala de tempo geológico?",
+      "answer": "Eons são as maiores divisões de tempo geológico, enquanto eras são subdivisões menores dentro dos eons.",
+      "subject": "Geologia"
+    },
+    {
+      "question": "Em qual período geológico surgiu a primeira forma de vida fotossintética?",
+      "answer": "No período Proterozoico, durante o eon Proterozoico.",
+      "subject": "Geologia"
+    },
+    {
+      "question": "Qual é a era atual na escala de tempo geológico?",
+      "answer": "A era atual é a Cenozoica.",
+      "subject": "Geologia"
+    },
+    {
+      "question": "O que é o eon Fanerozoico?",
+      "answer": "O eon Fanerozoico é o eon atual, caracterizado pelo desenvolvimento e diversificação da vida visível, incluindo plantas, animais e fungos.",
+      "subject": "Geologia"
+    },
+    {
+      "question": "Como as rochas sedimentares ajudam a determinar a idade da Terra?",
+      "answer": "As rochas sedimentares contêm fósseis e camadas que podem ser datadas e correlacionadas com eventos geológicos, ajudando a construir a história da Terra.",
+      "subject": "Geologia"
+    },
+    {
+      "question": "Qual é a principal diferença entre rochas ígneas e rochas sedimentares na datação geológica?",
+      "answer": "Rochas ígneas são formadas a partir do resfriamento e solidificação do magma, enquanto rochas sedimentares são formadas pela deposição e compactação de sedimentos.",
+      "subject": "Geologia"
+    },
+    {
+      "question": "O que é o manto terrestre e qual sua importância na formação da Terra?",
+      "answer": "O manto terrestre é a camada entre a crosta e o núcleo, composto por rochas sólidas que, devido ao calor e pressão, podem se mover e causar a tectônica de placas.",
+      "subject": "Geologia"
+    },
+    {
+      "question": "Como os isótopos de carbono são utilizados na datação geológica?",
+      "answer": "Isótopos de carbono, como o carbono-14, são usados para datar materiais orgânicos até cerca de 50.000 anos, complementando outros métodos de datação para diferentes escalas de tempo.",
+      "subject": "Geologia"
+    },
+    {
+      "question": "Qual eon abrange a maior parte da história da Terra?",
+      "answer": "O eon Pré-Cambriano abrange cerca de 88% da história da Terra.",
+      "subject": "Geologia"
+    },
+    {
+      "question": "O que são fósseis e como eles ajudam a determinar a idade da Terra?",
+      "answer": "Fósseis são restos ou vestígios de organismos antigos que ajudam a datar rochas e a entender a evolução da vida na Terra.",
+      "subject": "Geologia"
+    },
+    {
+      "question": "Qual é a importância das camadas estratigráficas na geologia?",
+      "answer": "As camadas estratigráficas permitem a reconstrução da sequência de eventos geológicos e a determinação da idade relativa das rochas e fósseis.",
+      "subject": "Geologia"
+    },
+    {
+      "question": "Como a deriva continental está relacionada à idade da Terra?",
+      "answer": "A deriva continental, parte da tectônica de placas, explica como os continentes se moveram e se rearranjaram ao longo da história geológica da Terra.",
+      "subject": "Geologia"
+    },
+    {
+      "question": "Qual é a palavra do alfabeto fonético para a letra A?",
+      "answer": "Alpha",
+      "subject": "Alfabeto Fonético"
+    },
+    {
+      "question": "Qual é a palavra do alfabeto fonético para a letra B?",
+      "answer": "Bravo",
+      "subject": "Alfabeto Fonético"
+    },
+    {
+      "question": "Qual é a palavra do alfabeto fonético para a letra C?",
+      "answer": "Charlie",
+      "subject": "Alfabeto Fonético"
+    },
+    {
+      "question": "Qual é a palavra do alfabeto fonético para a letra D?",
+      "answer": "Delta",
+      "subject": "Alfabeto Fonético"
+    },
+    {
+      "question": "Qual é a palavra do alfabeto fonético para a letra E?",
+      "answer": "Echo",
+      "subject": "Alfabeto Fonético"
+    },
+    {
+      "question": "Qual é a palavra do alfabeto fonético para a letra F?",
+      "answer": "Foxtrot",
+      "subject": "Alfabeto Fonético"
+    },
+    {
+      "question": "Qual é a palavra do alfabeto fonético para a letra G?",
+      "answer": "Golf",
+      "subject": "Alfabeto Fonético"
+    },
+    {
+      "question": "Qual é a palavra do alfabeto fonético para a letra H?",
+      "answer": "Hotel",
+      "subject": "Alfabeto Fonético"
+    },
+    {
+      "question": "Qual é a palavra do alfabeto fonético para a letra I?",
+      "answer": "India",
+      "subject": "Alfabeto Fonético"
+    },
+    {
+      "question": "Qual é a palavra do alfabeto fonético para a letra J?",
+      "answer": "Juliett",
+      "subject": "Alfabeto Fonético"
+    },
+    {
+      "question": "Qual é a palavra do alfabeto fonético para a letra K?",
+      "answer": "Kilo",
+      "subject": "Alfabeto Fonético"
+    },
+    {
+      "question": "Qual é a palavra do alfabeto fonético para a letra L?",
+      "answer": "Lima",
+      "subject": "Alfabeto Fonético"
+    },
+    {
+      "question": "Qual é a palavra do alfabeto fonético para a letra M?",
+      "answer": "Mike",
+      "subject": "Alfabeto Fonético"
+    },
+    {
+      "question": "Qual é a palavra do alfabeto fonético para a letra N?",
+      "answer": "November",
+      "subject": "Alfabeto Fonético"
+    },
+    {
+      "question": "Qual é a palavra do alfabeto fonético para a letra O?",
+      "answer": "Oscar",
+      "subject": "Alfabeto Fonético"
+    },
+    {
+      "question": "Qual é a palavra do alfabeto fonético para a letra P?",
+      "answer": "Papa",
+      "subject": "Alfabeto Fonético"
+    },
+    {
+      "question": "Qual é a palavra do alfabeto fonético para a letra Q?",
+      "answer": "Quebec",
+      "subject": "Alfabeto Fonético"
+    },
+    {
+      "question": "Qual é a palavra do alfabeto fonético para a letra R?",
+      "answer": "Romeo",
+      "subject": "Alfabeto Fonético"
+    },
+    {
+      "question": "Qual é a palavra do alfabeto fonético para a letra S?",
+      "answer": "Sierra",
+      "subject": "Alfabeto Fonético"
+    },
+    {
+      "question": "Qual é a palavra do alfabeto fonético para a letra T?",
+      "answer": "Tango",
+      "subject": "Alfabeto Fonético"
+    },
+    {
+      "question": "Qual é a palavra do alfabeto fonético para a letra U?",
+      "answer": "Uniform",
+      "subject": "Alfabeto Fonético"
+    },
+    {
+      "question": "Qual é a palavra do alfabeto fonético para a letra V?",
+      "answer": "Victor",
+      "subject": "Alfabeto Fonético"
+    },
+    {
+      "question": "Qual é a palavra do alfabeto fonético para a letra W?",
+      "answer": "Whiskey",
+      "subject": "Alfabeto Fonético"
+    },
+    {
+      "question": "Qual é a palavra do alfabeto fonético para a letra X?",
+      "answer": "X-ray",
+      "subject": "Alfabeto Fonético"
+    },
+    {
+      "question": "Qual é a palavra do alfabeto fonético para a letra Y?",
+      "answer": "Yankee",
+      "subject": "Alfabeto Fonético"
+    },
+    {
+      "question": "Qual é a palavra do alfabeto fonético para a letra Z?",
+      "answer": "Zulu",
+      "subject": "Alfabeto Fonético"
+    },
+    {
+      "question": "Qual é o propósito do alfabeto fonético da OTAN?",
+      "answer": "O alfabeto fonético da OTAN é utilizado para garantir clareza e precisão na comunicação verbal, especialmente em ambientes ruidosos ou onde a compreensão é crucial, como em operações militares, aviação e serviços de emergência.",
+      "subject": "Alfabeto Fonético"
+    },
+    {
+      "question": "Quando e por que o alfabeto fonético da OTAN foi adotado?",
+      "answer": "O alfabeto fonético da OTAN foi adotado em 1956 para padronizar as comunicações internacionais e reduzir erros de interpretação em transmissões de rádio e telefonia.",
+      "subject": "Alfabeto Fonético"
+    },
+    {
+      "question": "Por que algumas palavras do alfabeto fonético da OTAN foram escolhidas em vez de outras?",
+      "answer": "As palavras foram escolhidas por sua pronúncia clara e distinta em diferentes idiomas e sotaques, minimizando a possibilidade de confusão ou erro de interpretação durante as comunicações.",
+      "subject": "Alfabeto Fonético"
+    },
+    {
+      "question": "Como o alfabeto fonético da OTAN ajuda na redução de erros de comunicação?",
+      "answer": "Ao usar palavras padronizadas e distintas para cada letra, reduz-se a ambiguidade e a possibilidade de mal-entendidos, especialmente em ambientes ruidosos ou em transmissões de longa distância.",
+      "subject": "Alfabeto Fonético"
+    },
+    {
+      "question": "Qual é a palavra do alfabeto fonético da OTAN para a letra 'Z' e em que contextos ela é frequentemente utilizada?",
+      "answer": "A palavra para a letra 'Z' é 'Zulu'. Ela é frequentemente utilizada em contextos militares e aeronáuticos para indicar o fuso horário UTC (Tempo Universal Coordenado).",
+      "subject": "Alfabeto Fonético"
+    },
+    {
+      "question": "O que é camelCase em programação?",
+      "answer": "camelCase é uma convenção de nomenclatura onde a primeira letra da primeira palavra é minúscula e a primeira letra de cada palavra subsequente é maiúscula, sem espaços ou separadores. Exemplo: `minhaVariavel`.",
+      "subject": "Programação"
+    },
+    {
+      "question": "O que é PascalCase em programação?",
+      "answer": "PascalCase é uma convenção de nomenclatura onde a primeira letra de cada palavra é maiúscula, sem espaços ou separadores. Exemplo: `MinhaVariavel`.",
+      "subject": "Programação"
+    },
+    {
+      "question": "O que é kebab-case em programação?",
+      "answer": "kebab-case é uma convenção de nomenclatura onde todas as letras são minúsculas e as palavras são separadas por hífens. Exemplo: `minha-variavel`.",
+      "subject": "Programação"
+    },
+    {
+      "question": "O que é snake_case em programação?",
+      "answer": "snake_case é uma convenção de nomenclatura onde todas as letras são minúsculas e as palavras são separadas por underscores (sublinhados). Exemplo: `minha_variavel`.",
+      "subject": "Programação"
+    },
+    {
+      "question": "O que é Sentence Case em programação?",
+      "answer": "Sentence Case é uma convenção de nomenclatura onde a primeira letra da primeira palavra é maiúscula e todas as outras letras são minúsculas, similar a uma frase normal. Exemplo: `Minha variavel`.",
+      "subject": "Programação"
+    },
+    {
+      "question": "Quais são as cores do arco-íris na ordem correta?",
+      "answer": "Vermelho, laranja, amarelo, verde, azul, anil e violeta.",
+      "subject": "Ciências"
+    },
+    {
+      "question": "O que significa o acrônimo ROYGBIV?",
+      "answer": "ROYGBIV representa as iniciais das cores do arco-íris: Red (Vermelho), Orange (Laranja), Yellow (Amarelo), Green (Verde), Blue (Azul), Indigo (Anil) e Violet (Violeta).",
+      "subject": "Ciências"
+    },
+    {
+      "question": "Qual fenômeno meteorológico causa a formação do arco-íris?",
+      "answer": "A formação do arco-íris é causada pela interação da luz solar com gotas de água na atmosfera, resultando em refração, dispersão e reflexão da luz.",
+      "subject": "Ciências"
+    },
+    {
+      "question": "O que é a refração da luz?",
+      "answer": "Refração é a mudança na direção da luz ao passar de um meio para outro com densidade diferente, como do ar para a água nas gotas de chuva.",
+      "subject": "Ciências"
+    },
+    {
+      "question": "Qual a diferença entre arco-íris primário e secundário?",
+      "answer": "O arco-íris primário possui as cores na ordem normal e é mais brilhante, enquanto o arco-íris secundário tem as cores invertidas e é menos intenso.",
+      "subject": "Ciências"
+    },
+    {
+      "question": "Em que condições climáticas um arco-íris pode ser visto?",
+      "answer": "Um arco-íris pode ser visto quando há sol e chuva simultaneamente, com o sol atrás do observador e as gotas de chuva na frente.",
+      "subject": "Ciências"
+    },
+    {
+      "question": "Como a dispersão da luz contribui para as cores do arco-íris?",
+      "answer": "A dispersão da luz separa a luz branca nas suas cores componentes devido às diferentes velocidades de propagação de cada cor nas gotas de água.",
+      "subject": "Ciências"
+    },
+    {
+      "question": "O que é a reflexão interna total em relação ao arco-íris?",
+      "answer": "Reflexão interna total ocorre quando a luz reflete completamente na superfície interna da gota de água sem refratar novamente, contribuindo para a formação do arco-íris.",
+      "subject": "Ciências"
+    },
+    {
+      "question": "Como a posição do sol afeta a visibilidade do arco-íris?",
+      "answer": "A posição do sol determina o ângulo no qual o arco-íris é visto; quanto mais baixo o sol, maior o arco e mais amplo será o espectro de cores percebido.",
+      "subject": "Ciências"
+    },
+    {
+      "question": "Quais são os diferentes tipos de arco-íris?",
+      "answer": "Além do arco-íris primário e secundário, existem arco-íris duplos, arco-íris supernumerários e arco-íris de fogo, cada um com características distintas.",
+      "subject": "Ciências"
+    },
+    {
+      "question": "Como a física explica a sequência de cores no arco-íris?",
+      "answer": "A física explica que a sequência de cores no arco-íris ocorre devido à dispersão da luz branca em diferentes comprimentos de onda, resultando nas cores vermelha, laranja, amarela, verde, azul, anil e violeta.",
+      "subject": "Ciências"
+    },
+    {
+      "question": "Como os arco-íris de lua diferem dos arco-íris diurnos?",
+      "answer": "Arco-íris de lua, ou arco-íris noturnos, são mais tênues e menos comuns, formados pela luz da lua refletida e refratada nas gotas de chuva, enquanto os arco-íris diurnos são mais vibrantes devido à luz solar mais intensa.",
+      "subject": "Ciências"
+    }
+  ]
+}

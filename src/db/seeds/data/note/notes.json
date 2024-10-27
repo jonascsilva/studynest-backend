@@ -1,0 +1,30 @@
+{
+  "$schema": "./notes.schema.json",
+  "notes": [
+    {
+      "title": "Revolução Francesa",
+      "subject": "História",
+      "content": "A Revolução Francesa (1789-1799) foi um marco na história mundial, que resultou na queda da monarquia absolutista e na ascensão de valores republicanos, como liberdade, igualdade e fraternidade. Este movimento influenciou diversas revoluções pelo mundo e marcou o fim do Antigo Regime."
+    },
+    {
+      "title": "Revolução Industrial",
+      "subject": "História",
+      "content": "A Revolução Industrial, iniciada na Inglaterra no século XVIII, foi um período de grandes inovações tecnológicas, como a máquina a vapor e o tear mecânico. Isso transformou a produção artesanal em manufatureira, impulsionando a urbanização e criando novas dinâmicas sociais e econômicas."
+    },
+    {
+      "title": "Guerra Fria",
+      "subject": "História",
+      "content": "A Guerra Fria foi uma disputa geopolítica e ideológica entre os Estados Unidos (capitalismo) e a União Soviética (socialismo) de 1947 até 1991. O conflito foi caracterizado por corridas armamentistas e espaciais, além da formação de blocos militares como a OTAN e o Pacto de Varsóvia."
+    },
+    {
+      "title": "Teoria da Evolução",
+      "subject": "Ciência",
+      "content": "Proposta por Charles Darwin em 1859, a Teoria da Evolução sugere que as espécies evoluem ao longo do tempo por meio da seleção natural. Os indivíduos com características mais adaptadas ao ambiente têm maiores chances de sobreviver e se reproduzir, transmitindo essas características para as próximas gerações."
+    },
+    {
+      "title": "Leis de Newton",
+      "subject": "Física",
+      "content": "As Leis de Newton descrevem o movimento dos corpos. A primeira lei é a da inércia, a segunda é a da força resultante (F = ma) e a terceira afirma que toda ação tem uma reação de igual intensidade e em sentido contrário. Elas são fundamentais para entender a mecânica clássica."
+    }
+  ]
+}

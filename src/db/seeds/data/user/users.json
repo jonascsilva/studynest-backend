@@ -1,0 +1,41 @@
+{
+  "$schema": "./users.schema.json",
+  "users": [
+    {
+      "id": "661890ba-b035-442c-a418-6ec541cac961",
+      "name": "Jonas",
+      "email": "jonas@studynest.com",
+      "password": "abcdef"
+    },
+    {
+      "id": "d1c23c75-0930-4329-8c5b-600c46ee5f3c",
+      "name": "Admin",
+      "email": "admin@example.com",
+      "password": "123456"
+    },
+    {
+      "id": "8ba58749-f1fd-4def-90f3-1dbbabbaec00",
+      "name": "Alice",
+      "email": "alice@example.com",
+      "password": "password1"
+    },
+    {
+      "id": "e686a8d5-930d-4678-86d5-bd82ad18023f",
+      "name": "Bob",
+      "email": "bob@example.com",
+      "password": "password2"
+    },
+    {
+      "id": "fec62312-3f7e-4230-a4c9-e0ed7a125ccb",
+      "name": "Professor",
+      "email": "professor@studynest.com",
+      "password": "password"
+    },
+    {
+      "id": "f94a644b-8c66-4570-9e58-92a19fe2f9c7",
+      "name": "Aluno",
+      "email": "aluno@studynest.com",
+      "password": "qwerty"
+    }
+  ]
+}
