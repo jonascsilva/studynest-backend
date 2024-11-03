@@ -3,12 +3,14 @@ import {
   CreateDateColumn,
   Entity,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn
 } from 'typeorm'
 
 import { Flashcard } from '$/flashcards/flashcard.entity'
 import { Note } from '$/notes/note.entity'
+import { UserSettings } from '$/users/user-settings.entity'
 
 @Entity()
 export class User {
@@ -34,5 +36,8 @@ export class User {
   notes: Note[]
 
   @OneToMany(() => Flashcard, flashcard => flashcard.user)
-  flashcards: Note[]
+  flashcards: Flashcard[]
+
+  @OneToOne(() => UserSettings, userSettings => userSettings.user, { cascade: true })
+  userSettings: UserSettings
 }

@@ -6,20 +6,24 @@ import { User } from '$/users/user.entity'
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectRepository(User) private readonly repo: Repository<User>) {}
+  constructor(@InjectRepository(User) private readonly userRepo: Repository<User>) {}
 
   create(email: string, password: string) {
-    const user = this.repo.create({ email, password })
+    const user = this.userRepo.create({
+      email,
+      password,
+      userSettings: {}
+    })
 
-    return this.repo.save(user)
+    return this.userRepo.save(user)
   }
 
   findOne(id: string) {
-    return this.repo.findOneBy({ id })
+    return this.userRepo.findOneBy({ id })
   }
 
   find(email: string) {
-    return this.repo.find({ where: { email } })
+    return this.userRepo.find({ where: { email } })
   }
 
   async update(id: string, attrs: Partial<User>) {
@@ -30,7 +34,7 @@ export class UsersService {
     }
 
     if (attrs.email && attrs.email !== user.email) {
-      const existingUser = await this.repo.findOne({ where: { email: attrs.email } })
+      const existingUser = await this.userRepo.findOne({ where: { email: attrs.email } })
 
       if (existingUser) {
         throw new BadRequestException('Email is already in use')
@@ -39,7 +43,7 @@ export class UsersService {
 
     Object.assign(user, attrs)
 
-    return await this.repo.save(user)
+    return await this.userRepo.save(user)
   }
 
   async remove(id: string) {
@@ -49,6 +53,6 @@ export class UsersService {
       throw new NotFoundException('user not found')
     }
 
-    return this.repo.remove(user)
+    return this.userRepo.remove(user)
   }
 }

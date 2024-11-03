@@ -37,9 +37,9 @@ export class AiService {
 
     const prompt = 'Crie um flashcard (e somente um) sobre algum conteúdo do ensino médio'
 
-    const result = await model.generateContent(prompt)
+    const generatedContent = await model.generateContent(prompt)
 
-    const json = JSON.parse(result.response.text())
+    const json = JSON.parse(generatedContent.response.text())
 
     return json
   }

@@ -1,8 +1,13 @@
-@flashcardId = b992b89d-aa92-4a4b-9610-bb633409b60c
-@userId = 8f82aa4e-57fb-4e07-9928-3616edcf45c0
+@flashcardId = 8feec2da-0eaf-4c0a-9312-2e438c1569e5
+@userId = d1c23c75-0930-4329-8c5b-600c46ee5f3c
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkMWMyM2M3NS0wOTMwLTQzMjktOGM1Yi02MDBjNDZlZTVmM2MiLCJlbWFpbCI6ImFkbWluQGV4YW1wbGUuY29tIiwibmFtZSI6IkFkbWluIiwiaWF0IjoxNzMwNjYwNTcxLCJleHAiOjE3MzA2NjQxNzF9.5-5zEfHyNh9VCqGbFhqLRzsT6Dwt3DjM3I0IVO6ONP4
 
 ### Find all flashcards
 GET http://localhost:3000/flashcards
+
+### Find all due flashcards
+GET http://localhost:3000/flashcards/due
+Authorization: Bearer {{accessToken}}
 
 ### Find a particular flashcard
 GET http://localhost:3000/flashcards/{{flashcardId}}
@@ -17,6 +22,16 @@ Content-Type: application/json
     "subject": "História",
     "front": "Pergunta",
     "back": "Resposta"
+}
+
+### Review flashcard
+POST http://localhost:3000/flashcards/review/{{flashcardId}}
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+    "flashcardId": "{{flashcardId}}",
+    "result": 1
 }
 
 ### Update a flashcard

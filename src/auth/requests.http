@@ -1,4 +1,4 @@
-@userEmail = test4@abcd.com
+@userEmail = admin@example.com
 @userPassword = 123456
 
 ### Create a new user

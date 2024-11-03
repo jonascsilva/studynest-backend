@@ -4,8 +4,7 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn
+  PrimaryGeneratedColumn
 } from 'typeorm'
 
 import { Flashcard } from '$/flashcards/flashcard.entity'
@@ -18,14 +17,11 @@ export class FlashcardRevision {
   @Column('uuid')
   flashcardId: string
 
-  @Column()
-  remembered: boolean
+  @Column('int')
+  result: number
 
   @CreateDateColumn()
   createdAt: Date
-
-  @UpdateDateColumn()
-  updatedAt: Date
 
   @ManyToOne(() => Flashcard, flashcard => flashcard.flashcardRevisions)
   @JoinColumn({ name: 'flashcardId' })

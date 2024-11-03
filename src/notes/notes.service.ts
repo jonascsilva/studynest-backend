@@ -8,14 +8,14 @@ import { Note } from '$/notes/note.entity'
 
 @Injectable()
 export class NotesService {
-  constructor(@InjectRepository(Note) private readonly repo: Repository<Note>) {}
+  constructor(@InjectRepository(Note) private readonly noteRepo: Repository<Note>) {}
 
   async find(): Promise<Note[]> {
-    return this.repo.find()
+    return this.noteRepo.find()
   }
 
   async findOne(id: string): Promise<Note> {
-    const note = await this.repo.findOneBy({ id })
+    const note = await this.noteRepo.findOneBy({ id })
 
     if (!note) {
       throw new NotFoundException('Note not found')
@@ -25,9 +25,9 @@ export class NotesService {
   }
 
   async create(attrs: CreateNoteDto): Promise<Note> {
-    const note = this.repo.create(attrs)
+    const note = this.noteRepo.create(attrs)
 
-    return this.repo.save(note)
+    return this.noteRepo.save(note)
   }
 
   async update(id: string, attrs: UpdateNoteDto): Promise<Note> {
@@ -35,12 +35,12 @@ export class NotesService {
 
     Object.assign(note, attrs)
 
-    return this.repo.save(note)
+    return this.noteRepo.save(note)
   }
 
   async remove(id: string): Promise<Note> {
     const note = await this.findOne(id)
 
-    return this.repo.remove(note)
+    return this.noteRepo.remove(note)
   }
 }
