@@ -109,9 +109,7 @@ describe('UsersService', () => {
       user.password = 'oldpassword'
 
       when(userRepoMock.findOneBy(deepEqual({ id }))).thenResolve(user)
-      when(userRepoMock.findOne(deepEqual({ where: { email: attrs.email } }))).thenResolve(
-        null
-      )
+      when(userRepoMock.findOne(deepEqual({ where: { email: attrs.email } }))).thenResolve(null)
       when(userRepoMock.save(anything())).thenResolve(user)
 
       const result = await usersService.update(id, attrs)

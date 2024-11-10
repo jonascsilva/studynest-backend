@@ -10,6 +10,8 @@ import { FlashcardsService } from '$/flashcards/flashcards.service'
 import { calculateCurrentIntervalLevel, calculateNextReviewDate } from '$/flashcards/utils'
 import { UserSettings } from '$/users/user-settings.entity'
 
+import { dueFlashcardsMock, flashcardsMock, upcomingFlashcardsMock } from './flashcards.mock'
+
 describe('FlashcardsService', () => {
   let flashcardsService: FlashcardsService
   let flashcardRepoMock: Repository<Flashcard>
@@ -54,6 +56,7 @@ describe('FlashcardsService', () => {
       }
 
       const flashcard = new Flashcard()
+
       Object.assign(flashcard, attrs)
 
       when(flashcardRepoMock.create(attrs)).thenReturn(flashcard)
@@ -71,14 +74,12 @@ describe('FlashcardsService', () => {
   describe('findOne', () => {
     it('should find a flashcard by id', async () => {
       const id = 'some-id'
-      const flashcard = new Flashcard()
-      flashcard.id = id
 
-      when(flashcardRepoMock.findOneBy(deepEqual({ id }))).thenResolve(flashcard)
+      when(flashcardRepoMock.findOneBy(deepEqual({ id }))).thenResolve(flashcardsMock[0])
 
       const result = await flashcardsService.findOne(id)
 
-      expect(result).toEqual(flashcard)
+      expect(result).toEqual(flashcardsMock[0])
       verify(flashcardRepoMock.findOneBy(deepEqual({ id }))).once()
     })
 
@@ -95,15 +96,17 @@ describe('FlashcardsService', () => {
 
   describe('find', () => {
     it('should find all flashcards', async () => {
-      const flashcards = [new Flashcard(), new Flashcard()]
+      const userId = 'fake-user-id'
 
-      when(flashcardRepoMock.find()).thenResolve(flashcards)
+      const queryOptions = { where: { userId } }
 
-      const result = await flashcardsService.find()
+      when(flashcardRepoMock.find(deepEqual(queryOptions))).thenResolve(flashcardsMock)
 
-      expect(result).toEqual(flashcards)
+      const result = await flashcardsService.find(userId)
 
-      verify(flashcardRepoMock.find()).once()
+      expect(result).toEqual(flashcardsMock)
+
+      verify(flashcardRepoMock.find(deepEqual(queryOptions))).once()
     })
   })
 
@@ -114,18 +117,15 @@ describe('FlashcardsService', () => {
         answer: 'An awesome Node.js framework'
       }
 
-      const flashcard = new Flashcard()
-      flashcard.id = id
-      flashcard.question = 'What is NestJS?'
-      flashcard.answer = 'A progressive Node.js framework'
+      const flashcard = { ...flashcardsMock[0], id }
 
       when(flashcardRepoMock.findOneBy(deepEqual({ id }))).thenResolve(flashcard)
       when(flashcardRepoMock.save(anything())).thenResolve(flashcard)
 
       const result = await flashcardsService.update(id, attrs)
 
-      expect(result).toEqual(flashcard)
-      expect(flashcard.answer).toEqual(attrs.answer)
+      expect(result.question).toEqual(flashcard.question)
+      expect(result.answer).toEqual(attrs.answer)
 
       verify(flashcardRepoMock.findOneBy(deepEqual({ id }))).once()
       verify(flashcardRepoMock.save(flashcard)).once()
@@ -148,9 +148,9 @@ describe('FlashcardsService', () => {
 
   describe('remove', () => {
     it('should remove a flashcard', async () => {
-      const id = 'some-id'
-      const flashcard = new Flashcard()
-      flashcard.id = id
+      const id = 'fake-flashcard-id'
+
+      const flashcard = { ...flashcardsMock[0], id }
 
       when(flashcardRepoMock.findOneBy(deepEqual({ id }))).thenResolve(flashcard)
       when(flashcardRepoMock.remove(flashcard)).thenResolve(flashcard)
@@ -177,18 +177,13 @@ describe('FlashcardsService', () => {
 
   describe('reviewFlashcard', () => {
     it('should save a new FlashcardRevision when the flashcard exists and belongs to the user', async () => {
-      const userId = 'user-id'
+      const userId = 'fake-user-id'
       const flashcardId = 'flashcard-id'
       const result = 1
 
-      const flashcard = new Flashcard()
-
-      flashcard.id = flashcardId
-      flashcard.userId = userId
-
       when(
         flashcardRepoMock.findOne(deepEqual({ where: { id: flashcardId, userId } }))
-      ).thenResolve(flashcard)
+      ).thenResolve(flashcardsMock[0])
 
       when(flashcardRevisionRepoMock.save(anything())).thenResolve()
 
@@ -217,34 +212,50 @@ describe('FlashcardsService', () => {
   })
 
   describe('getDueFlashcards', () => {
+    beforeAll(() => {
+      jest.useFakeTimers().setSystemTime(new Date('2024-10-11T14:21:00Z'))
+    })
+
+    afterAll(() => {
+      jest.useRealTimers()
+    })
+
     it('should return flashcards with no revisions as due', async () => {
       const userId = 'user-id'
+      const queryOptions = { where: { userId } }
 
-      const flashcards = [
-        { id: 'flashcard-1', userId } as Flashcard,
-        { id: 'flashcard-2', userId } as Flashcard
-      ]
-
-      when(flashcardRepoMock.find(deepEqual({ where: { userId } }))).thenResolve(flashcards)
+      when(flashcardRepoMock.find(deepEqual(queryOptions))).thenResolve(flashcardsMock)
 
       when(flashcardRevisionRepoMock.find(anything())).thenResolve([])
 
-      const dueFlashcards = await flashcardsService.getDueFlashcards(userId)
+      const dueFlashcards = await flashcardsService.getFlashcardsWithReviews(userId)
 
-      expect(dueFlashcards).toEqual(flashcards)
+      const flashcards = [...dueFlashcardsMock, ...upcomingFlashcardsMock]
 
-      verify(flashcardRepoMock.find(deepEqual({ where: { userId } }))).once()
-      verify(flashcardRevisionRepoMock.find(anything())).times(flashcards.length)
+      flashcards[0].currentLevel = 1
+      flashcards[0].nextReviewDate = new Date('2024-10-10T14:21:00.000Z')
+      flashcards[1].currentLevel = 1
+      flashcards[1].nextReviewDate = new Date('2024-10-10T14:21:00.000Z')
+      flashcards[2].currentLevel = 1
+      flashcards[2].nextReviewDate = new Date('2024-10-10T14:21:00.000Z')
+
+      expect(dueFlashcards).toEqual({
+        dueFlashcards: [...dueFlashcardsMock, ...upcomingFlashcardsMock],
+        upcomingFlashcards: []
+      })
+
+      verify(flashcardRepoMock.find(deepEqual(queryOptions))).once()
+      verify(flashcardRevisionRepoMock.find(anything())).times(flashcardsMock.length)
     })
 
     it('should return flashcards that are due based on nextReviewDate', async () => {
       const userId = 'user-id'
+      const queryOptions = { where: { userId } }
 
-      const flashcards = [{ id: 'flashcard-1', userId } as Flashcard]
-
-      const revisions = [
-        { result: 1, createdAt: new Date('2023-01-01') } as FlashcardRevision,
-        { result: 1, createdAt: new Date('2023-01-02') } as FlashcardRevision
+      const revisions: FlashcardRevision[] = [
+        { result: 1, createdAt: new Date('2024-10-10T12:41:00.000Z') } as FlashcardRevision,
+        { result: 1, createdAt: new Date('2024-10-10T12:41:00.000Z') } as FlashcardRevision,
+        { result: 0, createdAt: new Date('2024-10-10T12:41:00.000Z') } as FlashcardRevision
       ]
 
       const userSettings = {
@@ -254,16 +265,16 @@ describe('FlashcardsService', () => {
         intervalsQuantity: 5
       } as UserSettings
 
-      when(flashcardRepoMock.find(deepEqual({ where: { userId } }))).thenResolve(flashcards)
+      when(flashcardRepoMock.find(deepEqual(queryOptions))).thenResolve([flashcardsMock[0]])
       when(
         flashcardRevisionRepoMock.find(
           deepEqual({
-            where: { flashcardId: 'flashcard-1' },
+            where: { flashcardId: flashcardsMock[0].id },
             order: { createdAt: 'ASC' }
           })
         )
       ).thenResolve(revisions)
-      when(userSettingsRepoMock.findOne(deepEqual({ where: { userId } }))).thenResolve(userSettings)
+      when(userSettingsRepoMock.findOne(deepEqual(queryOptions))).thenResolve(userSettings)
 
       const currentLevel = calculateCurrentIntervalLevel(revisions, userSettings.intervalsQuantity)
 
@@ -276,26 +287,27 @@ describe('FlashcardsService', () => {
         lastRevisionDate
       )
 
-      jest.useFakeTimers().setSystemTime(new Date(nextReviewDate.getTime() + 1))
+      jest.setSystemTime(new Date(nextReviewDate.getTime() + 1))
 
-      const dueFlashcards = await flashcardsService.getDueFlashcards(userId)
+      const result = await flashcardsService.getFlashcardsWithReviews(userId)
+      const { dueFlashcards, upcomingFlashcards } = result
 
       expect(dueFlashcards).toHaveLength(1)
+      expect(upcomingFlashcards).toHaveLength(0)
       expect(dueFlashcards[0]).toEqual({
-        ...flashcards[0],
+        ...flashcardsMock[0],
         currentLevel,
         nextReviewDate
       })
 
-      verify(flashcardRepoMock.find(deepEqual({ where: { userId } }))).once()
+      verify(flashcardRepoMock.find(deepEqual(queryOptions))).once()
       verify(flashcardRevisionRepoMock.find(anything())).once()
-      verify(userSettingsRepoMock.findOne(deepEqual({ where: { userId } }))).once()
-
-      jest.useRealTimers()
+      verify(userSettingsRepoMock.findOne(deepEqual(queryOptions))).once()
     })
 
     it('should not return flashcards that are not due', async () => {
       const userId = 'user-id'
+      const queryOptions = { where: { userId } }
 
       const flashcards = [{ id: 'flashcard-1', userId } as Flashcard]
 
@@ -311,7 +323,7 @@ describe('FlashcardsService', () => {
         intervalsQuantity: 5
       } as UserSettings
 
-      when(flashcardRepoMock.find(deepEqual({ where: { userId } }))).thenResolve(flashcards)
+      when(flashcardRepoMock.find(deepEqual(queryOptions))).thenResolve(flashcards)
       when(
         flashcardRevisionRepoMock.find(
           deepEqual({
@@ -320,7 +332,7 @@ describe('FlashcardsService', () => {
           })
         )
       ).thenResolve(revisions)
-      when(userSettingsRepoMock.findOne(deepEqual({ where: { userId } }))).thenResolve(userSettings)
+      when(userSettingsRepoMock.findOne(deepEqual(queryOptions))).thenResolve(userSettings)
 
       const currentLevel = calculateCurrentIntervalLevel(revisions, userSettings.intervalsQuantity)
 
@@ -333,17 +345,17 @@ describe('FlashcardsService', () => {
         lastRevisionDate
       )
 
-      jest.useFakeTimers().setSystemTime(new Date(nextReviewDate.getTime() - 1))
+      jest.setSystemTime(new Date(nextReviewDate.getTime() - 1))
 
-      const dueFlashcards = await flashcardsService.getDueFlashcards(userId)
+      const result = await flashcardsService.getFlashcardsWithReviews(userId)
+      const { dueFlashcards, upcomingFlashcards } = result
 
       expect(dueFlashcards).toHaveLength(0)
+      expect(upcomingFlashcards).toHaveLength(1)
 
-      verify(flashcardRepoMock.find(deepEqual({ where: { userId } }))).once()
+      verify(flashcardRepoMock.find(deepEqual(queryOptions))).once()
       verify(flashcardRevisionRepoMock.find(anything())).once()
-      verify(userSettingsRepoMock.findOne(deepEqual({ where: { userId } }))).once()
-
-      jest.useRealTimers()
+      verify(userSettingsRepoMock.findOne(deepEqual(queryOptions))).once()
     })
   })
 })

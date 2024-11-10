@@ -1,12 +1,17 @@
-@flashcardId = 8feec2da-0eaf-4c0a-9312-2e438c1569e5
+@flashcardId = c0ae3c3e-8c95-406d-8b58-7ef87c3aa748
 @userId = d1c23c75-0930-4329-8c5b-600c46ee5f3c
-@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkMWMyM2M3NS0wOTMwLTQzMjktOGM1Yi02MDBjNDZlZTVmM2MiLCJlbWFpbCI6ImFkbWluQGV4YW1wbGUuY29tIiwibmFtZSI6IkFkbWluIiwiaWF0IjoxNzMwNjYwNTcxLCJleHAiOjE3MzA2NjQxNzF9.5-5zEfHyNh9VCqGbFhqLRzsT6Dwt3DjM3I0IVO6ONP4
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkMWMyM2M3NS0wOTMwLTQzMjktOGM1Yi02MDBjNDZlZTVmM2MiLCJlbWFpbCI6ImFkbWluQGV4YW1wbGUuY29tIiwibmFtZSI6IkFkbWluIiwiaWF0IjoxNzMxMTkxNzI5LCJleHAiOjE3MzEyNzgxMjl9.WILdbM2D_jNb2WL8pjVWabq6kSsi3JC5XdG1pWaYg8w
 
 ### Find all flashcards
 GET http://localhost:3000/flashcards
+Authorization: Bearer {{accessToken}}
 
 ### Find all due flashcards
-GET http://localhost:3000/flashcards/due
+GET http://localhost:3000/flashcards?due=true
+Authorization: Bearer {{accessToken}}
+
+### Find all upcoming flashcards
+GET http://localhost:3000/flashcards?upcoming=true
 Authorization: Bearer {{accessToken}}
 
 ### Find a particular flashcard
@@ -30,7 +35,6 @@ Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
-    "flashcardId": "{{flashcardId}}",
     "result": 1
 }
 

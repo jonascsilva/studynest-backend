@@ -1,14 +1,4 @@
-import {
-  Controller,
-  Get,
-  Param,
-  Post,
-  Delete,
-  Patch,
-  Body,
-  UseGuards,
-  Request
-} from '@nestjs/common'
+import { Controller, Get, Param, Post, Delete, Patch, Body, UseGuards, Query } from '@nestjs/common'
 
 import { JwtAuthGuard } from '$/auth/jwt-auth.guard'
 import { AiService } from '$/flashcards/ai.service'
@@ -19,7 +9,7 @@ import { UpdateFlashcardDto } from '$/flashcards/dtos/update-flashcard.dto'
 import { Flashcard } from '$/flashcards/flashcard.entity'
 import { FlashcardsService } from '$/flashcards/flashcards.service'
 import { Serialize } from '$/interceptor/serialize.interceptor'
-import { User } from '$/users/user.entity'
+import { RequestUser, User } from '$/users/user.decorator'
 
 @Controller('flashcards')
 @Serialize(FlashcardDto)
@@ -34,20 +24,32 @@ export class FlashcardsController {
     return this.flashcardsService.create(body)
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get()
-  getAllFlashcards(): Promise<Flashcard[]> {
-    return this.flashcardsService.find()
+  async getAllFlashcards(
+    @User() user: RequestUser,
+    @Query('due') due?: string,
+    @Query('upcoming') upcoming?: string
+  ): Promise<Flashcard[]> {
+    const userId = user.id
+
+    if (due || upcoming) {
+      const { dueFlashcards, upcomingFlashcards } =
+        await this.flashcardsService.getFlashcardsWithReviews(userId)
+
+      if (due && !upcoming) return dueFlashcards
+
+      if (upcoming && !due) return upcomingFlashcards
+
+      return [...dueFlashcards, ...upcomingFlashcards]
+    }
+
+    return this.flashcardsService.find(userId)
   }
 
   @Get('/ai')
   generateFlashcard(): Promise<Partial<Flashcard>> {
     return this.aiService.generate()
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Get('/due')
-  getDueFlashcards(@Request() req: { user: User }): Promise<Flashcard[]> {
-    return this.flashcardsService.getDueFlashcards(req.user.id)
   }
 
   @Get('/:id')
@@ -67,7 +69,11 @@ export class FlashcardsController {
 
   @UseGuards(JwtAuthGuard)
   @Post('/review/:id')
-  review(@Request() req: { user: User }, @Body() body: CreateFlashcardRevisionDto): Promise<void> {
-    return this.flashcardsService.reviewFlashcard(req.user.id, body.flashcardId, body.result)
+  review(
+    @User() user: RequestUser,
+    @Param('id') id: string,
+    @Body() body: CreateFlashcardRevisionDto
+  ): Promise<void> {
+    return this.flashcardsService.reviewFlashcard(user.id, id, body.result)
   }
 }

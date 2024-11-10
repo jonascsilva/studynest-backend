@@ -3,6 +3,7 @@ import { Test, TestingModule } from '@nestjs/testing'
 import { instance, mock, when, verify, deepEqual } from 'ts-mockito'
 
 import { UpdateUserDto } from '$/users/dtos/update-user.dto'
+import { RequestUser } from '$/users/user.decorator'
 import { User } from '$/users/user.entity'
 import { UsersController } from '$/users/users.controller'
 import { UsersService } from '$/users/users.service'
@@ -33,17 +34,15 @@ describe('UsersController', () => {
 
   describe('getProfile', () => {
     it('should return the user profile from the request', () => {
-      const req = {
-        user: {
-          id: 'user-id',
-          email: 'test@example.com',
-          name: 'Test User'
-        }
+      const user: RequestUser = {
+        id: 'user-id',
+        email: 'test@example.com',
+        name: 'Test User'
       }
 
-      const result = usersController.getProfile(req)
+      const result = usersController.getProfile(user)
 
-      expect(result).toEqual(req.user)
+      expect(result).toEqual(user)
     })
   })
 

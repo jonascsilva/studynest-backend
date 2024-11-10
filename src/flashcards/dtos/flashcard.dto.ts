@@ -17,6 +17,12 @@ export class FlashcardDto {
   userId: string
 
   @Expose()
+  currentLevel: number
+
+  @Expose()
+  nextReviewDate: Date
+
+  @Expose()
   createdAt: Date
 
   @Expose()

@@ -41,6 +41,8 @@ export class NotesService {
   async remove(id: string): Promise<Note> {
     const note = await this.findOne(id)
 
-    return this.noteRepo.remove(note)
+    const result = await this.noteRepo.remove(note)
+
+    return { ...result, id }
   }
 }

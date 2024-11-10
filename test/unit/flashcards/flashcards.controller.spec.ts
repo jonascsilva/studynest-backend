@@ -7,7 +7,8 @@ import { UpdateFlashcardDto } from '$/flashcards/dtos/update-flashcard.dto'
 import { Flashcard } from '$/flashcards/flashcard.entity'
 import { FlashcardsController } from '$/flashcards/flashcards.controller'
 import { FlashcardsService } from '$/flashcards/flashcards.service'
-import { User } from '$/users/user.entity'
+
+import { dueFlashcardsMock, flashcardsMock, upcomingFlashcardsMock } from './flashcards.mock'
 
 describe('FlashcardsController', () => {
   let flashcardsController: FlashcardsController
@@ -64,14 +65,84 @@ describe('FlashcardsController', () => {
 
   describe('getAllFlashcards', () => {
     it('should return all flashcards', async () => {
-      const flashcards = [new Flashcard(), new Flashcard()]
+      const userId = 'fake-id'
+      const user = {
+        email: 'fake-email',
+        name: 'fake-name',
+        id: userId
+      }
 
-      when(flashcardsServiceMock.find()).thenResolve(flashcards)
+      const flashcards = [flashcardsMock[0], flashcardsMock[1]]
 
-      const result = await flashcardsController.getAllFlashcards()
+      when(flashcardsServiceMock.find(userId)).thenResolve(flashcards)
+
+      const result = await flashcardsController.getAllFlashcards(user)
 
       expect(result).toEqual(flashcards)
-      verify(flashcardsServiceMock.find()).once()
+      verify(flashcardsServiceMock.find(userId)).once()
+    })
+
+    it('should return all due flashcards', async () => {
+      const userId = 'fake-user-id'
+
+      const user = {
+        email: 'fake-email',
+        name: 'fake-name',
+        id: userId
+      }
+
+      when(flashcardsServiceMock.getFlashcardsWithReviews(userId)).thenResolve({
+        dueFlashcards: dueFlashcardsMock,
+        upcomingFlashcards: upcomingFlashcardsMock
+      })
+
+      const result = await flashcardsController.getAllFlashcards(user, 'true')
+
+      expect(result).toEqual(dueFlashcardsMock)
+
+      verify(flashcardsServiceMock.getFlashcardsWithReviews(userId)).once()
+    })
+
+    it('should return all upcoming flashcards', async () => {
+      const userId = 'fake-user-id'
+
+      const user = {
+        email: 'fake-email',
+        name: 'fake-name',
+        id: userId
+      }
+
+      when(flashcardsServiceMock.getFlashcardsWithReviews(userId)).thenResolve({
+        dueFlashcards: dueFlashcardsMock,
+        upcomingFlashcards: upcomingFlashcardsMock
+      })
+
+      const result = await flashcardsController.getAllFlashcards(user, undefined, 'true')
+
+      expect(result).toEqual(upcomingFlashcardsMock)
+
+      verify(flashcardsServiceMock.getFlashcardsWithReviews(userId)).once()
+    })
+
+    it('should return all due and upcoming flashcards', async () => {
+      const userId = 'fake-user-id'
+
+      const user = {
+        email: 'fake-email',
+        name: 'fake-name',
+        id: userId
+      }
+
+      when(flashcardsServiceMock.getFlashcardsWithReviews(userId)).thenResolve({
+        dueFlashcards: dueFlashcardsMock,
+        upcomingFlashcards: upcomingFlashcardsMock
+      })
+
+      const result = await flashcardsController.getAllFlashcards(user, 'true', 'true')
+
+      expect(result).toEqual([...dueFlashcardsMock, ...upcomingFlashcardsMock])
+
+      verify(flashcardsServiceMock.getFlashcardsWithReviews(userId)).once()
     })
   })
 
@@ -95,15 +166,12 @@ describe('FlashcardsController', () => {
   describe('findFlashcard', () => {
     it('should return the flashcard when it exists', async () => {
       const id = 'some-id'
-      const flashcard = new Flashcard()
 
-      flashcard.id = id
-
-      when(flashcardsServiceMock.findOne(id)).thenResolve(flashcard)
+      when(flashcardsServiceMock.findOne(id)).thenResolve(flashcardsMock[0])
 
       const result = await flashcardsController.findFlashcard(id)
 
-      expect(result).toEqual(flashcard)
+      expect(result).toEqual(flashcardsMock[0])
       verify(flashcardsServiceMock.findOne(id)).once()
     })
   })
@@ -115,7 +183,7 @@ describe('FlashcardsController', () => {
         answer: 'An updated answer'
       }
 
-      const updatedFlashcard = new Flashcard()
+      const updatedFlashcard = { ...flashcardsMock[0] }
 
       updatedFlashcard.id = id
       updatedFlashcard.answer = body.answer
@@ -133,47 +201,14 @@ describe('FlashcardsController', () => {
   describe('removeFlashcard', () => {
     it('should remove and return the flashcard', async () => {
       const id = 'some-id'
-      const flashcard = new Flashcard()
 
-      flashcard.id = id
-
-      when(flashcardsServiceMock.remove(id)).thenResolve(flashcard)
+      when(flashcardsServiceMock.remove(id)).thenResolve(flashcardsMock[0])
 
       const result = await flashcardsController.removeFlashcard(id)
 
-      expect(result).toEqual(flashcard)
+      expect(result).toEqual(flashcardsMock[0])
 
       verify(flashcardsServiceMock.remove(id)).once()
-    })
-  })
-
-  describe('getDue', () => {
-    it('should return all due flashcards', async () => {
-      const userId = 'fake-user-id'
-
-      const user = new User()
-
-      user.id = userId
-
-      const req = { user }
-
-      const flashcard1 = new Flashcard()
-
-      flashcard1.id = 'fake-id-1'
-
-      const flashcard2 = new Flashcard()
-
-      flashcard2.id = 'fake-id-1'
-
-      const flashcards: Flashcard[] = [flashcard1, flashcard2]
-
-      when(flashcardsServiceMock.getDueFlashcards(userId)).thenResolve(flashcards)
-
-      const result = await flashcardsController.getDueFlashcards(req)
-
-      expect(result).toEqual(flashcards)
-
-      verify(flashcardsServiceMock.getDueFlashcards(userId)).once()
     })
   })
 
@@ -191,13 +226,13 @@ describe('FlashcardsController', () => {
         undefined
       )
 
-      const user = new User()
+      const user = {
+        name: 'fake-name',
+        email: 'fake-email',
+        id: userId
+      }
 
-      user.id = userId
-
-      const req = { user }
-
-      const result = await flashcardsController.review(req, body)
+      const result = await flashcardsController.review(user, flashcardId, body)
 
       expect(result).toEqual(undefined)
 

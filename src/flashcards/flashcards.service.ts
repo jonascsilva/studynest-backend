@@ -7,7 +7,7 @@ import { Flashcard } from '$/flashcards/flashcard.entity'
 import { calculateCurrentIntervalLevel, calculateNextReviewDate } from '$/flashcards/utils'
 import { UserSettings } from '$/users/user-settings.entity'
 
-type DueFlashcard = Flashcard & { currentLevel?: number; nextReviewDate?: Date }
+export type FlashcardWithReview = Flashcard & { currentLevel: number; nextReviewDate: Date }
 
 @Injectable()
 export class FlashcardsService {
@@ -35,8 +35,8 @@ export class FlashcardsService {
     return flashcard
   }
 
-  find(): Promise<Flashcard[]> {
-    return this.flashcardRepo.find()
+  find(userId: string): Promise<Flashcard[]> {
+    return this.flashcardRepo.find({ where: { userId } })
   }
 
   async update(id: string, attrs: Partial<Flashcard>): Promise<Flashcard> {
@@ -50,7 +50,9 @@ export class FlashcardsService {
   async remove(id: string): Promise<Flashcard> {
     const flashcard = await this.findOne(id)
 
-    return this.flashcardRepo.remove(flashcard)
+    const result = await this.flashcardRepo.remove(flashcard)
+
+    return { ...result, id }
   }
 
   async reviewFlashcard(userId: string, flashcardId: string, result: number): Promise<void> {
@@ -70,14 +72,17 @@ export class FlashcardsService {
     await this.flashcardRevisionRepo.save(newRevision)
   }
 
-  async getDueFlashcards(userId: string): Promise<Flashcard[]> {
+  async getFlashcardsWithReviews(
+    userId: string
+  ): Promise<{ dueFlashcards: FlashcardWithReview[]; upcomingFlashcards: FlashcardWithReview[] }> {
     const now = new Date()
 
     const flashcards = await this.flashcardRepo.find({
       where: { userId }
     })
 
-    const dueFlashcards: DueFlashcard[] = []
+    const dueFlashcards: FlashcardWithReview[] = []
+    const upcomingFlashcards: FlashcardWithReview[] = []
 
     for (const flashcard of flashcards) {
       const revisions = await this.flashcardRevisionRepo.find({
@@ -86,7 +91,13 @@ export class FlashcardsService {
       })
 
       if (revisions.length === 0) {
-        dueFlashcards.push(flashcard)
+        const nextReviewDate = new Date(now)
+
+        nextReviewDate.setHours(nextReviewDate.getHours() - 24)
+
+        const flashcardToReview = { ...flashcard, currentLevel: 1, nextReviewDate }
+
+        dueFlashcards.push(flashcardToReview)
 
         continue
       }
@@ -110,9 +121,11 @@ export class FlashcardsService {
 
       if (nextReviewDate <= now) {
         dueFlashcards.push(flashcardToReview)
+      } else {
+        upcomingFlashcards.push(flashcardToReview)
       }
     }
 
-    return dueFlashcards
+    return { dueFlashcards, upcomingFlashcards }
   }
 }
