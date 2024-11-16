@@ -9,7 +9,4 @@ export class CreateFlashcardDto {
 
   @IsString()
   answer: string
-
-  @IsString()
-  userId: string
 }

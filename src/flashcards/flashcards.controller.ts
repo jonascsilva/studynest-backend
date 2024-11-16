@@ -1,6 +1,6 @@
-import { Controller, Get, Param, Post, Delete, Patch, Body, UseGuards, Query } from '@nestjs/common'
+import { Controller, Get, Param, Post, Delete, Patch, Body, Query } from '@nestjs/common'
 
-import { JwtAuthGuard } from '$/auth/jwt-auth.guard'
+import { Authenticated } from '$/auth/auth.decorator'
 import { AiService } from '$/flashcards/ai.service'
 import { CreateFlashcardRevisionDto } from '$/flashcards/dtos/create-flashcard-revision.dto'
 import { CreateFlashcardDto } from '$/flashcards/dtos/create-flashcard.dto'
@@ -9,10 +9,11 @@ import { UpdateFlashcardDto } from '$/flashcards/dtos/update-flashcard.dto'
 import { Flashcard } from '$/flashcards/flashcard.entity'
 import { FlashcardsService } from '$/flashcards/flashcards.service'
 import { Serialize } from '$/interceptor/serialize.interceptor'
-import { RequestUser, User } from '$/users/user.decorator'
+import { RequestUser, ReqUser } from '$/users/user.decorator'
 
 @Controller('flashcards')
 @Serialize(FlashcardDto)
+@Authenticated()
 export class FlashcardsController {
   constructor(
     private readonly flashcardsService: FlashcardsService,
@@ -20,14 +21,16 @@ export class FlashcardsController {
   ) {}
 
   @Post()
-  createFlashcard(@Body() body: CreateFlashcardDto): Promise<Flashcard> {
-    return this.flashcardsService.create(body)
+  createFlashcard(
+    @ReqUser() user: RequestUser,
+    @Body() body: CreateFlashcardDto
+  ): Promise<Flashcard> {
+    return this.flashcardsService.create(user.id, body)
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get()
   async getAllFlashcards(
-    @User() user: RequestUser,
+    @ReqUser() user: RequestUser,
     @Query('due') due?: string,
     @Query('upcoming') upcoming?: string
   ): Promise<Flashcard[]> {
@@ -53,24 +56,27 @@ export class FlashcardsController {
   }
 
   @Get('/:id')
-  async findFlashcard(@Param('id') id: string): Promise<Flashcard> {
-    return this.flashcardsService.findOne(id)
+  async findFlashcard(@ReqUser() user: RequestUser, @Param('id') id: string): Promise<Flashcard> {
+    return this.flashcardsService.findOne(user.id, id)
   }
 
   @Patch('/:id')
-  updateFlashcard(@Param('id') id: string, @Body() body: UpdateFlashcardDto): Promise<Flashcard> {
-    return this.flashcardsService.update(id, body)
+  updateFlashcard(
+    @ReqUser() user: RequestUser,
+    @Param('id') id: string,
+    @Body() body: UpdateFlashcardDto
+  ): Promise<Flashcard> {
+    return this.flashcardsService.update(user.id, id, body)
   }
 
   @Delete('/:id')
-  removeFlashcard(@Param('id') id: string): Promise<Flashcard> {
-    return this.flashcardsService.remove(id)
+  removeFlashcard(@ReqUser() user: RequestUser, @Param('id') id: string): Promise<Flashcard> {
+    return this.flashcardsService.remove(user.id, id)
   }
 
-  @UseGuards(JwtAuthGuard)
   @Post('/review/:id')
   review(
-    @User() user: RequestUser,
+    @ReqUser() user: RequestUser,
     @Param('id') id: string,
     @Body() body: CreateFlashcardRevisionDto
   ): Promise<void> {

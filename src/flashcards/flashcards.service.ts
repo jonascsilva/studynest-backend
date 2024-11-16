@@ -19,57 +19,63 @@ export class FlashcardsService {
     private readonly userSettingsRepo: Repository<UserSettings>
   ) {}
 
-  create(attrs: Partial<Flashcard>): Promise<Flashcard> {
+  async create(userId: string, attrs: Partial<Flashcard>): Promise<Flashcard> {
+    attrs.userId = userId
+
     const flashcard = this.flashcardRepo.create(attrs)
 
-    return this.flashcardRepo.save(flashcard)
+    const createdFlashcard = await this.flashcardRepo.save(flashcard)
+
+    return createdFlashcard
   }
 
-  async findOne(id: string): Promise<Flashcard> {
-    const flashcard = await this.flashcardRepo.findOneBy({ id })
+  async findOne(userId: string, id: string): Promise<Flashcard> {
+    const foundFlashcard = await this.flashcardRepo.findOneBy({ userId, id })
 
-    if (!flashcard) {
+    if (!foundFlashcard) {
       throw new NotFoundException('Flashcard not found')
     }
 
-    return flashcard
+    return foundFlashcard
   }
 
-  find(userId: string): Promise<Flashcard[]> {
-    return this.flashcardRepo.find({ where: { userId } })
+  async find(userId: string): Promise<Flashcard[]> {
+    const foundFlashcards = await this.flashcardRepo.findBy({ userId })
+
+    return foundFlashcards
   }
 
-  async update(id: string, attrs: Partial<Flashcard>): Promise<Flashcard> {
-    const flashcard = await this.findOne(id)
+  async update(userId: string, id: string, attrs: Partial<Flashcard>): Promise<Flashcard> {
+    const flashcard = await this.findOne(userId, id)
 
     Object.assign(flashcard, attrs)
 
-    return this.flashcardRepo.save(flashcard)
+    const updatedFlashcard = await this.flashcardRepo.save(flashcard)
+
+    return updatedFlashcard
   }
 
-  async remove(id: string): Promise<Flashcard> {
-    const flashcard = await this.findOne(id)
+  async remove(userId: string, id: string): Promise<Flashcard> {
+    const flashcard = await this.findOne(userId, id)
 
     const result = await this.flashcardRepo.remove(flashcard)
 
-    return { ...result, id }
+    const removedFlashcard = { ...result, id }
+
+    return removedFlashcard
   }
 
-  async reviewFlashcard(userId: string, flashcardId: string, result: number): Promise<void> {
-    const flashcard = await this.flashcardRepo.findOne({
-      where: { id: flashcardId, userId }
-    })
+  async reviewFlashcard(userId: string, id: string, result: number): Promise<void> {
+    await this.findOne(userId, id)
 
-    if (!flashcard) {
-      throw new Error('Flashcard not found or does not belong to the user')
+    const attrs = {
+      flashcardId: id,
+      result
     }
 
-    const newRevision = new FlashcardRevision()
+    const flashcardRevision = this.flashcardRevisionRepo.create(attrs)
 
-    newRevision.flashcardId = flashcardId
-    newRevision.result = result
-
-    await this.flashcardRevisionRepo.save(newRevision)
+    await this.flashcardRevisionRepo.save(flashcardRevision)
   }
 
   async getFlashcardsWithReviews(

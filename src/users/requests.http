@@ -20,6 +20,7 @@ DELETE http://localhost:3000/users/{{userId}}
 
 ### Update a user
 PATCH http://localhost:3000/users/{{userId}}
+Authorization: Bearer {{accessToken}}
 content-type: application/json
 
 {

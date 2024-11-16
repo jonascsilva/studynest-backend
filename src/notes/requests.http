@@ -1,18 +1,21 @@
 @noteId = b992b89d-aa92-4a4b-9610-bb633409b60c
-@userId = 8f82aa4e-57fb-4e07-9928-3616edcf45c0
+@userId = d1c23c75-0930-4329-8c5b-600c46ee5f3c
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkMWMyM2M3NS0wOTMwLTQzMjktOGM1Yi02MDBjNDZlZTVmM2MiLCJlbWFpbCI6ImFkbWluQGV4YW1wbGUuY29tIiwibmFtZSI6IkFkbWluIiwiaWF0IjoxNzMxMTkxNzI5LCJleHAiOjE3MzEyNzgxMjl9.WILdbM2D_jNb2WL8pjVWabq6kSsi3JC5XdG1pWaYg8w
 
 ### Find all notes
 GET http://localhost:3000/notes
+Authorization: Bearer {{accessToken}}
 
 ### Find a particular note
 GET http://localhost:3000/notes/{{noteId}}
+Authorization: Bearer {{accessToken}}
 
 ### Create a new note
 POST http://localhost:3000/notes
+Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
-    "userId": "{{userId}}",
     "title": "Revolução Russa",
     "subject": "História",
     "content": "Um texto qualquer"
@@ -20,6 +23,7 @@ Content-Type: application/json
 
 ### Update a note
 PATCH http://localhost:3000/notes/{{noteId}}
+Authorization: Bearer {{accessToken}}
 content-type: application/json
 
 {
@@ -29,3 +33,4 @@ content-type: application/json
 
 ### Delete a note with given id
 DELETE http://localhost:3000/notes/{{noteId}}
+Authorization: Bearer {{accessToken}}

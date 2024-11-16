@@ -17,6 +17,7 @@ describe('FlashcardsService', () => {
   let flashcardRepoMock: Repository<Flashcard>
   let flashcardRevisionRepoMock: Repository<FlashcardRevision>
   let userSettingsRepoMock: Repository<UserSettings>
+  const userId = 'fake-user-id'
 
   beforeEach(async () => {
     flashcardRepoMock = mock(Repository<Flashcard>)
@@ -62,7 +63,7 @@ describe('FlashcardsService', () => {
       when(flashcardRepoMock.create(attrs)).thenReturn(flashcard)
       when(flashcardRepoMock.save(flashcard)).thenResolve(flashcard)
 
-      const result = await flashcardsService.create(attrs)
+      const result = await flashcardsService.create(userId, attrs)
 
       expect(result).toEqual(flashcard)
 
@@ -75,22 +76,22 @@ describe('FlashcardsService', () => {
     it('should find a flashcard by id', async () => {
       const id = 'some-id'
 
-      when(flashcardRepoMock.findOneBy(deepEqual({ id }))).thenResolve(flashcardsMock[0])
+      when(flashcardRepoMock.findOneBy(deepEqual({ userId, id }))).thenResolve(flashcardsMock[0])
 
-      const result = await flashcardsService.findOne(id)
+      const result = await flashcardsService.findOne(userId, id)
 
       expect(result).toEqual(flashcardsMock[0])
-      verify(flashcardRepoMock.findOneBy(deepEqual({ id }))).once()
+      verify(flashcardRepoMock.findOneBy(deepEqual({ userId, id }))).once()
     })
 
     it('should throw NotFoundException when flashcard does not exist', async () => {
       const id = 'non-existent-id'
 
-      when(flashcardRepoMock.findOneBy(deepEqual({ id }))).thenResolve(null)
+      when(flashcardRepoMock.findOneBy(deepEqual({ userId, id }))).thenResolve(null)
 
-      await expect(flashcardsService.findOne(id)).rejects.toThrow(NotFoundException)
+      await expect(flashcardsService.findOne(userId, id)).rejects.toThrow(NotFoundException)
 
-      verify(flashcardRepoMock.findOneBy(deepEqual({ id }))).once()
+      verify(flashcardRepoMock.findOneBy(deepEqual({ userId, id }))).once()
     })
   })
 
@@ -98,15 +99,13 @@ describe('FlashcardsService', () => {
     it('should find all flashcards', async () => {
       const userId = 'fake-user-id'
 
-      const queryOptions = { where: { userId } }
-
-      when(flashcardRepoMock.find(deepEqual(queryOptions))).thenResolve(flashcardsMock)
+      when(flashcardRepoMock.findBy(deepEqual({ userId }))).thenResolve(flashcardsMock)
 
       const result = await flashcardsService.find(userId)
 
       expect(result).toEqual(flashcardsMock)
 
-      verify(flashcardRepoMock.find(deepEqual(queryOptions))).once()
+      verify(flashcardRepoMock.findBy(deepEqual({ userId }))).once()
     })
   })
 
@@ -119,15 +118,15 @@ describe('FlashcardsService', () => {
 
       const flashcard = { ...flashcardsMock[0], id }
 
-      when(flashcardRepoMock.findOneBy(deepEqual({ id }))).thenResolve(flashcard)
+      when(flashcardRepoMock.findOneBy(deepEqual({ userId, id }))).thenResolve(flashcard)
       when(flashcardRepoMock.save(anything())).thenResolve(flashcard)
 
-      const result = await flashcardsService.update(id, attrs)
+      const result = await flashcardsService.update(userId, id, attrs)
 
       expect(result.question).toEqual(flashcard.question)
       expect(result.answer).toEqual(attrs.answer)
 
-      verify(flashcardRepoMock.findOneBy(deepEqual({ id }))).once()
+      verify(flashcardRepoMock.findOneBy(deepEqual({ userId, id }))).once()
       verify(flashcardRepoMock.save(flashcard)).once()
     })
 
@@ -137,11 +136,11 @@ describe('FlashcardsService', () => {
         answer: 'An awesome Node.js framework'
       }
 
-      when(flashcardRepoMock.findOneBy(deepEqual({ id }))).thenResolve(null)
+      when(flashcardRepoMock.findOneBy(deepEqual({ userId, id }))).thenResolve(null)
 
-      await expect(flashcardsService.update(id, attrs)).rejects.toThrow(NotFoundException)
+      await expect(flashcardsService.update(userId, id, attrs)).rejects.toThrow(NotFoundException)
 
-      verify(flashcardRepoMock.findOneBy(deepEqual({ id }))).once()
+      verify(flashcardRepoMock.findOneBy(deepEqual({ userId, id }))).once()
       verify(flashcardRepoMock.save(anything())).never()
     })
   })
@@ -152,25 +151,25 @@ describe('FlashcardsService', () => {
 
       const flashcard = { ...flashcardsMock[0], id }
 
-      when(flashcardRepoMock.findOneBy(deepEqual({ id }))).thenResolve(flashcard)
+      when(flashcardRepoMock.findOneBy(deepEqual({ userId, id }))).thenResolve(flashcard)
       when(flashcardRepoMock.remove(flashcard)).thenResolve(flashcard)
 
-      const result = await flashcardsService.remove(id)
+      const result = await flashcardsService.remove(userId, id)
 
       expect(result).toEqual(flashcard)
 
-      verify(flashcardRepoMock.findOneBy(deepEqual({ id }))).once()
+      verify(flashcardRepoMock.findOneBy(deepEqual({ userId, id }))).once()
       verify(flashcardRepoMock.remove(flashcard)).once()
     })
 
     it('should throw NotFoundException if flashcard not found', async () => {
       const id = 'non-existent-id'
 
-      when(flashcardRepoMock.findOneBy(deepEqual({ id }))).thenResolve(null)
+      when(flashcardRepoMock.findOneBy(deepEqual({ userId, id }))).thenResolve(null)
 
-      await expect(flashcardsService.remove(id)).rejects.toThrow(NotFoundException)
+      await expect(flashcardsService.remove(userId, id)).rejects.toThrow(NotFoundException)
 
-      verify(flashcardRepoMock.findOneBy(deepEqual({ id }))).once()
+      verify(flashcardRepoMock.findOneBy(deepEqual({ userId, id }))).once()
       verify(flashcardRepoMock.remove(anything())).never()
     })
   })
@@ -181,15 +180,15 @@ describe('FlashcardsService', () => {
       const flashcardId = 'flashcard-id'
       const result = 1
 
-      when(
-        flashcardRepoMock.findOne(deepEqual({ where: { id: flashcardId, userId } }))
-      ).thenResolve(flashcardsMock[0])
+      when(flashcardRepoMock.findOneBy(deepEqual({ userId, id: flashcardId }))).thenResolve(
+        flashcardsMock[0]
+      )
 
       when(flashcardRevisionRepoMock.save(anything())).thenResolve()
 
       await flashcardsService.reviewFlashcard(userId, flashcardId, result)
 
-      verify(flashcardRepoMock.findOne(deepEqual({ where: { id: flashcardId, userId } }))).once()
+      verify(flashcardRepoMock.findOneBy(deepEqual({ userId, id: flashcardId }))).once()
       verify(flashcardRevisionRepoMock.save(anything())).once()
     })
 
@@ -198,15 +197,13 @@ describe('FlashcardsService', () => {
       const flashcardId = 'flashcard-id'
       const result = 1
 
-      when(
-        flashcardRepoMock.findOne(deepEqual({ where: { id: flashcardId, userId } }))
-      ).thenResolve(null)
+      when(flashcardRepoMock.findOneBy(deepEqual({ userId, id: flashcardId }))).thenResolve(null)
 
       await expect(flashcardsService.reviewFlashcard(userId, flashcardId, result)).rejects.toThrow(
         Error
       )
 
-      verify(flashcardRepoMock.findOne(deepEqual({ where: { id: flashcardId, userId } }))).once()
+      verify(flashcardRepoMock.findOneBy(deepEqual({ userId, id: flashcardId }))).once()
       verify(flashcardRevisionRepoMock.save(anything())).never()
     })
   })

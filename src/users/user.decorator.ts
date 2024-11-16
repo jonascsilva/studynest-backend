@@ -12,6 +12,6 @@ const getUserFromContext = (_data: unknown, ctx: ExecutionContext) => {
   return request.user
 }
 
-const User = createParamDecorator(getUserFromContext)
+const ReqUser = createParamDecorator(getUserFromContext)
 
-export { User, RequestUser, getUserFromContext }
+export { ReqUser, RequestUser, getUserFromContext }

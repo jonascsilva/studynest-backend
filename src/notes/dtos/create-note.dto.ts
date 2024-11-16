@@ -9,7 +9,4 @@ export class CreateNoteDto {
 
   @IsString()
   content: string
-
-  @IsString()
-  userId: string
 }

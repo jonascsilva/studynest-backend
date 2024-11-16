@@ -16,13 +16,14 @@ Authorization: Bearer {{accessToken}}
 
 ### Find a particular flashcard
 GET http://localhost:3000/flashcards/{{flashcardId}}
+Authorization: Bearer {{accessToken}}
 
 ### Create a new flashcard
 POST http://localhost:3000/flashcards
+Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
-    "userId": "{{userId}}",
     "title": "Revolução Russa",
     "subject": "História",
     "front": "Pergunta",
@@ -40,6 +41,7 @@ Content-Type: application/json
 
 ### Update a flashcard
 PATCH http://localhost:3000/flashcards/{{flashcardId}}
+Authorization: Bearer {{accessToken}}
 content-type: application/json
 
 {
@@ -49,3 +51,4 @@ content-type: application/json
 
 ### Delete a flashcard with given id
 DELETE http://localhost:3000/flashcards/{{flashcardId}}
+Authorization: Bearer {{accessToken}}
