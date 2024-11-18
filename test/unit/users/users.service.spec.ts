@@ -89,13 +89,13 @@ describe('UsersService', () => {
       users[0].email = email
       users[1].email = email
 
-      when(userRepoMock.find(deepEqual({ where: { email } }))).thenResolve(users)
+      when(userRepoMock.findBy(deepEqual({ email }))).thenResolve(users)
 
       const result = await usersService.find(email)
 
       expect(result).toEqual(users)
 
-      verify(userRepoMock.find(deepEqual({ where: { email } }))).once()
+      verify(userRepoMock.findBy(deepEqual({ email }))).once()
     })
   })
 
@@ -109,7 +109,7 @@ describe('UsersService', () => {
       user.password = 'oldpassword'
 
       when(userRepoMock.findOneBy(deepEqual({ id }))).thenResolve(user)
-      when(userRepoMock.findOne(deepEqual({ where: { email: attrs.email } }))).thenResolve(null)
+      when(userRepoMock.findOneBy(deepEqual({ email: attrs.email }))).thenResolve(null)
       when(userRepoMock.save(anything())).thenResolve(user)
 
       const result = await usersService.update(id, attrs)
@@ -117,7 +117,7 @@ describe('UsersService', () => {
       expect(result).toEqual(user)
       expect(user.email).toEqual(attrs.email)
       verify(userRepoMock.findOneBy(deepEqual({ id }))).once()
-      verify(userRepoMock.findOne(deepEqual({ where: { email: attrs.email } }))).once()
+      verify(userRepoMock.findOneBy(deepEqual({ email: attrs.email }))).once()
       verify(userRepoMock.save(user)).once()
     })
 
@@ -130,7 +130,6 @@ describe('UsersService', () => {
       await expect(usersService.update(id, attrs)).rejects.toThrow(NotFoundException)
 
       verify(userRepoMock.findOneBy(deepEqual({ id }))).once()
-      verify(userRepoMock.findOne(anything())).never()
       verify(userRepoMock.save(anything())).never()
     })
 
@@ -146,14 +145,12 @@ describe('UsersService', () => {
       existingUser.email = attrs.email
 
       when(userRepoMock.findOneBy(deepEqual({ id }))).thenResolve(user)
-      when(userRepoMock.findOne(deepEqual({ where: { email: attrs.email } }))).thenResolve(
-        existingUser
-      )
+      when(userRepoMock.findOneBy(deepEqual({ email: attrs.email }))).thenResolve(existingUser)
 
       await expect(usersService.update(id, attrs)).rejects.toThrow(BadRequestException)
 
       verify(userRepoMock.findOneBy(deepEqual({ id }))).once()
-      verify(userRepoMock.findOne(deepEqual({ where: { email: attrs.email } }))).once()
+      verify(userRepoMock.findOneBy(deepEqual({ email: attrs.email }))).once()
       verify(userRepoMock.save(anything())).never()
     })
   })

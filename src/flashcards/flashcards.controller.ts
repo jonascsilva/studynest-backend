@@ -7,7 +7,7 @@ import { CreateFlashcardDto } from '$/flashcards/dtos/create-flashcard.dto'
 import { FlashcardDto } from '$/flashcards/dtos/flashcard.dto'
 import { UpdateFlashcardDto } from '$/flashcards/dtos/update-flashcard.dto'
 import { Flashcard } from '$/flashcards/flashcard.entity'
-import { FlashcardsService } from '$/flashcards/flashcards.service'
+import { FlashcardsService, FlashcardWithReview } from '$/flashcards/flashcards.service'
 import { Serialize } from '$/interceptor/serialize.interceptor'
 import { RequestUser, ReqUser } from '$/users/user.decorator'
 
@@ -79,7 +79,7 @@ export class FlashcardsController {
     @ReqUser() user: RequestUser,
     @Param('id') id: string,
     @Body() body: CreateFlashcardRevisionDto
-  ): Promise<void> {
+  ): Promise<FlashcardWithReview> {
     return this.flashcardsService.reviewFlashcard(user.id, id, body.result)
   }
 }

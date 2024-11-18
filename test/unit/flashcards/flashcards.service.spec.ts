@@ -186,6 +186,30 @@ describe('FlashcardsService', () => {
 
       when(flashcardRevisionRepoMock.save(anything())).thenResolve()
 
+      const revisions: FlashcardRevision[] = [
+        { result: 1, createdAt: new Date('2024-10-10T12:41:00.000Z') } as FlashcardRevision,
+        { result: 1, createdAt: new Date('2024-10-10T12:41:00.000Z') } as FlashcardRevision,
+        { result: 0, createdAt: new Date('2024-10-10T12:41:00.000Z') } as FlashcardRevision
+      ]
+
+      const userSettings = {
+        userId,
+        baseInterval: 1,
+        intervalIncreaseRate: 2,
+        intervalsQuantity: 5
+      } as UserSettings
+
+      when(flashcardRepoMock.findBy(deepEqual({ userId }))).thenResolve([flashcardsMock[0]])
+      when(
+        flashcardRevisionRepoMock.find(
+          deepEqual({
+            where: { flashcardId: flashcardsMock[0].id },
+            order: { createdAt: 'ASC' }
+          })
+        )
+      ).thenResolve(revisions)
+      when(userSettingsRepoMock.findOneBy(deepEqual({ userId }))).thenResolve(userSettings)
+
       await flashcardsService.reviewFlashcard(userId, flashcardId, result)
 
       verify(flashcardRepoMock.findOneBy(deepEqual({ userId, id: flashcardId }))).once()
@@ -219,9 +243,8 @@ describe('FlashcardsService', () => {
 
     it('should return flashcards with no revisions as due', async () => {
       const userId = 'user-id'
-      const queryOptions = { where: { userId } }
 
-      when(flashcardRepoMock.find(deepEqual(queryOptions))).thenResolve(flashcardsMock)
+      when(flashcardRepoMock.findBy(deepEqual({ userId }))).thenResolve(flashcardsMock)
 
       when(flashcardRevisionRepoMock.find(anything())).thenResolve([])
 
@@ -241,13 +264,12 @@ describe('FlashcardsService', () => {
         upcomingFlashcards: []
       })
 
-      verify(flashcardRepoMock.find(deepEqual(queryOptions))).once()
+      verify(flashcardRepoMock.findBy(deepEqual({ userId }))).once()
       verify(flashcardRevisionRepoMock.find(anything())).times(flashcardsMock.length)
     })
 
     it('should return flashcards that are due based on nextReviewDate', async () => {
       const userId = 'user-id'
-      const queryOptions = { where: { userId } }
 
       const revisions: FlashcardRevision[] = [
         { result: 1, createdAt: new Date('2024-10-10T12:41:00.000Z') } as FlashcardRevision,
@@ -262,7 +284,7 @@ describe('FlashcardsService', () => {
         intervalsQuantity: 5
       } as UserSettings
 
-      when(flashcardRepoMock.find(deepEqual(queryOptions))).thenResolve([flashcardsMock[0]])
+      when(flashcardRepoMock.findBy(deepEqual({ userId }))).thenResolve([flashcardsMock[0]])
       when(
         flashcardRevisionRepoMock.find(
           deepEqual({
@@ -271,7 +293,7 @@ describe('FlashcardsService', () => {
           })
         )
       ).thenResolve(revisions)
-      when(userSettingsRepoMock.findOne(deepEqual(queryOptions))).thenResolve(userSettings)
+      when(userSettingsRepoMock.findOneBy(deepEqual({ userId }))).thenResolve(userSettings)
 
       const currentLevel = calculateCurrentIntervalLevel(revisions, userSettings.intervalsQuantity)
 
@@ -297,15 +319,13 @@ describe('FlashcardsService', () => {
         nextReviewDate
       })
 
-      verify(flashcardRepoMock.find(deepEqual(queryOptions))).once()
+      verify(flashcardRepoMock.findBy(deepEqual({ userId }))).once()
       verify(flashcardRevisionRepoMock.find(anything())).once()
-      verify(userSettingsRepoMock.findOne(deepEqual(queryOptions))).once()
+      verify(userSettingsRepoMock.findOneBy(deepEqual({ userId }))).once()
     })
 
     it('should not return flashcards that are not due', async () => {
       const userId = 'user-id'
-      const queryOptions = { where: { userId } }
-
       const flashcards = [{ id: 'flashcard-1', userId } as Flashcard]
 
       const revisions = [
@@ -320,7 +340,7 @@ describe('FlashcardsService', () => {
         intervalsQuantity: 5
       } as UserSettings
 
-      when(flashcardRepoMock.find(deepEqual(queryOptions))).thenResolve(flashcards)
+      when(flashcardRepoMock.findBy(deepEqual({ userId }))).thenResolve(flashcards)
       when(
         flashcardRevisionRepoMock.find(
           deepEqual({
@@ -329,7 +349,7 @@ describe('FlashcardsService', () => {
           })
         )
       ).thenResolve(revisions)
-      when(userSettingsRepoMock.findOne(deepEqual(queryOptions))).thenResolve(userSettings)
+      when(userSettingsRepoMock.findOneBy(deepEqual({ userId }))).thenResolve(userSettings)
 
       const currentLevel = calculateCurrentIntervalLevel(revisions, userSettings.intervalsQuantity)
 
@@ -350,9 +370,9 @@ describe('FlashcardsService', () => {
       expect(dueFlashcards).toHaveLength(0)
       expect(upcomingFlashcards).toHaveLength(1)
 
-      verify(flashcardRepoMock.find(deepEqual(queryOptions))).once()
+      verify(flashcardRepoMock.findBy(deepEqual({ userId }))).once()
       verify(flashcardRevisionRepoMock.find(anything())).once()
-      verify(userSettingsRepoMock.findOne(deepEqual(queryOptions))).once()
+      verify(userSettingsRepoMock.findOneBy(deepEqual({ userId }))).once()
     })
   })
 })

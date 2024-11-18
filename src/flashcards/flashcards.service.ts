@@ -65,17 +65,59 @@ export class FlashcardsService {
     return removedFlashcard
   }
 
-  async reviewFlashcard(userId: string, id: string, result: number): Promise<void> {
-    await this.findOne(userId, id)
+  async reviewFlashcard(
+    userId: string,
+    flashcardId: string,
+    result: number
+  ): Promise<FlashcardWithReview> {
+    const flashcard = await this.findOne(userId, flashcardId)
 
     const attrs = {
-      flashcardId: id,
+      flashcardId,
       result
     }
 
     const flashcardRevision = this.flashcardRevisionRepo.create(attrs)
 
     await this.flashcardRevisionRepo.save(flashcardRevision)
+
+    const flashcardWithReview = this.getFlashcardWithReview(userId, flashcard)
+
+    return flashcardWithReview
+  }
+
+  async getFlashcardWithReview(userId: string, flashcard: Flashcard): Promise<FlashcardWithReview> {
+    const revisions = await this.flashcardRevisionRepo.find({
+      where: { flashcardId: flashcard.id },
+      order: { createdAt: 'ASC' }
+    })
+
+    if (revisions.length === 0) {
+      const nextReviewDate = new Date()
+
+      nextReviewDate.setHours(nextReviewDate.getHours() - 24)
+
+      const flashcardWithReview = { ...flashcard, currentLevel: 1, nextReviewDate }
+
+      return flashcardWithReview
+    }
+
+    const userSettings = await this.userSettingsRepo.findOneBy({ userId })
+
+    const currentLevel = calculateCurrentIntervalLevel(revisions, userSettings.intervalsQuantity)
+
+    const lastRevisionDate = revisions[revisions.length - 1].createdAt
+
+    const nextReviewDate = calculateNextReviewDate(
+      userSettings.baseInterval,
+      userSettings.intervalIncreaseRate,
+      currentLevel,
+      lastRevisionDate
+    )
+
+    const flashcardWithReview = { ...flashcard, currentLevel, nextReviewDate }
+
+    return flashcardWithReview
   }
 
   async getFlashcardsWithReviews(
@@ -83,52 +125,18 @@ export class FlashcardsService {
   ): Promise<{ dueFlashcards: FlashcardWithReview[]; upcomingFlashcards: FlashcardWithReview[] }> {
     const now = new Date()
 
-    const flashcards = await this.flashcardRepo.find({
-      where: { userId }
-    })
+    const flashcards = await this.flashcardRepo.findBy({ userId })
 
     const dueFlashcards: FlashcardWithReview[] = []
     const upcomingFlashcards: FlashcardWithReview[] = []
 
     for (const flashcard of flashcards) {
-      const revisions = await this.flashcardRevisionRepo.find({
-        where: { flashcardId: flashcard.id },
-        order: { createdAt: 'ASC' }
-      })
+      const flashcardWithReview = await this.getFlashcardWithReview(userId, flashcard)
 
-      if (revisions.length === 0) {
-        const nextReviewDate = new Date(now)
-
-        nextReviewDate.setHours(nextReviewDate.getHours() - 24)
-
-        const flashcardToReview = { ...flashcard, currentLevel: 1, nextReviewDate }
-
-        dueFlashcards.push(flashcardToReview)
-
-        continue
-      }
-
-      const userSettings = await this.userSettingsRepo.findOne({
-        where: { userId }
-      })
-
-      const currentLevel = calculateCurrentIntervalLevel(revisions, userSettings.intervalsQuantity)
-
-      const lastRevisionDate = revisions[revisions.length - 1].createdAt
-
-      const nextReviewDate = calculateNextReviewDate(
-        userSettings.baseInterval,
-        userSettings.intervalIncreaseRate,
-        currentLevel,
-        lastRevisionDate
-      )
-
-      const flashcardToReview = { ...flashcard, currentLevel, nextReviewDate }
-
-      if (nextReviewDate <= now) {
-        dueFlashcards.push(flashcardToReview)
+      if (flashcardWithReview.nextReviewDate <= now) {
+        dueFlashcards.push(flashcardWithReview)
       } else {
-        upcomingFlashcards.push(flashcardToReview)
+        upcomingFlashcards.push(flashcardWithReview)
       }
     }
 

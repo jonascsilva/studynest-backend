@@ -23,7 +23,7 @@ export class UsersService {
   }
 
   find(email: string) {
-    return this.userRepo.find({ where: { email } })
+    return this.userRepo.findBy({ email })
   }
 
   async update(id: string, attrs: Partial<User>) {
@@ -34,7 +34,7 @@ export class UsersService {
     }
 
     if (attrs.email && attrs.email !== user.email) {
-      const existingUser = await this.userRepo.findOne({ where: { email: attrs.email } })
+      const existingUser = await this.userRepo.findOneBy({ email: attrs.email })
 
       if (existingUser) {
         throw new BadRequestException('Email is already in use')
