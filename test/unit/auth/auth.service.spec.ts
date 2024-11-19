@@ -78,20 +78,31 @@ describe('AuthService', () => {
 
       when(hashServiceMock.hash(password)).thenResolve(hashedPassword)
 
+      const accessToken = 'fake-jwt-token'
+
       const createdUser = new User()
       createdUser.id = 'user-id'
       createdUser.email = email
+      createdUser.email = 'fake-name'
       createdUser.password = hashedPassword
 
       when(usersServiceMock.create(email, hashedPassword)).thenResolve(createdUser)
 
+      jest.spyOn(jwtService, 'sign').mockReturnValue(accessToken)
+
       const result = await authService.signup(email, password)
 
-      expect(result).toEqual(createdUser)
+      expect(result).toEqual({ access_token: accessToken })
 
       verify(usersServiceMock.find(email)).once()
       verify(hashServiceMock.hash(password)).once()
       verify(usersServiceMock.create(email, hashedPassword)).once()
+
+      expect(jwtService.sign).toHaveBeenCalledWith({
+        sub: createdUser.id,
+        email: createdUser.email,
+        name: createdUser.name
+      })
     })
   })
 

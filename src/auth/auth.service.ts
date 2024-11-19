@@ -23,7 +23,13 @@ export class AuthService {
 
     const user = await this.usersService.create(email, hash)
 
-    return user
+    const payload = { sub: user.id, email: user.email, name: user.name }
+
+    const access_token = this.jwtService.sign(payload)
+
+    return {
+      access_token
+    }
   }
 
   async signin(email: string, password: string) {
@@ -41,8 +47,10 @@ export class AuthService {
 
     const payload = { sub: user.id, email: user.email, name: user.name }
 
+    const access_token = this.jwtService.sign(payload)
+
     return {
-      access_token: this.jwtService.sign(payload)
+      access_token
     }
   }
 }
