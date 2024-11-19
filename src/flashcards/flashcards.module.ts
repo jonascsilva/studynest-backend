@@ -6,7 +6,7 @@ import { FlashcardRevision } from '$/flashcards/flashcard-revision.entity'
 import { Flashcard } from '$/flashcards/flashcard.entity'
 import { FlashcardsController } from '$/flashcards/flashcards.controller'
 import { FlashcardsService } from '$/flashcards/flashcards.service'
-import { UserSettings } from '$/users/user-settings.entity'
+import { UserSettings } from '$/settings/user-settings.entity'
 
 @Module({
   imports: [

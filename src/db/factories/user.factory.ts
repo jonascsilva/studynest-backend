@@ -1,7 +1,7 @@
 import * as argon2 from 'argon2'
 import { setSeederFactory } from 'typeorm-extension'
 
-import { UserSettings } from '$/users/user-settings.entity'
+import { UserSettings } from '$/settings/user-settings.entity'
 import { User } from '$/users/user.entity'
 
 export default setSeederFactory(User, async faker => {

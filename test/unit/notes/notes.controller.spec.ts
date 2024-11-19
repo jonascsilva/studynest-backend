@@ -36,7 +36,7 @@ describe('NotesController', () => {
     expect(notesController).toBeDefined()
   })
 
-  it('should return all notes"', async () => {
+  it('should return all notes', async () => {
     when(notesServiceMock.find(userId)).thenResolve(notesMock)
 
     const result = await notesController.findAllNotes(requestUser)

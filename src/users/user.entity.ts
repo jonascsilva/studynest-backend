@@ -10,7 +10,7 @@ import {
 
 import { Flashcard } from '$/flashcards/flashcard.entity'
 import { Note } from '$/notes/note.entity'
-import { UserSettings } from '$/users/user-settings.entity'
+import { UserSettings } from '$/settings/user-settings.entity'
 
 @Entity()
 export class User {

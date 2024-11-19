@@ -5,7 +5,7 @@ import { Repository } from 'typeorm'
 import { FlashcardRevision } from '$/flashcards/flashcard-revision.entity'
 import { Flashcard } from '$/flashcards/flashcard.entity'
 import { calculateCurrentIntervalLevel, calculateNextReviewDate } from '$/flashcards/utils'
-import { UserSettings } from '$/users/user-settings.entity'
+import { UserSettings } from '$/settings/user-settings.entity'
 
 export type FlashcardWithReview = Flashcard & { currentLevel: number; nextReviewDate: Date }
 

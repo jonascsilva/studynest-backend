@@ -8,7 +8,7 @@ import { FlashcardRevision } from '$/flashcards/flashcard-revision.entity'
 import { Flashcard } from '$/flashcards/flashcard.entity'
 import { FlashcardsService } from '$/flashcards/flashcards.service'
 import { calculateCurrentIntervalLevel, calculateNextReviewDate } from '$/flashcards/utils'
-import { UserSettings } from '$/users/user-settings.entity'
+import { UserSettings } from '$/settings/user-settings.entity'
 
 import { dueFlashcardsMock, flashcardsMock, upcomingFlashcardsMock } from './flashcards.mock'
 

@@ -7,6 +7,7 @@ import { AuthModule } from '$/auth/auth.module'
 import { DbModule } from '$/db/db.module'
 import { FlashcardsModule } from '$/flashcards/flashcards.module'
 import { NotesModule } from '$/notes/notes.module'
+import { SettingsModule } from '$/settings/settings.module'
 import { UsersModule } from '$/users/users.module'
 
 @Module({
@@ -19,7 +20,8 @@ import { UsersModule } from '$/users/users.module'
     UsersModule,
     NotesModule,
     FlashcardsModule,
-    AuthModule
+    AuthModule,
+    SettingsModule
   ],
   controllers: [AppController],
   providers: [AppService]

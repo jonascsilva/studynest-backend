@@ -1,0 +1,14 @@
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkMWMyM2M3NS0wOTMwLTQzMjktOGM1Yi02MDBjNDZlZTVmM2MiLCJlbWFpbCI6ImFkbWluQGV4YW1wbGUuY29tIiwibmFtZSI6IkFkbWluIiwiaWF0IjoxNzMxOTgzNjU5LCJleHAiOjE3MzIwNzAwNTl9.MMrOXHvqJcKNe3BWIzre7nKcrsFR1wB7A6H0dr1gmwU
+
+### Find the own settings
+GET http://localhost:3000/settings
+Authorization: Bearer {{accessToken}}
+
+### Update own settings
+PATCH http://localhost:3000/settings
+Authorization: Bearer {{accessToken}}
+content-type: application/json
+
+{
+  "baseInterval": 2
+}
