@@ -1,8 +1,9 @@
-import { NotFoundException } from '@nestjs/common'
+import { ForbiddenException, NotFoundException } from '@nestjs/common'
 import { Test, TestingModule } from '@nestjs/testing'
 import { instance, mock, when, verify, deepEqual } from 'ts-mockito'
 
 import { UpdateUserDto } from '$/users/dtos/update-user.dto'
+import { RequestUser } from '$/users/user.decorator'
 import { User } from '$/users/user.entity'
 import { UsersController } from '$/users/users.controller'
 import { UsersService } from '$/users/users.service'
@@ -10,6 +11,12 @@ import { UsersService } from '$/users/users.service'
 describe('UsersController', () => {
   let usersController: UsersController
   let usersServiceMock: UsersService
+  const userId = 'fake-user-id'
+  const requestUser = {
+    email: 'fake-email',
+    name: 'fake-name',
+    id: userId
+  }
 
   beforeEach(async () => {
     usersServiceMock = mock(UsersService)
@@ -32,18 +39,16 @@ describe('UsersController', () => {
   })
 
   describe('getProfile', () => {
-    it('should return the user profile from the request', () => {
-      const req = {
-        user: {
-          id: 'user-id',
-          email: 'test@example.com',
-          name: 'Test User'
-        }
+    it('should return the user profile from the request', async () => {
+      const user: RequestUser = {
+        id: 'user-id',
+        email: 'test@example.com',
+        name: 'Test User'
       }
 
-      const result = usersController.getProfile(req)
+      const result = await usersController.getProfile(user)
 
-      expect(result).toEqual(req.user)
+      expect(result).toEqual(user)
     })
   })
 
@@ -101,24 +106,9 @@ describe('UsersController', () => {
     })
   })
 
-  describe('removeUser', () => {
-    it('should remove the user via usersService.remove', async () => {
-      const id = 'user-id'
-      const user = new User()
-      user.id = id
-
-      when(usersServiceMock.remove(id)).thenResolve(user)
-
-      const result = await usersController.removeUser(id)
-
-      expect(result).toEqual(user)
-      verify(usersServiceMock.remove(id)).once()
-    })
-  })
-
   describe('updateUser', () => {
-    it('should update the user via usersService.update', async () => {
-      const id = 'user-id'
+    it('should update the user', async () => {
+      const id = 'fake-user-id'
       const body: UpdateUserDto = {
         email: 'newemail@example.com',
         name: 'New Name'
@@ -130,10 +120,53 @@ describe('UsersController', () => {
 
       when(usersServiceMock.update(id, deepEqual(body))).thenResolve(updatedUser)
 
-      const result = await usersController.updateUser(id, body)
+      const result = await usersController.updateUser(requestUser, id, body)
 
       expect(result).toEqual(updatedUser)
       verify(usersServiceMock.update(id, deepEqual(body))).once()
+    })
+
+    it('should fail to update another user', async () => {
+      const id = 'fake-user-id-2'
+      const body: UpdateUserDto = {
+        email: 'newemail@example.com',
+        name: 'New Name'
+      }
+      const updatedUser = new User()
+      updatedUser.id = id
+      updatedUser.email = body.email
+      updatedUser.name = body.name
+
+      await expect(usersController.updateUser(requestUser, id, body)).rejects.toThrow(
+        ForbiddenException
+      )
+
+      verify(usersServiceMock.update(id, deepEqual(body))).never()
+    })
+  })
+
+  describe('removeUser', () => {
+    it('should remove the user', async () => {
+      const id = 'fake-user-id'
+      const user = new User()
+      user.id = id
+
+      when(usersServiceMock.remove(id)).thenResolve(user)
+
+      const result = await usersController.removeUser(requestUser, id)
+
+      expect(result).toEqual(user)
+      verify(usersServiceMock.remove(id)).once()
+    })
+
+    it('should fail to remove another user', async () => {
+      const id = 'fake-user-id-2'
+      const user = new User()
+      user.id = id
+
+      await expect(usersController.removeUser(requestUser, id)).rejects.toThrow(ForbiddenException)
+
+      verify(usersServiceMock.remove(id)).never()
     })
   })
 })

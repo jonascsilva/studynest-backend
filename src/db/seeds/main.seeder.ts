@@ -13,24 +13,26 @@ export default class UserSeeder implements Seeder {
   async run(dataSource: DataSource, factoryManager: SeederFactoryManager): Promise<void> {
     await this.cleanTables(dataSource)
 
-    const usersInsertResult = await this.insertUsersData(dataSource)
+    const usersSaveResult = await this.saveUsersData(dataSource)
 
-    const usersIds = usersInsertResult.identifiers.map(identifier => identifier.id)
+    const usersIds = usersSaveResult.map(user => user.id)
 
-    await this.insertFlashcardsData(dataSource, usersIds)
+    await this.saveFlashcardsData(dataSource, usersIds)
 
-    await this.insertNotesData(dataSource, usersIds)
+    await this.saveNotesData(dataSource, usersIds)
 
-    await this.insertFactoriesData(factoryManager)
+    await this.saveFactoriesData(factoryManager)
   }
 
   async cleanTables(dataSource: DataSource) {
-    await dataSource.query('TRUNCATE "user" RESTART IDENTITY CASCADE;')
     await dataSource.query('TRUNCATE "flashcard" RESTART IDENTITY CASCADE;')
+    await dataSource.query('TRUNCATE "flashcard_revision" RESTART IDENTITY CASCADE;')
     await dataSource.query('TRUNCATE "note" RESTART IDENTITY CASCADE;')
+    await dataSource.query('TRUNCATE "user" RESTART IDENTITY CASCADE;')
+    await dataSource.query('TRUNCATE "user_settings" RESTART IDENTITY CASCADE;')
   }
 
-  async insertFactoriesData(factoryManager: SeederFactoryManager) {
+  async saveFactoriesData(factoryManager: SeederFactoryManager) {
     const userFactory = factoryManager.get(User)
 
     await userFactory.saveMany(5)
@@ -51,42 +53,43 @@ export default class UserSeeder implements Seeder {
     return randomEntry
   }
 
-  async insertUsersData(dataSource: DataSource) {
+  async saveUsersData(dataSource: DataSource) {
     const repository = dataSource.getRepository(User)
 
-    const usersToInsert = await Promise.all(
+    const usersToSave = await Promise.all(
       rawUsers.map(async rawUser => ({
         ...rawUser,
-        password: await argon2.hash(rawUser.password)
+        password: await argon2.hash(rawUser.password),
+        userSettings: {}
       }))
     )
 
-    return repository.insert(usersToInsert)
+    return repository.save(usersToSave)
   }
 
-  async insertFlashcardsData(dataSource: DataSource, usersIds: string[]) {
+  async saveFlashcardsData(dataSource: DataSource, usersIds: string[]) {
     const repository = dataSource.getRepository(Flashcard)
 
-    const flashcardsToInsert = await Promise.all(
+    const flashcardsToSave = await Promise.all(
       rawFlashcards.map(async rawFlashcard => ({
         ...rawFlashcard,
         userId: this.getRandomEntry(usersIds)
       }))
     )
 
-    await repository.insert(flashcardsToInsert)
+    await repository.save(flashcardsToSave)
   }
 
-  async insertNotesData(dataSource: DataSource, usersIds: string[]) {
+  async saveNotesData(dataSource: DataSource, usersIds: string[]) {
     const repository = dataSource.getRepository(Note)
 
-    const notesToInsert = await Promise.all(
+    const notesToSave = await Promise.all(
       rawNotes.map(async rawNotes => ({
         ...rawNotes,
         userId: this.getRandomEntry(usersIds)
       }))
     )
 
-    await repository.insert(notesToInsert)
+    await repository.save(notesToSave)
   }
 }

@@ -1,5 +1,5 @@
-@userEmail = test4@abcd.com
-@userPassword = 123456
+@userEmail = admin7@example.com
+@userPassword = 1234567
 
 ### Create a new user
 POST http://localhost:3000/auth/signup

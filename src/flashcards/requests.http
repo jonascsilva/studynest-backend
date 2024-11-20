@@ -1,26 +1,56 @@
-@flashcardId = b992b89d-aa92-4a4b-9610-bb633409b60c
-@userId = 8f82aa4e-57fb-4e07-9928-3616edcf45c0
+@flashcardId = c0ae3c3e-8c95-406d-8b58-7ef87c3aa748
+@userId = d1c23c75-0930-4329-8c5b-600c46ee5f3c
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3MTBiMDZlZS0wOWIyLTRjMDgtOWVmYy1hNDk2ODI2MzQ4N2IiLCJlbWFpbCI6ImFkbWluN0BleGFtcGxlLmNvbSIsIm5hbWUiOm51bGwsImlhdCI6MTczMjA1MTA5NCwiZXhwIjoxNzMyMTM3NDk0fQ.oYv7QK00uc9C_QJ-p7s-oWBAYyNt5vIyNkAxTXmkBGU
 
-### Find all flashcards
-GET http://localhost:3000/flashcards
-
-### Find a particular flashcard
-GET http://localhost:3000/flashcards/{{flashcardId}}
-
-### Create a new flashcard
-POST http://localhost:3000/flashcards
+### Generate flashcard content
+POST http://localhost:3000/flashcards/generate
+Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
-    "userId": "{{userId}}",
-    "title": "Revolução Russa",
     "subject": "História",
-    "front": "Pergunta",
-    "back": "Resposta"
+    "question": "O que foi a Revolução Russa"
+}
+
+### Find all flashcards
+GET http://localhost:3000/flashcards
+Authorization: Bearer {{accessToken}}
+
+### Find all due flashcards
+GET http://localhost:3000/flashcards?due=true
+Authorization: Bearer {{accessToken}}
+
+### Find all upcoming flashcards
+GET http://localhost:3000/flashcards?upcoming=true
+Authorization: Bearer {{accessToken}}
+
+### Find a particular flashcard
+GET http://localhost:3000/flashcards/{{flashcardId}}
+Authorization: Bearer {{accessToken}}
+
+### Create a new flashcard
+POST http://localhost:3000/flashcards
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+    "subject": "História",
+    "question": "Revolução Russa",
+    "answer": "Resposta"
+}
+
+### Review flashcard
+POST http://localhost:3000/flashcards/review/{{flashcardId}}
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+    "result": 1
 }
 
 ### Update a flashcard
 PATCH http://localhost:3000/flashcards/{{flashcardId}}
+Authorization: Bearer {{accessToken}}
 content-type: application/json
 
 {
@@ -30,3 +60,4 @@ content-type: application/json
 
 ### Delete a flashcard with given id
 DELETE http://localhost:3000/flashcards/{{flashcardId}}
+Authorization: Bearer {{accessToken}}

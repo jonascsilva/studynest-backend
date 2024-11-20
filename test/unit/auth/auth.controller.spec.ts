@@ -4,7 +4,6 @@ import { instance, mock, when, verify } from 'ts-mockito'
 import { AuthController } from '$/auth/auth.controller'
 import { AuthService } from '$/auth/auth.service'
 import { CreateUserDto } from '$/auth/dtos/create-user.dto'
-import { User } from '$/users/user.entity'
 
 describe('AuthController', () => {
   let authController: AuthController
@@ -37,19 +36,13 @@ describe('AuthController', () => {
         password: 'password123'
       }
 
-      const user = new User()
-      user.id = 'user-id'
-      user.email = body.email
-      user.password = 'hashedpassword'
+      const response = { access_token: 'fake-token' }
 
-      when(authServiceMock.signup(body.email, body.password)).thenResolve(user)
+      when(authServiceMock.signup(body.email, body.password)).thenResolve(response)
 
       const result = await authController.signup(body)
 
-      expect(result).toEqual({
-        message: 'User registered successfully',
-        user
-      })
+      expect(result).toEqual(response)
 
       verify(authServiceMock.signup(body.email, body.password)).once()
     })

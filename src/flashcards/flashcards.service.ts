@@ -2,45 +2,144 @@ import { Injectable, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 
+import { FlashcardRevision } from '$/flashcards/flashcard-revision.entity'
 import { Flashcard } from '$/flashcards/flashcard.entity'
+import { calculateCurrentIntervalLevel, calculateNextReviewDate } from '$/flashcards/utils'
+import { UserSettings } from '$/settings/user-settings.entity'
+
+export type FlashcardWithReview = Flashcard & { currentLevel: number; nextReviewDate: Date }
 
 @Injectable()
 export class FlashcardsService {
-  constructor(@InjectRepository(Flashcard) private readonly repo: Repository<Flashcard>) {}
+  constructor(
+    @InjectRepository(Flashcard) private readonly flashcardRepo: Repository<Flashcard>,
+    @InjectRepository(FlashcardRevision)
+    private readonly flashcardRevisionRepo: Repository<FlashcardRevision>,
+    @InjectRepository(UserSettings)
+    private readonly userSettingsRepo: Repository<UserSettings>
+  ) {}
 
-  create(attrs: Partial<Flashcard>): Promise<Flashcard> {
-    const flashcard = this.repo.create(attrs)
+  async create(userId: string, attrs: Partial<Flashcard>): Promise<Flashcard> {
+    attrs.userId = userId
 
-    return this.repo.save(flashcard)
+    const flashcard = this.flashcardRepo.create(attrs)
+
+    const createdFlashcard = await this.flashcardRepo.save(flashcard)
+
+    return createdFlashcard
   }
 
-  findOne(id: string): Promise<Flashcard> {
-    return this.repo.findOneBy({ id })
-  }
+  async findOne(userId: string, id: string): Promise<Flashcard> {
+    const foundFlashcard = await this.flashcardRepo.findOneBy({ userId, id })
 
-  find(): Promise<Flashcard[]> {
-    return this.repo.find()
-  }
-
-  async update(id: string, attrs: Partial<Flashcard>): Promise<Flashcard> {
-    const flashcard = await this.findOne(id)
-
-    if (!flashcard) {
+    if (!foundFlashcard) {
       throw new NotFoundException('Flashcard not found')
     }
+
+    return foundFlashcard
+  }
+
+  async find(userId: string): Promise<Flashcard[]> {
+    const foundFlashcards = await this.flashcardRepo.findBy({ userId })
+
+    return foundFlashcards
+  }
+
+  async update(userId: string, id: string, attrs: Partial<Flashcard>): Promise<Flashcard> {
+    const flashcard = await this.findOne(userId, id)
 
     Object.assign(flashcard, attrs)
 
-    return this.repo.save(flashcard)
+    const updatedFlashcard = await this.flashcardRepo.save(flashcard)
+
+    return updatedFlashcard
   }
 
-  async remove(id: string): Promise<Flashcard> {
-    const flashcard = await this.findOne(id)
+  async remove(userId: string, id: string): Promise<Flashcard> {
+    const flashcard = await this.findOne(userId, id)
 
-    if (!flashcard) {
-      throw new NotFoundException('Flashcard not found')
+    const result = await this.flashcardRepo.remove(flashcard)
+
+    const removedFlashcard = { ...result, id }
+
+    return removedFlashcard
+  }
+
+  async reviewFlashcard(
+    userId: string,
+    flashcardId: string,
+    result: number
+  ): Promise<FlashcardWithReview> {
+    const flashcard = await this.findOne(userId, flashcardId)
+
+    const attrs = {
+      flashcardId,
+      result
     }
 
-    return this.repo.remove(flashcard)
+    const flashcardRevision = this.flashcardRevisionRepo.create(attrs)
+
+    await this.flashcardRevisionRepo.save(flashcardRevision)
+
+    const flashcardWithReview = this.getFlashcardWithReview(userId, flashcard)
+
+    return flashcardWithReview
+  }
+
+  async getFlashcardWithReview(userId: string, flashcard: Flashcard): Promise<FlashcardWithReview> {
+    const revisions = await this.flashcardRevisionRepo.find({
+      where: { flashcardId: flashcard.id },
+      order: { createdAt: 'ASC' }
+    })
+
+    if (revisions.length === 0) {
+      const nextReviewDate = new Date()
+
+      nextReviewDate.setHours(nextReviewDate.getHours() - 24)
+
+      const flashcardWithReview = { ...flashcard, currentLevel: 1, nextReviewDate }
+
+      return flashcardWithReview
+    }
+
+    const userSettings = await this.userSettingsRepo.findOneBy({ userId })
+
+    const currentLevel = calculateCurrentIntervalLevel(revisions, userSettings.intervalsQuantity)
+
+    const lastRevisionDate = revisions[revisions.length - 1].createdAt
+
+    const nextReviewDate = calculateNextReviewDate(
+      userSettings.baseInterval,
+      userSettings.intervalIncreaseRate,
+      currentLevel,
+      lastRevisionDate
+    )
+
+    const flashcardWithReview = { ...flashcard, currentLevel, nextReviewDate }
+
+    return flashcardWithReview
+  }
+
+  async getFlashcardsWithReviews(
+    userId: string
+  ): Promise<{ dueFlashcards: FlashcardWithReview[]; upcomingFlashcards: FlashcardWithReview[] }> {
+    const now = new Date()
+
+    const flashcards = await this.flashcardRepo.findBy({ userId })
+
+    const dueFlashcards: FlashcardWithReview[] = []
+    const upcomingFlashcards: FlashcardWithReview[] = []
+
+    for (const flashcard of flashcards) {
+      const flashcardWithReview = await this.getFlashcardWithReview(userId, flashcard)
+
+      if (flashcardWithReview.nextReviewDate <= now) {
+        dueFlashcards.push(flashcardWithReview)
+      } else {
+        upcomingFlashcards.push(flashcardWithReview)
+      }
+    }
+
+    return { dueFlashcards, upcomingFlashcards }
   }
 }

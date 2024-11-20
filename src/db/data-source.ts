@@ -15,7 +15,7 @@ export const dataSourceOptions: DataSourceOptions & SeederOptions = {
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DATABASE,
   entities: ['dist/**/*.entity.js'],
-  migrations: ['dist/db/migrations/*.js'],
+  migrations: [`dist/db/migrations/${process.env.NODE_ENV}/*.js`],
   migrationsRun: process.env.NODE_ENV === 'development',
 
   seeds: ['dist/db/seeds/**/*.js'],

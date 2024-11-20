@@ -2,45 +2,56 @@ import { Injectable, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 
-import { CreateNoteDto } from '$/notes/dtos/create-note.dto'
 import { UpdateNoteDto } from '$/notes/dtos/update-note.dto'
 import { Note } from '$/notes/note.entity'
 
 @Injectable()
 export class NotesService {
-  constructor(@InjectRepository(Note) private readonly repo: Repository<Note>) {}
+  constructor(@InjectRepository(Note) private readonly noteRepo: Repository<Note>) {}
 
-  async find(): Promise<Note[]> {
-    return this.repo.find()
+  async find(userId: string): Promise<Note[]> {
+    const foundNotes = await this.noteRepo.findBy({ userId })
+
+    return foundNotes
   }
 
-  async findOne(id: string): Promise<Note> {
-    const note = await this.repo.findOneBy({ id })
+  async findOne(userId: string, id: string): Promise<Note> {
+    const foundNote = await this.noteRepo.findOneBy({ userId, id })
 
-    if (!note) {
+    if (!foundNote) {
       throw new NotFoundException('Note not found')
     }
 
-    return note
+    return foundNote
   }
 
-  async create(attrs: CreateNoteDto): Promise<Note> {
-    const note = this.repo.create(attrs)
+  async create(userId: string, attrs: Partial<Note>): Promise<Note> {
+    attrs.userId = userId
 
-    return this.repo.save(note)
+    const note = this.noteRepo.create(attrs)
+
+    const createdNote = await this.noteRepo.save(note)
+
+    return createdNote
   }
 
-  async update(id: string, attrs: UpdateNoteDto): Promise<Note> {
-    const note = await this.findOne(id)
+  async update(userId: string, id: string, attrs: UpdateNoteDto): Promise<Note> {
+    const note = await this.findOne(userId, id)
 
     Object.assign(note, attrs)
 
-    return this.repo.save(note)
+    const updatedNote = await this.noteRepo.save(note)
+
+    return updatedNote
   }
 
-  async remove(id: string): Promise<Note> {
-    const note = await this.findOne(id)
+  async remove(userId: string, id: string): Promise<Note> {
+    const note = await this.findOne(userId, id)
 
-    return this.repo.remove(note)
+    const result = await this.noteRepo.remove(note)
+
+    const removedNote = { ...result, id }
+
+    return removedNote
   }
 }

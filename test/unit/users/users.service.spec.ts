@@ -9,17 +9,17 @@ import { UsersService } from '$/users/users.service'
 
 describe('UsersService', () => {
   let usersService: UsersService
-  let usersRepositoryMock: Repository<User>
+  let userRepoMock: Repository<User>
 
   beforeEach(async () => {
-    usersRepositoryMock = mock(Repository<User>)
+    userRepoMock = mock(Repository<User>)
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         UsersService,
         {
           provide: getRepositoryToken(User),
-          useValue: instance(usersRepositoryMock)
+          useValue: instance(userRepoMock)
         }
       ]
     }).compile()
@@ -36,19 +36,22 @@ describe('UsersService', () => {
       const email = 'test@example.com'
       const password = 'password123'
 
+      const createUserInput = { email, password, userSettings: {} }
+
       const user = new User()
+
       user.email = email
       user.password = password
 
-      when(usersRepositoryMock.create(deepEqual({ email, password }))).thenReturn(user)
-      when(usersRepositoryMock.save(user)).thenResolve(user)
+      when(userRepoMock.create(deepEqual(createUserInput))).thenReturn(user)
+      when(userRepoMock.save(user)).thenResolve(user)
 
       const result = await usersService.create(email, password)
 
       expect(result).toEqual(user)
 
-      verify(usersRepositoryMock.create(deepEqual({ email, password }))).once()
-      verify(usersRepositoryMock.save(user)).once()
+      verify(userRepoMock.create(deepEqual(createUserInput))).once()
+      verify(userRepoMock.save(user)).once()
     })
   })
 
@@ -58,24 +61,24 @@ describe('UsersService', () => {
       const user = new User()
       user.id = id
 
-      when(usersRepositoryMock.findOneBy(deepEqual({ id }))).thenResolve(user)
+      when(userRepoMock.findOneBy(deepEqual({ id }))).thenResolve(user)
 
       const result = await usersService.findOne(id)
 
       expect(result).toEqual(user)
 
-      verify(usersRepositoryMock.findOneBy(deepEqual({ id }))).once()
+      verify(userRepoMock.findOneBy(deepEqual({ id }))).once()
     })
 
     it('should return null if user is not found', async () => {
       const id = 'non-existent-id'
 
-      when(usersRepositoryMock.findOneBy(deepEqual({ id }))).thenResolve(null)
+      when(userRepoMock.findOneBy(deepEqual({ id }))).thenResolve(null)
 
       const result = await usersService.findOne(id)
 
       expect(result).toBeNull()
-      verify(usersRepositoryMock.findOneBy(deepEqual({ id }))).once()
+      verify(userRepoMock.findOneBy(deepEqual({ id }))).once()
     })
   })
 
@@ -86,13 +89,13 @@ describe('UsersService', () => {
       users[0].email = email
       users[1].email = email
 
-      when(usersRepositoryMock.find(deepEqual({ where: { email } }))).thenResolve(users)
+      when(userRepoMock.findBy(deepEqual({ email }))).thenResolve(users)
 
       const result = await usersService.find(email)
 
       expect(result).toEqual(users)
 
-      verify(usersRepositoryMock.find(deepEqual({ where: { email } }))).once()
+      verify(userRepoMock.findBy(deepEqual({ email }))).once()
     })
   })
 
@@ -105,32 +108,29 @@ describe('UsersService', () => {
       user.email = 'test@example.com'
       user.password = 'oldpassword'
 
-      when(usersRepositoryMock.findOneBy(deepEqual({ id }))).thenResolve(user)
-      when(usersRepositoryMock.findOne(deepEqual({ where: { email: attrs.email } }))).thenResolve(
-        null
-      )
-      when(usersRepositoryMock.save(anything())).thenResolve(user)
+      when(userRepoMock.findOneBy(deepEqual({ id }))).thenResolve(user)
+      when(userRepoMock.findOneBy(deepEqual({ email: attrs.email }))).thenResolve(null)
+      when(userRepoMock.save(anything())).thenResolve(user)
 
       const result = await usersService.update(id, attrs)
 
       expect(result).toEqual(user)
       expect(user.email).toEqual(attrs.email)
-      verify(usersRepositoryMock.findOneBy(deepEqual({ id }))).once()
-      verify(usersRepositoryMock.findOne(deepEqual({ where: { email: attrs.email } }))).once()
-      verify(usersRepositoryMock.save(user)).once()
+      verify(userRepoMock.findOneBy(deepEqual({ id }))).once()
+      verify(userRepoMock.findOneBy(deepEqual({ email: attrs.email }))).once()
+      verify(userRepoMock.save(user)).once()
     })
 
     it('should throw NotFoundException if user not found', async () => {
       const id = 'non-existent-id'
       const attrs: Partial<User> = { email: 'newemail@example.com' }
 
-      when(usersRepositoryMock.findOneBy(deepEqual({ id }))).thenResolve(null)
+      when(userRepoMock.findOneBy(deepEqual({ id }))).thenResolve(null)
 
       await expect(usersService.update(id, attrs)).rejects.toThrow(NotFoundException)
 
-      verify(usersRepositoryMock.findOneBy(deepEqual({ id }))).once()
-      verify(usersRepositoryMock.findOne(anything())).never()
-      verify(usersRepositoryMock.save(anything())).never()
+      verify(userRepoMock.findOneBy(deepEqual({ id }))).once()
+      verify(userRepoMock.save(anything())).never()
     })
 
     it('should throw BadRequestException if new email is already in use', async () => {
@@ -144,16 +144,14 @@ describe('UsersService', () => {
       existingUser.id = 'another-id'
       existingUser.email = attrs.email
 
-      when(usersRepositoryMock.findOneBy(deepEqual({ id }))).thenResolve(user)
-      when(usersRepositoryMock.findOne(deepEqual({ where: { email: attrs.email } }))).thenResolve(
-        existingUser
-      )
+      when(userRepoMock.findOneBy(deepEqual({ id }))).thenResolve(user)
+      when(userRepoMock.findOneBy(deepEqual({ email: attrs.email }))).thenResolve(existingUser)
 
       await expect(usersService.update(id, attrs)).rejects.toThrow(BadRequestException)
 
-      verify(usersRepositoryMock.findOneBy(deepEqual({ id }))).once()
-      verify(usersRepositoryMock.findOne(deepEqual({ where: { email: attrs.email } }))).once()
-      verify(usersRepositoryMock.save(anything())).never()
+      verify(userRepoMock.findOneBy(deepEqual({ id }))).once()
+      verify(userRepoMock.findOneBy(deepEqual({ email: attrs.email }))).once()
+      verify(userRepoMock.save(anything())).never()
     })
   })
 
@@ -163,26 +161,26 @@ describe('UsersService', () => {
       const user = new User()
       user.id = id
 
-      when(usersRepositoryMock.findOneBy(deepEqual({ id }))).thenResolve(user)
-      when(usersRepositoryMock.remove(user)).thenResolve(user)
+      when(userRepoMock.findOneBy(deepEqual({ id }))).thenResolve(user)
+      when(userRepoMock.remove(user)).thenResolve(user)
 
       const result = await usersService.remove(id)
 
       expect(result).toEqual(user)
 
-      verify(usersRepositoryMock.findOneBy(deepEqual({ id }))).once()
-      verify(usersRepositoryMock.remove(user)).once()
+      verify(userRepoMock.findOneBy(deepEqual({ id }))).once()
+      verify(userRepoMock.remove(user)).once()
     })
 
     it('should throw NotFoundException if user not found', async () => {
       const id = 'non-existent-id'
 
-      when(usersRepositoryMock.findOneBy(deepEqual({ id }))).thenResolve(null)
+      when(userRepoMock.findOneBy(deepEqual({ id }))).thenResolve(null)
 
       await expect(usersService.remove(id)).rejects.toThrow(NotFoundException)
 
-      verify(usersRepositoryMock.findOneBy(deepEqual({ id }))).once()
-      verify(usersRepositoryMock.remove(anything())).never()
+      verify(userRepoMock.findOneBy(deepEqual({ id }))).once()
+      verify(userRepoMock.remove(anything())).never()
     })
   })
 })

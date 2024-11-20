@@ -7,54 +7,62 @@ import {
   Param,
   Patch,
   Query,
-  UseGuards,
-  Request
+  ForbiddenException
 } from '@nestjs/common'
 
-import { JwtAuthGuard } from '$/auth/jwt-auth.guard'
+import { Authenticated } from '$/auth/auth.decorator'
 import { Serialize } from '$/interceptor/serialize.interceptor'
 import { UpdateUserDto } from '$/users/dtos/update-user.dto'
 import { UserDto } from '$/users/dtos/user.dto'
+import { RequestUser, ReqUser } from '$/users/user.decorator'
 import { UsersService } from '$/users/users.service'
-
-type User = {
-  id: string
-  email: string
-  name: string
-}
 
 @Controller('users')
 @Serialize(UserDto)
+@Authenticated()
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @UseGuards(JwtAuthGuard)
   @Get('profile')
-  getProfile(@Request() req: { user: User }) {
-    return req.user
+  async getProfile(@ReqUser() user: RequestUser) {
+    return user
   }
 
   @Get('/:id')
   async findUser(@Param('id') id: string) {
     const user = await this.usersService.findOne(id)
+
     if (!user) {
       throw new NotFoundException('user not found')
     }
+
     return user
   }
 
   @Get()
-  findAllUsers(@Query('email') email: string) {
+  async findAllUsers(@Query('email') email: string) {
     return this.usersService.find(email)
   }
 
-  @Delete('/:id')
-  removeUser(@Param('id') id: string) {
-    return this.usersService.remove(id)
+  @Patch('/:id')
+  async updateUser(
+    @ReqUser() user: RequestUser,
+    @Param('id') id: string,
+    @Body() body: UpdateUserDto
+  ) {
+    if (user.id !== id) {
+      throw new ForbiddenException('user can only update themselves')
+    }
+
+    return this.usersService.update(id, body)
   }
 
-  @Patch('/:id')
-  updateUser(@Param('id') id: string, @Body() body: UpdateUserDto) {
-    return this.usersService.update(id, body)
+  @Delete('/:id')
+  async removeUser(@ReqUser() user: RequestUser, @Param('id') id: string) {
+    if (user.id !== id) {
+      throw new ForbiddenException('user can only delete themselves')
+    }
+
+    return this.usersService.remove(id)
   }
 }
