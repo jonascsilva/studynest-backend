@@ -7,15 +7,10 @@ function calculateCurrentIntervalLevel(
   let level = 1
 
   for (const revision of revisions) {
-    switch (revision.result) {
-      case 1:
-        level = Math.min(level + 1, intervalsQuantity)
-
-        break
-      default:
-        level = Math.max(level - 1, 1)
-
-        break
+    if (revision.result) {
+      level = Math.min(level + 1, intervalsQuantity)
+    } else {
+      level = Math.max(level - 1, 1)
     }
   }
 
