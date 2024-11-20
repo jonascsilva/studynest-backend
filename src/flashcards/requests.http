@@ -1,6 +1,16 @@
 @flashcardId = c0ae3c3e-8c95-406d-8b58-7ef87c3aa748
 @userId = d1c23c75-0930-4329-8c5b-600c46ee5f3c
-@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkMWMyM2M3NS0wOTMwLTQzMjktOGM1Yi02MDBjNDZlZTVmM2MiLCJlbWFpbCI6ImFkbWluQGV4YW1wbGUuY29tIiwibmFtZSI6IkFkbWluIiwiaWF0IjoxNzMxMTkxNzI5LCJleHAiOjE3MzEyNzgxMjl9.WILdbM2D_jNb2WL8pjVWabq6kSsi3JC5XdG1pWaYg8w
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3MTBiMDZlZS0wOWIyLTRjMDgtOWVmYy1hNDk2ODI2MzQ4N2IiLCJlbWFpbCI6ImFkbWluN0BleGFtcGxlLmNvbSIsIm5hbWUiOm51bGwsImlhdCI6MTczMjA1MTA5NCwiZXhwIjoxNzMyMTM3NDk0fQ.oYv7QK00uc9C_QJ-p7s-oWBAYyNt5vIyNkAxTXmkBGU
+
+### Generate flashcard content
+POST http://localhost:3000/flashcards/generate
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+    "subject": "História",
+    "question": "O que foi a Revolução Russa"
+}
 
 ### Find all flashcards
 GET http://localhost:3000/flashcards
@@ -24,10 +34,9 @@ Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
-    "title": "Revolução Russa",
     "subject": "História",
-    "front": "Pergunta",
-    "back": "Resposta"
+    "question": "Revolução Russa",
+    "answer": "Resposta"
 }
 
 ### Review flashcard

@@ -5,6 +5,7 @@ import { AiService } from '$/flashcards/ai.service'
 import { CreateFlashcardRevisionDto } from '$/flashcards/dtos/create-flashcard-revision.dto'
 import { CreateFlashcardDto } from '$/flashcards/dtos/create-flashcard.dto'
 import { FlashcardDto } from '$/flashcards/dtos/flashcard.dto'
+import { GenerateFlashcardContentDto } from '$/flashcards/dtos/generate-flashcard-content.dto'
 import { UpdateFlashcardDto } from '$/flashcards/dtos/update-flashcard.dto'
 import { Flashcard } from '$/flashcards/flashcard.entity'
 import { FlashcardsService, FlashcardWithReview } from '$/flashcards/flashcards.service'
@@ -50,9 +51,14 @@ export class FlashcardsController {
     return this.flashcardsService.find(userId)
   }
 
-  @Get('/ai')
-  generateFlashcard(): Promise<Partial<Flashcard>> {
-    return this.aiService.generate()
+  @Post('/generate')
+  generateFlashcard(@Body() body: GenerateFlashcardContentDto): Promise<Partial<Flashcard>> {
+    return this.aiService.generateContent(body.subject, body.question)
+  }
+
+  @Get('/from/:id')
+  generateFlashcards(@ReqUser() user: RequestUser, @Param('id') id: string): Promise<Flashcard[]> {
+    return this.aiService.generateFlashcards(user.id, id)
   }
 
   @Get('/:id')

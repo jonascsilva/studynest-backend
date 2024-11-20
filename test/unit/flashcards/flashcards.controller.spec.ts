@@ -122,18 +122,42 @@ describe('FlashcardsController', () => {
 
   describe('generateFlashcard', () => {
     it('should generate a flashcard using AI', async () => {
+      const subject = 'Geography'
+      const question = 'What is the capital of France?'
+
       const partialFlashcard: Partial<Flashcard> = {
-        question: 'What is the capital of France?',
-        answer: 'Paris',
-        subject: 'Geography'
+        answer: 'Paris'
       }
 
-      when(aiServiceMock.generate()).thenResolve(partialFlashcard)
+      when(aiServiceMock.generateContent(subject, question)).thenResolve(partialFlashcard)
 
-      const result = await flashcardsController.generateFlashcard()
+      const result = await flashcardsController.generateFlashcard({ subject, question })
 
       expect(result).toEqual(partialFlashcard)
-      verify(aiServiceMock.generate()).once()
+
+      verify(aiServiceMock.generateContent(subject, question)).once()
+    })
+  })
+
+  describe('generateFlashcards', () => {
+    it('should generate flashcards from a note using AI', async () => {
+      const noteId = 'fake-note-id'
+
+      const responseMock = [
+        {
+          question: 'What is the capital of France?',
+          subject: 'Geography',
+          answer: 'Paris'
+        }
+      ]
+
+      when(aiServiceMock.generateFlashcards(userId, noteId)).thenResolve(responseMock)
+
+      const result = await flashcardsController.generateFlashcards(requestUser, noteId)
+
+      expect(result).toEqual(responseMock)
+
+      verify(aiServiceMock.generateFlashcards(userId, noteId)).once()
     })
   })
 

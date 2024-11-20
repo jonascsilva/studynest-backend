@@ -2,7 +2,9 @@ import { Controller, Get, Param, Post, Delete, Patch, Body } from '@nestjs/commo
 
 import { Authenticated } from '$/auth/auth.decorator'
 import { Serialize } from '$/interceptor/serialize.interceptor'
+import { AiService } from '$/notes/ai.service'
 import { CreateNoteDto } from '$/notes/dtos/create-note.dto'
+import { GenerateNoteContentDto } from '$/notes/dtos/generate-note-content.dto'
 import { NoteDto } from '$/notes/dtos/note.dto'
 import { UpdateNoteDto } from '$/notes/dtos/update-note.dto'
 import { Note } from '$/notes/note.entity'
@@ -13,7 +15,10 @@ import { RequestUser, ReqUser } from '$/users/user.decorator'
 @Serialize(NoteDto)
 @Authenticated()
 export class NotesController {
-  constructor(private readonly notesService: NotesService) {}
+  constructor(
+    private readonly notesService: NotesService,
+    private readonly aiService: AiService
+  ) {}
 
   @Get()
   findAllNotes(@ReqUser() user: RequestUser): Promise<Note[]> {
@@ -23,6 +28,11 @@ export class NotesController {
   @Get('/:id')
   async findNote(@ReqUser() user: RequestUser, @Param('id') id: string): Promise<Note> {
     return this.notesService.findOne(user.id, id)
+  }
+
+  @Post('/generate')
+  generateNote(@Body() body: GenerateNoteContentDto): Promise<Partial<Note>> {
+    return this.aiService.generateContent(body.subject, body.title)
   }
 
   @Post()

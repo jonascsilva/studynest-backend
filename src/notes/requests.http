@@ -1,6 +1,16 @@
 @noteId = b992b89d-aa92-4a4b-9610-bb633409b60c
 @userId = d1c23c75-0930-4329-8c5b-600c46ee5f3c
-@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkMWMyM2M3NS0wOTMwLTQzMjktOGM1Yi02MDBjNDZlZTVmM2MiLCJlbWFpbCI6ImFkbWluQGV4YW1wbGUuY29tIiwibmFtZSI6IkFkbWluIiwiaWF0IjoxNzMxMTkxNzI5LCJleHAiOjE3MzEyNzgxMjl9.WILdbM2D_jNb2WL8pjVWabq6kSsi3JC5XdG1pWaYg8w
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3MTBiMDZlZS0wOWIyLTRjMDgtOWVmYy1hNDk2ODI2MzQ4N2IiLCJlbWFpbCI6ImFkbWluN0BleGFtcGxlLmNvbSIsIm5hbWUiOm51bGwsImlhdCI6MTczMjA1MTA5NCwiZXhwIjoxNzMyMTM3NDk0fQ.oYv7QK00uc9C_QJ-p7s-oWBAYyNt5vIyNkAxTXmkBGU
+
+### Generate note content
+POST http://localhost:3000/notes/generate
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+    "subject": "História",
+    "title": "Revolução Russa"
+}
 
 ### Find all notes
 GET http://localhost:3000/notes

@@ -1,6 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing'
 import { instance, mock, verify, when } from 'ts-mockito'
 
+import { AiService } from '$/notes/ai.service'
+import { Note } from '$/notes/note.entity'
 import { NotesController } from '$/notes/notes.controller'
 import { NotesService } from '$/notes/notes.service'
 
@@ -9,6 +11,7 @@ import { notesMock } from './notes.mock'
 describe('NotesController', () => {
   let notesController: NotesController
   let notesServiceMock: NotesService
+  let aiServiceMock: AiService
   const userId = 'fake-user-id'
   const requestUser = {
     email: 'fake-email',
@@ -18,6 +21,7 @@ describe('NotesController', () => {
 
   beforeEach(async () => {
     notesServiceMock = mock(NotesService)
+    aiServiceMock = mock(AiService)
 
     const module: TestingModule = await Test.createTestingModule({
       controllers: [NotesController],
@@ -25,6 +29,10 @@ describe('NotesController', () => {
         {
           provide: NotesService,
           useValue: instance(notesServiceMock)
+        },
+        {
+          provide: AiService,
+          useValue: instance(aiServiceMock)
         }
       ]
     }).compile()
@@ -34,6 +42,23 @@ describe('NotesController', () => {
 
   it('should be defined', () => {
     expect(notesController).toBeDefined()
+  })
+
+  it('should generate a note content', async () => {
+    const subject = 'Geography'
+    const title = 'The capital of France'
+
+    const partialFlashcard: Partial<Note> = {
+      content: 'Paris'
+    }
+
+    when(aiServiceMock.generateContent(subject, title)).thenResolve(partialFlashcard)
+
+    const result = await notesController.generateNote({ subject, title })
+
+    expect(result).toEqual(partialFlashcard)
+
+    verify(aiServiceMock.generateContent(subject, title)).once()
   })
 
   it('should return all notes', async () => {
