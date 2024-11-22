@@ -65,9 +65,9 @@ export class AiService {
 
     const generatedContent = await model.generateContent(prompt)
 
-    const json = JSON.parse(generatedContent.response.text())
+    const flashcard = JSON.parse(generatedContent.response.text())
 
-    return json
+    return flashcard
   }
 
   async generateFlashcards(userId: string, noteId: string) {

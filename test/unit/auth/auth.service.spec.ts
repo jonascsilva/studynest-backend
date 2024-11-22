@@ -72,6 +72,7 @@ describe('AuthService', () => {
     it('should create a new user with hashed password', async () => {
       const email = 'test@example.com'
       const password = 'password123'
+      const name = 'fake-name'
       const hashedPassword = 'hashedpassword'
 
       when(usersServiceMock.find(email)).thenResolve([])
@@ -83,20 +84,20 @@ describe('AuthService', () => {
       const createdUser = new User()
       createdUser.id = 'user-id'
       createdUser.email = email
-      createdUser.email = 'fake-name'
+      createdUser.name = name
       createdUser.password = hashedPassword
 
-      when(usersServiceMock.create(email, hashedPassword)).thenResolve(createdUser)
+      when(usersServiceMock.create(email, hashedPassword, name)).thenResolve(createdUser)
 
       jest.spyOn(jwtService, 'sign').mockReturnValue(accessToken)
 
-      const result = await authService.signup(email, password)
+      const result = await authService.signup(email, password, name)
 
       expect(result).toEqual({ access_token: accessToken })
 
       verify(usersServiceMock.find(email)).once()
       verify(hashServiceMock.hash(password)).once()
-      verify(usersServiceMock.create(email, hashedPassword)).once()
+      verify(usersServiceMock.create(email, hashedPassword, name)).once()
 
       expect(jwtService.sign).toHaveBeenCalledWith({
         sub: createdUser.id,

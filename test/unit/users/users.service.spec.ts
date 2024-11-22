@@ -35,8 +35,9 @@ describe('UsersService', () => {
     it('should create and save a new user', async () => {
       const email = 'test@example.com'
       const password = 'password123'
+      const name = 'Test'
 
-      const createUserInput = { email, password, userSettings: {} }
+      const createUserInput = { email, password, name, userSettings: {} }
 
       const user = new User()
 
@@ -46,7 +47,7 @@ describe('UsersService', () => {
       when(userRepoMock.create(deepEqual(createUserInput))).thenReturn(user)
       when(userRepoMock.save(user)).thenResolve(user)
 
-      const result = await usersService.create(email, password)
+      const result = await usersService.create(email, password, name)
 
       expect(result).toEqual(user)
 

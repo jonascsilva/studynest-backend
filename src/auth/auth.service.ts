@@ -12,7 +12,7 @@ export class AuthService {
     private readonly jwtService: JwtService
   ) {}
 
-  async signup(email: string, password: string) {
+  async signup(email: string, password: string, name?: string) {
     const users = await this.usersService.find(email)
 
     if (users.length) {
@@ -21,7 +21,7 @@ export class AuthService {
 
     const hash = await this.hashService.hash(password)
 
-    const user = await this.usersService.create(email, hash)
+    const user = await this.usersService.create(email, hash, name)
 
     const payload = { sub: user.id, email: user.email, name: user.name }
 
