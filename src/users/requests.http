@@ -1,6 +1,6 @@
 @userId = d1c23c75-0930-4329-8c5b-600c46ee5f3c
 @userEmail = admin@example.com
-@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkMWMyM2M3NS0wOTMwLTQzMjktOGM1Yi02MDBjNDZlZTVmM2MiLCJlbWFpbCI6ImFkbWluQGV4YW1wbGUuY29tIiwibmFtZSI6IkFkbWluIiwiaWF0IjoxNzMxOTgzNjU5LCJleHAiOjE3MzIwNzAwNTl9.MMrOXHvqJcKNe3BWIzre7nKcrsFR1wB7A6H0dr1gmwU
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyZGI2NTMxMC1hMGUwLTRiMWUtOGY4Ni0xNzNlMTRmNjUyYWEiLCJlbWFpbCI6ImpvbmFzQGV4YW1wbGUuY29tIiwibmFtZSI6bnVsbCwiaWF0IjoxNzMyMTM3MjQzLCJleHAiOjE3MzIyMjM2NDN9.DPqLR9-Evcjkx2HvXKuzkBYrSWiZ6224cisfbCMT4xE
 
 ### Find a particular user with a given ID
 GET http://localhost:3000/users/{{userId}}

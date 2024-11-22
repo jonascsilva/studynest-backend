@@ -33,18 +33,19 @@ describe('AuthController', () => {
     it('should register a new user and return a success message', async () => {
       const body: CreateUserDto = {
         email: 'test@example.com',
-        password: 'password123'
+        password: 'password123',
+        name: 'Test'
       }
 
       const response = { access_token: 'fake-token' }
 
-      when(authServiceMock.signup(body.email, body.password)).thenResolve(response)
+      when(authServiceMock.signup(body.email, body.password, body.name)).thenResolve(response)
 
       const result = await authController.signup(body)
 
       expect(result).toEqual(response)
 
-      verify(authServiceMock.signup(body.email, body.password)).once()
+      verify(authServiceMock.signup(body.email, body.password, body.name)).once()
     })
   })
 

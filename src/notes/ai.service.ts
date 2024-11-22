@@ -31,13 +31,19 @@ export class AiService {
 
     const prompt = `
       Gere o conteúdo (em português) de uma anotação (documento) sobre o seguinte assunto: "${subject}" e com o seguinte título: "${title}".
-      O conteúdo deve ser bem completo.
+      O conteúdo deve ser bem completo e não deve conter exemplos de código.
     `
 
     const generatedContent = await model.generateContent(prompt)
 
-    const json = JSON.parse(generatedContent.response.text())
+    const { content } = JSON.parse(generatedContent.response.text())
 
-    return json
+    const parsedContent = content
+      .replace(/\*+\s?/g, '')
+      .replace(/_+\s?/g, '')
+      .replace(/#+\s?/g, '')
+      .replace(/>+\s?/g, '')
+
+    return { content: parsedContent }
   }
 }

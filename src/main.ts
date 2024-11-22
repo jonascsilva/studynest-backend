@@ -25,7 +25,7 @@ async function bootstrap() {
 
   const config = new DocumentBuilder()
     .setTitle('StudyNest API')
-    .setVersion('0.3.0')
+    .setVersion('0.4.0')
     .addBearerAuth()
     .build()
 
