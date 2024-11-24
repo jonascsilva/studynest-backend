@@ -1,4 +1,4 @@
-import { IsString, IsOptional } from 'class-validator'
+import { IsString, IsOptional, IsBoolean } from 'class-validator'
 
 export class UpdateNoteDto {
   @IsString()
@@ -12,4 +12,8 @@ export class UpdateNoteDto {
   @IsString()
   @IsOptional()
   content?: string
+
+  @IsBoolean()
+  @IsOptional()
+  shared?: boolean
 }

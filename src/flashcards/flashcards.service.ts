@@ -40,7 +40,31 @@ export class FlashcardsService {
   }
 
   async find(userId: string): Promise<Flashcard[]> {
-    const foundFlashcards = await this.flashcardRepo.findBy({ userId })
+    const foundFlashcards = await this.flashcardRepo.find({
+      where: { userId },
+      order: { createdAt: 'DESC' }
+    })
+
+    return foundFlashcards
+  }
+
+  async findShared(userId: string, query?: string): Promise<Flashcard[]> {
+    const qb = this.flashcardRepo
+      .createQueryBuilder('flashcard')
+      .where('flashcard.shared = :shared', { shared: true })
+      .andWhere('flashcard.userId != :userId', { userId })
+      .orderBy('flashcard.createdAt', 'DESC')
+
+    if (query) {
+      const lowerQuery = `%${query.toLowerCase()}%`
+
+      qb.andWhere(
+        '(LOWER(flashcard.question) LIKE :query OR LOWER(flashcard.subject) LIKE :query)',
+        { query: lowerQuery }
+      )
+    }
+
+    const foundFlashcards = await qb.getMany()
 
     return foundFlashcards
   }
@@ -89,7 +113,7 @@ export class FlashcardsService {
   async getFlashcardWithReview(userId: string, flashcard: Flashcard): Promise<FlashcardWithReview> {
     const revisions = await this.flashcardRevisionRepo.find({
       where: { flashcardId: flashcard.id },
-      order: { createdAt: 'ASC' }
+      order: { createdAt: 'DESC' }
     })
 
     if (revisions.length === 0) {
@@ -125,7 +149,10 @@ export class FlashcardsService {
   ): Promise<{ dueFlashcards: FlashcardWithReview[]; upcomingFlashcards: FlashcardWithReview[] }> {
     const now = new Date()
 
-    const flashcards = await this.flashcardRepo.findBy({ userId })
+    const flashcards = await this.flashcardRepo.find({
+      where: { userId },
+      order: { createdAt: 'DESC' }
+    })
 
     const dueFlashcards: FlashcardWithReview[] = []
     const upcomingFlashcards: FlashcardWithReview[] = []

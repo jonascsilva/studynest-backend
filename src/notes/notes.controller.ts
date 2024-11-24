@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Post, Delete, Patch, Body } from '@nestjs/common'
+import { Controller, Get, Param, Post, Delete, Patch, Body, Query } from '@nestjs/common'
 
 import { Authenticated } from '$/auth/auth.decorator'
 import { Serialize } from '$/interceptor/serialize.interceptor'
@@ -21,8 +21,18 @@ export class NotesController {
   ) {}
 
   @Get()
-  findAllNotes(@ReqUser() user: RequestUser): Promise<Note[]> {
-    return this.notesService.find(user.id)
+  findAllNotes(
+    @ReqUser() user: RequestUser,
+    @Query('shared') shared?: boolean,
+    @Query('query') query?: string
+  ): Promise<Note[]> {
+    const userId = user.id
+
+    if (shared) {
+      return this.notesService.findShared(userId, query)
+    }
+
+    return this.notesService.find(userId)
   }
 
   @Get('/:id')

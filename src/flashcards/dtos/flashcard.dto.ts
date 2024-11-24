@@ -14,6 +14,9 @@ export class FlashcardDto {
   answer: string
 
   @Expose()
+  shared: boolean
+
+  @Expose()
   userId: string
 
   @Expose()

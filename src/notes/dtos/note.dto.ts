@@ -14,6 +14,9 @@ export class NoteDto {
   content: string
 
   @Expose()
+  shared: boolean
+
+  @Expose()
   userId: string
 
   @Expose()

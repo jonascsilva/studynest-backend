@@ -1,6 +1,6 @@
-@flashcardId = c0ae3c3e-8c95-406d-8b58-7ef87c3aa748
+@flashcardId = 218291e9-f277-4c02-b020-3121b860267d
 @userId = d1c23c75-0930-4329-8c5b-600c46ee5f3c
-@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3MTBiMDZlZS0wOWIyLTRjMDgtOWVmYy1hNDk2ODI2MzQ4N2IiLCJlbWFpbCI6ImFkbWluN0BleGFtcGxlLmNvbSIsIm5hbWUiOm51bGwsImlhdCI6MTczMjA1MTA5NCwiZXhwIjoxNzMyMTM3NDk0fQ.oYv7QK00uc9C_QJ-p7s-oWBAYyNt5vIyNkAxTXmkBGU
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkMWMyM2M3NS0wOTMwLTQzMjktOGM1Yi02MDBjNDZlZTVmM2MiLCJlbWFpbCI6ImFkbWluQGV4YW1wbGUuY29tIiwibmFtZSI6IkFkbWluIiwiaWF0IjoxNzMyMzc4NzQxLCJleHAiOjE3MzI0NjUxNDF9.MMFhS2FegOTaqAxh_KZUAxV5t4d78PlIDpC_u8zMpKs
 
 ### Generate flashcard content
 POST http://localhost:3000/flashcards/generate
@@ -54,8 +54,9 @@ Authorization: Bearer {{accessToken}}
 content-type: application/json
 
 {
-    "title": "Outra pergunta",
-    "content": "Uma nova resposta"
+    "question": "Outra pergunta",
+    "answer": "Uma nova resposta",
+    "shared": true
 }
 
 ### Delete a flashcard with given id

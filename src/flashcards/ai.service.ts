@@ -60,7 +60,7 @@ export class AiService {
 
     const prompt = `
       Gere a resposta do flashcard (em português) sobre o seguinte assunto: "${subject}" e com a seguinte pergunta: "${question}".
-      A resposta deve ser objetiva.
+      A resposta deve ser bem objetiva.
     `
 
     const generatedContent = await model.generateContent(prompt)

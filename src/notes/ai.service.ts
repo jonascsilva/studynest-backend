@@ -31,7 +31,7 @@ export class AiService {
 
     const prompt = `
       Gere o conteúdo (em português) de uma anotação (documento) sobre o seguinte assunto: "${subject}" e com o seguinte título: "${title}".
-      O conteúdo deve ser bem completo e não deve conter exemplos de código.
+      O conteúdo deve ser bem completo, não deve conter exemplos de código e não deve conter um título.
     `
 
     const generatedContent = await model.generateContent(prompt)

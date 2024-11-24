@@ -10,7 +10,30 @@ export class NotesService {
   constructor(@InjectRepository(Note) private readonly noteRepo: Repository<Note>) {}
 
   async find(userId: string): Promise<Note[]> {
-    const foundNotes = await this.noteRepo.findBy({ userId })
+    const foundNotes = await this.noteRepo.find({
+      where: { userId },
+      order: { createdAt: 'DESC' }
+    })
+
+    return foundNotes
+  }
+
+  async findShared(userId: string, query?: string): Promise<Note[]> {
+    const qb = this.noteRepo
+      .createQueryBuilder('note')
+      .where('note.shared = :shared', { shared: true })
+      .andWhere('note.userId != :userId', { userId })
+      .orderBy('note.createdAt', 'DESC')
+
+    if (query) {
+      const lowerQuery = `%${query.toLowerCase()}%`
+
+      qb.andWhere('(LOWER(note.title) LIKE :query OR LOWER(note.subject) LIKE :query)', {
+        query: lowerQuery
+      })
+    }
+
+    const foundNotes = await qb.getMany()
 
     return foundNotes
   }

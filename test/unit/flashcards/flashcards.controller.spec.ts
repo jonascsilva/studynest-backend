@@ -80,13 +80,29 @@ describe('FlashcardsController', () => {
       verify(flashcardsServiceMock.find(userId)).once()
     })
 
+    it('should return all shared notes', async () => {
+      when(flashcardsServiceMock.findShared(userId, undefined)).thenResolve(flashcardsMock)
+
+      const result = await flashcardsController.getAllFlashcards(requestUser, true)
+
+      expect(result).toEqual(flashcardsMock)
+
+      verify(flashcardsServiceMock.findShared(userId, undefined)).once()
+    })
+
     it('should return all due flashcards', async () => {
       when(flashcardsServiceMock.getFlashcardsWithReviews(userId)).thenResolve({
         dueFlashcards: dueFlashcardsMock,
         upcomingFlashcards: upcomingFlashcardsMock
       })
 
-      const result = await flashcardsController.getAllFlashcards(requestUser, 'true')
+      const result = await flashcardsController.getAllFlashcards(
+        requestUser,
+        undefined,
+        undefined,
+        true,
+        undefined
+      )
 
       expect(result).toEqual(dueFlashcardsMock)
 
@@ -99,7 +115,13 @@ describe('FlashcardsController', () => {
         upcomingFlashcards: upcomingFlashcardsMock
       })
 
-      const result = await flashcardsController.getAllFlashcards(requestUser, undefined, 'true')
+      const result = await flashcardsController.getAllFlashcards(
+        requestUser,
+        undefined,
+        undefined,
+        undefined,
+        true
+      )
 
       expect(result).toEqual(upcomingFlashcardsMock)
 
@@ -112,7 +134,13 @@ describe('FlashcardsController', () => {
         upcomingFlashcards: upcomingFlashcardsMock
       })
 
-      const result = await flashcardsController.getAllFlashcards(requestUser, 'true', 'true')
+      const result = await flashcardsController.getAllFlashcards(
+        requestUser,
+        undefined,
+        undefined,
+        true,
+        true
+      )
 
       expect(result).toEqual([...dueFlashcardsMock, ...upcomingFlashcardsMock])
 
