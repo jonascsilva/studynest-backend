@@ -32,10 +32,16 @@ export class FlashcardsController {
   @Get()
   async getAllFlashcards(
     @ReqUser() user: RequestUser,
-    @Query('due') due?: string,
-    @Query('upcoming') upcoming?: string
+    @Query('shared') shared?: boolean,
+    @Query('query') query?: string,
+    @Query('due') due?: boolean,
+    @Query('upcoming') upcoming?: boolean
   ): Promise<Flashcard[]> {
     const userId = user.id
+
+    if (shared) {
+      return this.flashcardsService.findShared(userId, query)
+    }
 
     if (due || upcoming) {
       const { dueFlashcards, upcomingFlashcards } =

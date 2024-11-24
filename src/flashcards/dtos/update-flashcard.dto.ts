@@ -1,4 +1,4 @@
-import { IsString, IsOptional } from 'class-validator'
+import { IsString, IsOptional, IsBoolean } from 'class-validator'
 
 export class UpdateFlashcardDto {
   @IsString()
@@ -12,4 +12,8 @@ export class UpdateFlashcardDto {
   @IsString()
   @IsOptional()
   answer?: string
+
+  @IsBoolean()
+  @IsOptional()
+  shared?: boolean
 }

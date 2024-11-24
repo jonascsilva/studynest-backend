@@ -2,7 +2,7 @@ import { NotFoundException } from '@nestjs/common'
 import { Test, TestingModule } from '@nestjs/testing'
 import { getRepositoryToken } from '@nestjs/typeorm'
 import { instance, mock, when, verify, anything, deepEqual } from 'ts-mockito'
-import { Repository } from 'typeorm'
+import { Repository, SelectQueryBuilder } from 'typeorm'
 
 import { FlashcardRevision } from '$/flashcards/flashcard-revision.entity'
 import { Flashcard } from '$/flashcards/flashcard.entity'
@@ -97,15 +97,150 @@ describe('FlashcardsService', () => {
 
   describe('find', () => {
     it('should find all flashcards', async () => {
-      const userId = 'fake-user-id'
+      const findOptions = {
+        where: { userId },
+        order: { createdAt: 'DESC' as const }
+      }
 
-      when(flashcardRepoMock.findBy(deepEqual({ userId }))).thenResolve(flashcardsMock)
+      when(flashcardRepoMock.find(deepEqual(findOptions))).thenResolve(flashcardsMock)
 
       const result = await flashcardsService.find(userId)
 
       expect(result).toEqual(flashcardsMock)
 
-      verify(flashcardRepoMock.findBy(deepEqual({ userId }))).once()
+      verify(flashcardRepoMock.find(deepEqual(findOptions))).once()
+    })
+  })
+
+  describe('findShared', () => {
+    it("should return shared flashcards excluding the user's own flashcards when no query is provided", async () => {
+      const userId = 'user-id'
+      const sharedFlashcards = [
+        {
+          id: 'flashcard-1',
+          question: 'Shared Flashcard 1',
+          subject: 'Subject 1',
+          shared: true,
+          userId: 'other-user-id'
+        } as Flashcard,
+        {
+          id: 'flashcard-2',
+          question: 'Shared Flashcard 2',
+          subject: 'Subject 2',
+          shared: true,
+          userId: 'another-user-id'
+        } as Flashcard
+      ]
+
+      const qbMock = mock<SelectQueryBuilder<Flashcard>>()
+
+      when(flashcardRepoMock.createQueryBuilder('flashcard')).thenReturn(instance(qbMock))
+      when(qbMock.where('flashcard.shared = :shared', deepEqual({ shared: true }))).thenReturn(
+        instance(qbMock)
+      )
+      when(qbMock.andWhere('flashcard.userId != :userId', deepEqual({ userId }))).thenReturn(
+        instance(qbMock)
+      )
+      when(qbMock.orderBy('flashcard.createdAt', 'DESC')).thenReturn(instance(qbMock))
+      when(qbMock.getMany()).thenResolve(sharedFlashcards)
+
+      const result = await flashcardsService.findShared(userId)
+
+      expect(result).toEqual(sharedFlashcards)
+
+      verify(flashcardRepoMock.createQueryBuilder('flashcard')).once()
+      verify(qbMock.where('flashcard.shared = :shared', deepEqual({ shared: true }))).once()
+      verify(qbMock.andWhere('flashcard.userId != :userId', deepEqual({ userId }))).once()
+      verify(qbMock.orderBy('flashcard.createdAt', 'DESC')).once()
+      verify(qbMock.getMany()).once()
+    })
+
+    it('should return shared flashcards matching the query when query is provided', async () => {
+      const userId = 'user-id'
+      const query = 'test'
+      const lowerQuery = `%${query.toLowerCase()}%`
+      const sharedFlashcards = [
+        {
+          id: 'flashcard-1',
+          question: 'Test Flashcard',
+          subject: 'Subject 1',
+          shared: true,
+          userId: 'other-user-id'
+        } as Flashcard
+      ]
+
+      const qbMock = mock<SelectQueryBuilder<Flashcard>>()
+
+      when(flashcardRepoMock.createQueryBuilder('flashcard')).thenReturn(instance(qbMock))
+      when(qbMock.where('flashcard.shared = :shared', deepEqual({ shared: true }))).thenReturn(
+        instance(qbMock)
+      )
+      when(qbMock.andWhere('flashcard.userId != :userId', deepEqual({ userId }))).thenReturn(
+        instance(qbMock)
+      )
+      when(qbMock.orderBy('flashcard.createdAt', 'DESC')).thenReturn(instance(qbMock))
+      when(
+        qbMock.andWhere(
+          '(LOWER(flashcard.question) LIKE :query OR LOWER(flashcard.subject) LIKE :query)',
+          deepEqual({ query: lowerQuery })
+        )
+      ).thenReturn(instance(qbMock))
+      when(qbMock.getMany()).thenResolve(sharedFlashcards)
+
+      const result = await flashcardsService.findShared(userId, query)
+
+      expect(result).toEqual(sharedFlashcards)
+
+      verify(flashcardRepoMock.createQueryBuilder('flashcard')).once()
+      verify(qbMock.where('flashcard.shared = :shared', deepEqual({ shared: true }))).once()
+      verify(qbMock.andWhere('flashcard.userId != :userId', deepEqual({ userId }))).once()
+      verify(qbMock.orderBy('flashcard.createdAt', 'DESC')).once()
+      verify(
+        qbMock.andWhere(
+          '(LOWER(flashcard.question) LIKE :query OR LOWER(flashcard.subject) LIKE :query)',
+          deepEqual({ query: lowerQuery })
+        )
+      ).once()
+      verify(qbMock.getMany()).once()
+    })
+
+    it('should return an empty array when no shared flashcards are found', async () => {
+      const userId = 'user-id'
+      const query = 'non-existent-query'
+
+      const qbMock = mock<SelectQueryBuilder<Flashcard>>()
+
+      when(flashcardRepoMock.createQueryBuilder('flashcard')).thenReturn(instance(qbMock))
+      when(qbMock.where('flashcard.shared = :shared', deepEqual({ shared: true }))).thenReturn(
+        instance(qbMock)
+      )
+      when(qbMock.andWhere('flashcard.userId != :userId', deepEqual({ userId }))).thenReturn(
+        instance(qbMock)
+      )
+      when(qbMock.orderBy('flashcard.createdAt', 'DESC')).thenReturn(instance(qbMock))
+      when(
+        qbMock.andWhere(
+          '(LOWER(flashcard.question) LIKE :query OR LOWER(flashcard.subject) LIKE :query)',
+          deepEqual({ query: `%${query.toLowerCase()}%` })
+        )
+      ).thenReturn(instance(qbMock))
+      when(qbMock.getMany()).thenResolve([])
+
+      const result = await flashcardsService.findShared(userId, query)
+
+      expect(result).toEqual([])
+
+      verify(flashcardRepoMock.createQueryBuilder('flashcard')).once()
+      verify(qbMock.where('flashcard.shared = :shared', deepEqual({ shared: true }))).once()
+      verify(qbMock.andWhere('flashcard.userId != :userId', deepEqual({ userId }))).once()
+      verify(qbMock.orderBy('flashcard.createdAt', 'DESC')).once()
+      verify(
+        qbMock.andWhere(
+          '(LOWER(flashcard.question) LIKE :query OR LOWER(flashcard.subject) LIKE :query)',
+          deepEqual({ query: `%${query.toLowerCase()}%` })
+        )
+      ).once()
+      verify(qbMock.getMany()).once()
     })
   })
 
@@ -204,7 +339,7 @@ describe('FlashcardsService', () => {
         flashcardRevisionRepoMock.find(
           deepEqual({
             where: { flashcardId: flashcardsMock[0].id },
-            order: { createdAt: 'ASC' }
+            order: { createdAt: 'DESC' }
           })
         )
       ).thenResolve(revisions)
@@ -242,9 +377,12 @@ describe('FlashcardsService', () => {
     })
 
     it('should return flashcards with no revisions as due', async () => {
-      const userId = 'user-id'
+      const findOptions = {
+        where: { userId },
+        order: { createdAt: 'DESC' as const }
+      }
 
-      when(flashcardRepoMock.findBy(deepEqual({ userId }))).thenResolve(flashcardsMock)
+      when(flashcardRepoMock.find(deepEqual(findOptions))).thenResolve(flashcardsMock)
 
       when(flashcardRevisionRepoMock.find(anything())).thenResolve([])
 
@@ -264,7 +402,7 @@ describe('FlashcardsService', () => {
         upcomingFlashcards: []
       })
 
-      verify(flashcardRepoMock.findBy(deepEqual({ userId }))).once()
+      verify(flashcardRepoMock.find(deepEqual(findOptions))).once()
       verify(flashcardRevisionRepoMock.find(anything())).times(flashcardsMock.length)
     })
 
@@ -284,12 +422,17 @@ describe('FlashcardsService', () => {
         intervalsQuantity: 5
       } as UserSettings
 
-      when(flashcardRepoMock.findBy(deepEqual({ userId }))).thenResolve([flashcardsMock[0]])
+      const findOptions = {
+        where: { userId },
+        order: { createdAt: 'DESC' as const }
+      }
+
+      when(flashcardRepoMock.find(deepEqual(findOptions))).thenResolve([flashcardsMock[0]])
       when(
         flashcardRevisionRepoMock.find(
           deepEqual({
             where: { flashcardId: flashcardsMock[0].id },
-            order: { createdAt: 'ASC' }
+            order: { createdAt: 'DESC' }
           })
         )
       ).thenResolve(revisions)
@@ -319,7 +462,7 @@ describe('FlashcardsService', () => {
         nextReviewDate
       })
 
-      verify(flashcardRepoMock.findBy(deepEqual({ userId }))).once()
+      verify(flashcardRepoMock.find(deepEqual(findOptions))).once()
       verify(flashcardRevisionRepoMock.find(anything())).once()
       verify(userSettingsRepoMock.findOneBy(deepEqual({ userId }))).once()
     })
@@ -340,12 +483,17 @@ describe('FlashcardsService', () => {
         intervalsQuantity: 5
       } as UserSettings
 
-      when(flashcardRepoMock.findBy(deepEqual({ userId }))).thenResolve(flashcards)
+      const findOptions = {
+        where: { userId },
+        order: { createdAt: 'DESC' as const }
+      }
+
+      when(flashcardRepoMock.find(deepEqual(findOptions))).thenResolve(flashcards)
       when(
         flashcardRevisionRepoMock.find(
           deepEqual({
             where: { flashcardId: 'flashcard-1' },
-            order: { createdAt: 'ASC' }
+            order: { createdAt: 'DESC' }
           })
         )
       ).thenResolve(revisions)
@@ -370,7 +518,7 @@ describe('FlashcardsService', () => {
       expect(dueFlashcards).toHaveLength(0)
       expect(upcomingFlashcards).toHaveLength(1)
 
-      verify(flashcardRepoMock.findBy(deepEqual({ userId }))).once()
+      verify(flashcardRepoMock.find(deepEqual(findOptions))).once()
       verify(flashcardRevisionRepoMock.find(anything())).once()
       verify(userSettingsRepoMock.findOneBy(deepEqual({ userId }))).once()
     })

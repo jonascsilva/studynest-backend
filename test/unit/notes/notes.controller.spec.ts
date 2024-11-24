@@ -61,14 +61,26 @@ describe('NotesController', () => {
     verify(aiServiceMock.generateContent(subject, title)).once()
   })
 
-  it('should return all notes', async () => {
-    when(notesServiceMock.find(userId)).thenResolve(notesMock)
+  describe('findAllNotes', () => {
+    it('should return all notes', async () => {
+      when(notesServiceMock.find(userId)).thenResolve(notesMock)
 
-    const result = await notesController.findAllNotes(requestUser)
+      const result = await notesController.findAllNotes(requestUser)
 
-    expect(result).toEqual(notesMock)
+      expect(result).toEqual(notesMock)
 
-    verify(notesServiceMock.find(userId)).once()
+      verify(notesServiceMock.find(userId)).once()
+    })
+
+    it('should return all shared notes', async () => {
+      when(notesServiceMock.findShared(userId, undefined)).thenResolve(notesMock)
+
+      const result = await notesController.findAllNotes(requestUser, true)
+
+      expect(result).toEqual(notesMock)
+
+      verify(notesServiceMock.findShared(userId, undefined)).once()
+    })
   })
 
   it('should return a note', async () => {

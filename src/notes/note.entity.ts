@@ -24,6 +24,9 @@ export class Note {
   @Column('text', { default: '' })
   content: string
 
+  @Column({ default: false })
+  shared: boolean
+
   @Column('uuid')
   userId: string
 

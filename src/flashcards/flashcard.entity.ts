@@ -26,6 +26,9 @@ export class Flashcard {
   @Column('text', { default: '' })
   answer: string
 
+  @Column({ default: false })
+  shared: boolean
+
   @Column('uuid')
   userId: string
 
