@@ -23,7 +23,7 @@ export class FlashcardRevision {
   @CreateDateColumn()
   createdAt: Date
 
-  @ManyToOne(() => Flashcard, flashcard => flashcard.flashcardRevisions)
+  @ManyToOne(() => Flashcard, flashcard => flashcard.flashcardRevisions, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'flashcardId' })
   flashcard: Flashcard
 }

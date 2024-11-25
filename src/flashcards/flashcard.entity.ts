@@ -38,10 +38,12 @@ export class Flashcard {
   @UpdateDateColumn()
   updatedAt: Date
 
-  @ManyToOne(() => User, user => user.flashcards)
+  @ManyToOne(() => User, user => user.flashcards, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'userId' })
   user: User
 
-  @OneToMany(() => FlashcardRevision, flashcardRevision => flashcardRevision.flashcard)
+  @OneToMany(() => FlashcardRevision, flashcardRevision => flashcardRevision.flashcard, {
+    cascade: true
+  })
   flashcardRevisions: FlashcardRevision[]
 }

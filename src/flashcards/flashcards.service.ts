@@ -113,7 +113,7 @@ export class FlashcardsService {
   async getFlashcardWithReview(userId: string, flashcard: Flashcard): Promise<FlashcardWithReview> {
     const revisions = await this.flashcardRevisionRepo.find({
       where: { flashcardId: flashcard.id },
-      order: { createdAt: 'DESC' }
+      order: { createdAt: 'ASC' }
     })
 
     if (revisions.length === 0) {
