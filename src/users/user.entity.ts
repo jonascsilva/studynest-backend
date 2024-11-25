@@ -32,12 +32,15 @@ export class User {
   @UpdateDateColumn()
   updatedAt: Date
 
-  @OneToMany(() => Note, note => note.user)
+  @OneToMany(() => Note, note => note.user, { cascade: true })
   notes: Note[]
 
-  @OneToMany(() => Flashcard, flashcard => flashcard.user)
+  @OneToMany(() => Flashcard, flashcard => flashcard.user, { cascade: true })
   flashcards: Flashcard[]
 
-  @OneToOne(() => UserSettings, userSettings => userSettings.user, { cascade: true })
+  @OneToOne(() => UserSettings, userSettings => userSettings.user, {
+    cascade: true,
+    onDelete: 'CASCADE'
+  })
   userSettings: UserSettings
 }

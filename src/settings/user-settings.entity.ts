@@ -33,7 +33,7 @@ export class UserSettings {
   @UpdateDateColumn()
   updatedAt: Date
 
-  @OneToOne(() => User, user => user.userSettings)
+  @OneToOne(() => User, user => user.userSettings, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'userId' })
   user: User
 }

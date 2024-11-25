@@ -339,7 +339,7 @@ describe('FlashcardsService', () => {
         flashcardRevisionRepoMock.find(
           deepEqual({
             where: { flashcardId: flashcardsMock[0].id },
-            order: { createdAt: 'DESC' }
+            order: { createdAt: 'ASC' }
           })
         )
       ).thenResolve(revisions)
@@ -432,7 +432,7 @@ describe('FlashcardsService', () => {
         flashcardRevisionRepoMock.find(
           deepEqual({
             where: { flashcardId: flashcardsMock[0].id },
-            order: { createdAt: 'DESC' }
+            order: { createdAt: 'ASC' }
           })
         )
       ).thenResolve(revisions)
@@ -493,7 +493,7 @@ describe('FlashcardsService', () => {
         flashcardRevisionRepoMock.find(
           deepEqual({
             where: { flashcardId: 'flashcard-1' },
-            order: { createdAt: 'DESC' }
+            order: { createdAt: 'ASC' }
           })
         )
       ).thenResolve(revisions)
