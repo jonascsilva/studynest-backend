@@ -1,8 +1,9 @@
-name: Main pipeline
+name: Validations
 
 on:
   pull_request:
     types: [opened, synchronize, reopened]
+  workflow_dispatch:
 
 jobs:
   test:
@@ -58,6 +59,7 @@ jobs:
 
       - name: Build project
         run: npm run build
+
   sonarcloud:
     name: SonarCloud
     runs-on: ubuntu-latest

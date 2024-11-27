@@ -4,7 +4,6 @@ import { Repository } from 'typeorm'
 
 import { FlashcardRevision } from '$/flashcards/flashcard-revision.entity'
 import { Flashcard } from '$/flashcards/flashcard.entity'
-import { calculateCurrentIntervalLevel, calculateNextReviewDate } from '$/flashcards/utils'
 import { UserSettings } from '$/settings/user-settings.entity'
 
 export type FlashcardWithReview = Flashcard & { currentLevel: number; nextReviewDate: Date }
@@ -128,11 +127,14 @@ export class FlashcardsService {
 
     const userSettings = await this.userSettingsRepo.findOneBy({ userId })
 
-    const currentLevel = calculateCurrentIntervalLevel(revisions, userSettings.intervalsQuantity)
+    const currentLevel = this.calculateCurrentIntervalLevel(
+      revisions,
+      userSettings.intervalsQuantity
+    )
 
     const lastRevisionDate = revisions[revisions.length - 1].createdAt
 
-    const nextReviewDate = calculateNextReviewDate(
+    const nextReviewDate = this.calculateNextReviewDate(
       userSettings.baseInterval,
       userSettings.intervalIncreaseRate,
       currentLevel,
@@ -168,5 +170,33 @@ export class FlashcardsService {
     }
 
     return { dueFlashcards, upcomingFlashcards }
+  }
+
+  calculateCurrentIntervalLevel(revisions: FlashcardRevision[], intervalsQuantity: number): number {
+    let level = 1
+
+    for (const revision of revisions) {
+      if (revision.result) {
+        level = Math.min(level + 1, intervalsQuantity)
+      } else {
+        level = Math.max(level - 1, 1)
+      }
+    }
+
+    return level
+  }
+
+  calculateNextReviewDate(
+    baseInterval: number,
+    intervalIncreaseRate: number,
+    level: number,
+    lastRevisionDate: Date
+  ): Date {
+    const daysToAdd = baseInterval * Math.pow(intervalIncreaseRate, level - 1)
+    const nextReview = new Date(lastRevisionDate)
+
+    nextReview.setDate(nextReview.getDate() + daysToAdd)
+
+    return nextReview
   }
 }

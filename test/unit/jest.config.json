@@ -10,6 +10,6 @@
     "^\\$/(.*)$": "<rootDir>/src/$1"
   },
   "collectCoverageFrom": ["./src/**/*.{!(module|entity),}.(t|j)s"],
-  "coveragePathIgnorePatterns": ["/src/db/factories/", "/src/db/seeds/"],
+  "coveragePathIgnorePatterns": ["/src/db/"],
   "coverageDirectory": "./coverage"
 }
