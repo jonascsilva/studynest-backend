@@ -567,7 +567,7 @@ describe('FlashcardsService', () => {
       expect(level).toBe(3)
     })
 
-    it('should decrease level by 1 for each incorrect revision (result !== 1)', () => {
+    it('should decrease level to 1 for each incorrect revision (result !== 1)', () => {
       const revisions: FlashcardRevision[] = [
         { result: 1 } as FlashcardRevision,
         { result: 0 } as FlashcardRevision,
@@ -605,7 +605,7 @@ describe('FlashcardsService', () => {
 
       const level = flashcardsService.calculateCurrentIntervalLevel(revisions, intervalsQuantity)
 
-      expect(level).toBe(2)
+      expect(level).toBe(1)
     })
   })
 

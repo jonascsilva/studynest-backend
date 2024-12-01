@@ -179,7 +179,7 @@ export class FlashcardsService {
       if (revision.result) {
         level = Math.min(level + 1, intervalsQuantity)
       } else {
-        level = Math.max(level - 1, 1)
+        level = 1
       }
     }
 
